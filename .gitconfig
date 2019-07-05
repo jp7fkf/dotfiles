@@ -1,0 +1,7 @@
+[user]
+	email = jp7fkf@gmail.com
+	name = Yudai Hashimoto
+[alias]
+	delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
+[core]
+	excludesFile = ~/.gitignore_global
