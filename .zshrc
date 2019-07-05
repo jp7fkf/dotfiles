@@ -6,7 +6,6 @@ fi
 # 少し凝った zshrc
 # License : MIT
 # http://mollifier.mit-license.org/
- 
 ########################################
 #PATH
 export PATH=/usr/local/bin:$PATH:/usr/local/texlive/2015/bin/x86_64-darwin:/opt/local/bin
@@ -67,7 +66,6 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 # ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
  
- 
 ########################################
 # vcs_info
 autoload -Uz vcs_info
@@ -81,7 +79,6 @@ function _update_vcs_info_msg() {
     RPROMPT="${vcs_info_msg_0_}"
 }
 add-zsh-hook precmd _update_vcs_info_msg
- 
  
 ########################################
 # オプション
@@ -158,8 +155,6 @@ elif which putclip >/dev/null 2>&1 ; then
     alias -g C='| putclip'
 fi
  
- 
- 
 ########################################
 # OS 別の設定
 case ${OSTYPE} in
@@ -184,7 +179,6 @@ export PATH="/usr/local/opt/qt/bin:$PATH"
 export PATH="/usr/local/opt/libxslt/bin:$PATH"
 # pyenvさんに~/.pyenvではなく、/usr/loca/var/pyenvを使うようにお願いする
 export PYENV_ROOT=/usr/local/var/pyenv
-
 # pyenvさんに自動補完機能を提供してもらう
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
