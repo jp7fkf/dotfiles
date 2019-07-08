@@ -1,7 +1,7 @@
+# This is Git's per-user configuration file.
 [user]
+# Please adapt and uncomment the following lines:
+	name = jp7fkf
 	email = jp7fkf@gmail.com
-	name = Yudai Hashimoto
-[alias]
-	delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
 [core]
-	excludesFile = ~/.gitignore_global
+	excludesfile = ~/.gitignore_global

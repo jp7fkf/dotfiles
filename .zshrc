@@ -1,14 +1,8 @@
-# for rbenv
-if which rbenv > /dev/null; then
-    eval "$(rbenv init -)";
-fi
-
 # 少し凝った zshrc
 # License : MIT
 # http://mollifier.mit-license.org/
+ 
 ########################################
-#PATH
-export PATH=/usr/local/bin:$PATH:/usr/local/texlive/2015/bin/x86_64-darwin:/opt/local/bin
 
 #重複削除
 typeset -U path PATH
@@ -46,6 +40,11 @@ zstyle ':zle:*' word-style unspecified
  
 ########################################
 # 補完
+
+function _ssh {
+  compadd `fgrep 'Host ' ~/.ssh/config | awk '{print $2}' | sort`;
+}
+
 #for zsh-completions
 fpath=(/usr/local/share/zsh-completions $fpath)
 
@@ -66,6 +65,7 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 # ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
  
+ 
 ########################################
 # vcs_info
 autoload -Uz vcs_info
@@ -79,6 +79,7 @@ function _update_vcs_info_msg() {
     RPROMPT="${vcs_info_msg_0_}"
 }
 add-zsh-hook precmd _update_vcs_info_msg
+ 
  
 ########################################
 # オプション
@@ -125,7 +126,7 @@ bindkey '^R' history-incremental-pattern-search-backward
  
 ########################################
 # エイリアス
- 
+alias ssh='ssh -o ServerAliveInterval=60'
 alias la='ls -a'
 alias ll='ls -l'
  
@@ -154,13 +155,36 @@ elif which putclip >/dev/null 2>&1 ; then
     # Cygwin
     alias -g C='| putclip'
 fi
+
+
+
+############## peco&ssh ################
+function peco-ssh () {
+  local selected_host=$(awk '
+  tolower($1)=="host" {
+    for (i=2; i<=NF; i++) {
+      if ($i !~ "[*?]") {
+        print $i
+      }
+    }
+  }
+  ' ~/.ssh/*| sort | peco --query "$LBUFFER")
+  if [ -n "$selected_host" ]; then
+    BUFFER="ssh ${selected_host}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-ssh
+bindkey 'SS' peco-ssh
+ 
  
 ########################################
 # OS 別の設定
 case ${OSTYPE} in
     darwin*)
         #Mac用の設定
-	export LSCOLORS=dxgxcxdxcxegedabagacad
+    export LSCOLORS=dxgxcxdxcxegedabagacad
         export CLICOLOR=1
         alias ls='ls -G -F'
         ;;
@@ -172,15 +196,19 @@ esac
  
 # vim:set ft=zsh:
 export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/Users/YudaiHashimoto/.rbenv/shims:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin:/usr/local/texlive/2015/bin/x86_64-darwin:/opt/local/bin"
-export PATH="/usr/local/opt/e2fsprogs/bin:$PATH"
-export PATH="/usr/local/opt/e2fsprogs/sbin:$PATH"
-export PATH="/usr/local/opt/qt/bin:$PATH"
-export PATH="/usr/local/opt/libxslt/bin:$PATH"
-# pyenvさんに~/.pyenvではなく、/usr/loca/var/pyenvを使うようにお願いする
-export PYENV_ROOT=/usr/local/var/pyenv
-# pyenvさんに自動補完機能を提供してもらう
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-
-alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
+export PYENV_ROOT=$HOME/.pyenv
+export PATH=$PYENV_ROOT/bin:$PATH
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export PGDATA=/usr/local/var/postgres
+export PATH="$HOME/.rbenv/bin:$PATH"
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+export GOENV_ROOT="$HOME/.goenv"
+export GOPATH=$HOME/dev/godev
+export GOBIN=$GOPATH/bin
+export PATH="$GOBIN:$GOENV_ROOT/bin:$PATH"
+if which goenv > /dev/null; then eval "$(goenv init -)"; fi
 alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S"`"'
+alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
