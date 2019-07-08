@@ -1,4 +1,12 @@
-*~
+# DS_Store
 .DS_Store
-node_modules/
-bower_components/
+
+# Vi/Vim backup files
+*~
+*.swp
+*.swo
+
+# Emacs backup files
+*~
+*#
+

@@ -138,7 +138,11 @@ alias mkdir='mkdir -p'
  
 # sudo の後のコマンドでエイリアスを有効にする
 alias sudo='sudo '
- 
+
+
+alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S"`"'
+alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
+
 # グローバルエイリアス
 alias -g L='| less'
 alias -g G='| grep'
@@ -184,7 +188,7 @@ bindkey 'SS' peco-ssh
 case ${OSTYPE} in
     darwin*)
         #Mac用の設定
-    export LSCOLORS=dxgxcxdxcxegedabagacad
+        export LSCOLORS=dxgxcxdxcxegedabagacad
         export CLICOLOR=1
         alias ls='ls -G -F'
         ;;
@@ -195,20 +199,30 @@ case ${OSTYPE} in
 esac
  
 # vim:set ft=zsh:
+
 export PATH="/usr/local/sbin:$PATH"
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+## pyenv
 export PYENV_ROOT=$HOME/.pyenv
 export PATH=$PYENV_ROOT/bin:$PATH
 export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
+if which pyenv > /dev/null; then eval "$(rbenv init -)"; fi
+
 export PGDATA=/usr/local/var/postgres
+
+## rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+## goenv
 export GOENV_ROOT="$HOME/.goenv"
 export GOPATH=$HOME/dev/godev
 export GOBIN=$GOPATH/bin
 export PATH="$GOBIN:$GOENV_ROOT/bin:$PATH"
 if which goenv > /dev/null; then eval "$(goenv init -)"; fi
-alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S"`"'
-alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
+
+## texlive
+export PATH="/Library/TeX/texbin:/usr/local/texlive/2015/bin/x86_64-darwin:$PATH"
+
