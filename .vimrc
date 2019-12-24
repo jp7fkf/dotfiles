@@ -32,9 +32,11 @@ set undodir=D:$HOME/.vimbackup
 
 "" ステータスライン
 " ステータスラインに文字コード/改行文字種別を表示
-set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
 " 常にステータス行を表示
 set laststatus=2
+set statusline =%F%r%h%=
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+"set statusline+=[%{has('multi_byte')&&\&fileencoding!=''?&fileencoding:&encoding}]
 
 " バックアップ関連
 set backup
@@ -85,9 +87,6 @@ set smartindent
 set visualbell
 " 括弧入力時の対応する括弧を表示
 set showmatch
-" ステータスラインを常に表示
-set laststatus=2
-set statusline =%F%r%h%=
 set cursorline
 set colorcolumn=80
 
