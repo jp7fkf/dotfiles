@@ -1,5 +1,9 @@
 [
-  { "keys": ["ctrl+shift+r"], "command": "reindent"},
+  {
+    "keys": ["ctrl+shift+r"],
+    "command": "reindent",
+    "args": { "single_line": false }
+  },
   { "keys": ["ctrl+super+l"], "command": "sublime_linter_panel_toggle" },
   { "keys": ["shift+super+d"],
     "command": "insert_date",
