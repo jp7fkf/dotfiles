@@ -1,0 +1,36 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"10% Too Dull for My Tastes Color Scheme",
+		"Alignment",
+		"AlignTab",
+		"AutoFileName",
+		"BracketHighlighter",
+		"Codecs33",
+		"ConvertToUTF8",
+		"CTags",
+		"Dockerfile Syntax Highlighting",
+		"HyperlinkHelper",
+		"Increment Selection",
+		"InsertDate",
+		"Package Control",
+		"Pretty JSON",
+		"RobotFrameworkAssistant",
+		"Ruby Slim",
+		"ShellScriptImproved",
+		"SublimeLinter",
+		"SublimeLinter-annotations",
+		"SublimeLinter-clang",
+		"SublimeLinter-csslint",
+		"SublimeLinter-golint",
+		"SublimeLinter-json",
+		"SublimeLinter-ruby",
+		"SublimeLinter-xmllint",
+		"Sublimerge 3",
+		"SyncedSideBar"
+	]
+}
