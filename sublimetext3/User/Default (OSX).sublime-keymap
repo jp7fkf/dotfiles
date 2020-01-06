@@ -1,1 +1,4 @@
-{ "keys": ["ctrl+shift+r"], "command": "reindent"}
+[
+  { "keys": ["ctrl+shift+r"], "command": "reindent"},
+  { "keys": ["ctrl+super+l"], "command": "sublime_linter_panel_toggle" }
+]
