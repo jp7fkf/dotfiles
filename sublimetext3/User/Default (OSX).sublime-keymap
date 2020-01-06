@@ -1,4 +1,8 @@
 [
   { "keys": ["ctrl+shift+r"], "command": "reindent"},
-  { "keys": ["ctrl+super+l"], "command": "sublime_linter_panel_toggle" }
+  { "keys": ["ctrl+super+l"], "command": "sublime_linter_panel_toggle" },
+  { "keys": ["shift+super+d"],
+    "command": "insert_date",
+    "args": {"format": "#%Y-%m-%d %H:%M:%S Yudai Hashimoto"}
+  }
 ]
