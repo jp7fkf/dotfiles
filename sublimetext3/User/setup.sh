@@ -18,6 +18,6 @@ do
   [[ ${f} = ".gitmodules" ]] && continue
   [[ ${f} = ".DS_Store" ]] && continue
   [[ ${f} = "setup.sh" ]] && continue
-  ln -snfv "${f}" "${SUBLIME_USR_DIR}/${f}"
+  ln -snfv "${DOT_DIRECTORY}/${f}" "${SUBLIME_USR_DIR}/${f}"
 done
 echo $(tput setaf 2)Deploy dotfiles complete!. ✔︎$(tput sgr0)
