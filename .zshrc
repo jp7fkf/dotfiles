@@ -13,7 +13,14 @@ export LANG=ja_JP.UTF-8
 # 色を使用出来るようにする
 autoload -Uz colors
 colors
- 
+
+# diffをcolordiffに
+if [[ -x `which colordiff` ]]; then
+  alias diff='colordiff -u'
+else
+  alias diff='diff -u'
+fi
+
 # emacs 風キーバインドにする
 bindkey -e
  
