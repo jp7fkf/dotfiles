@@ -147,7 +147,7 @@ alias mkdir='mkdir -p'
 alias sudo='sudo '
 
 
-alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S"`"'
+alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S %Z"`"'
 alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
 
 # グローバルエイリアス
