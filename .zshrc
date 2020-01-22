@@ -229,6 +229,10 @@ export GOBIN=$GOPATH/bin
 export PATH="$GOBIN:$GOENV_ROOT/bin:$PATH"
 if which goenv > /dev/null; then eval "$(goenv init -)"; fi
 
+## nodebrew
+export NODEBREW_ROOT=$HOME/.nodebrew/nodebrew
+export PATH=$NODEBREW_ROOT/current/bin:$PATH
+
 ## texlive
 export PATH="/Library/TeX/texbin:/usr/local/texlive/2015/bin/x86_64-darwin:$PATH"
 
