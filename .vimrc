@@ -11,7 +11,6 @@ set filetype=on
 filetype plugin indent on
 set fileencoding=utf-8
 set browsedir=buffer
-" au BufWritePost * mkview
 autocmd BufReadPost * loadview
 
 " 保存時に行末の空白を除去する
@@ -20,9 +19,9 @@ fun! StripTrailingWhitespace()
     if &ft =~ 'modula2\|markdown'
         return
     endif
-    %s/\s\+$//e
+    %s/^ *$//g
 endfun
-" autocmd BufWritePre * call StripTrailingWhitespace()
+autocmd BufWritePre * call StripTrailingWhitespace()
 
 " 全角スペースを視覚化
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
@@ -54,8 +53,15 @@ set backspace=start,eol,indent
 " クリップボード関連の設定
 set clipboard=unnamed
 
+" macos iterm2でもsyntax highlight
+let OSTYPE = system('uname')
+if OSTYPE == "Darwin\n"
+  set term=xterm-256color
+endif
+
 " 見た目の設定
-set syntax=on
+syntax enable
+colorscheme monokai
 
 " setting
 "文字コードをUFT-8に設定
@@ -143,7 +149,7 @@ augroup END
 " 言語別設定
 " --------------------
 " 共通
-set autoindent smartindent expandtab nocindent tabstop=4 softtabstop=4 shiftwidth=4
+set autoindent smartindent expandtab nocindent tabstop=2 softtabstop=2 shiftwidth=2
 
 " HTML
 autocmd FileType html setlocal nocindent tabstop=2 softtabstop=2 shiftwidth=2
@@ -156,7 +162,7 @@ autocmd FileType c setlocal cindent tabstop=8 softtabstop=8 shiftwidth=8
 
 " Python
 autocmd FileType python setl cinwords=if,elif,else,for,while,try,except,finally,def,class
-autocmd FileType python setl tabstop=8
+autocmd FileType python setl tabstop=2
 
 " Ruby
 autocmd FileType ruby setl tabstop=2 shiftwidth=2 softtabstop=2 expandtab
@@ -251,8 +257,5 @@ let g:indent_guides_enable_on_vim_startup = 1
 "let g:go_fmt_command = "goimports"
 "
 "" .md をMarkdownとして扱う
-"au BufRead,BufNewFile *.md set filetype=markdown
-"
-"syntax on
-"filetype plugin indent on
-"
+au BufRead,BufNewFile *.md set filetype=markdown
+

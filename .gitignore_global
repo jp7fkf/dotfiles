@@ -6,7 +6,8 @@
 *.swp
 *.swo
 
+.netrwhist
+
 # Emacs backup files
 *~
 *#
-
