@@ -12,6 +12,7 @@ set fileencoding=utf-8
 set browsedir=buffer
 autocmd BufReadPost * loadview
 set incsearch
+set scrolloff=2
 
 " delete whitespace of line ends
 fun! StripTrailingWhitespace()
