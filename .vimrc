@@ -1,19 +1,19 @@
 "------------------------------------
-" mktakuyaの.vimrc を盛大にパクらせてもらったJP7FKFの.vimrc
+" JP7FKF's vimrc
 "------------------------------------
 
 " --------------------
-" 基本設定
+" General
 " --------------------
-" ファイル読み込み時の設定
 set nocp
 set filetype=on
 filetype plugin indent on
 set fileencoding=utf-8
 set browsedir=buffer
 autocmd BufReadPost * loadview
+set incsearch
 
-" 保存時に行末の空白を除去する
+" delete whitespace of line ends
 fun! StripTrailingWhitespace()
     " don't strip on these filetypes
     if &ft =~ 'modula2\|markdown'
@@ -23,105 +23,91 @@ fun! StripTrailingWhitespace()
 endfun
 autocmd BufWritePre * call StripTrailingWhitespace()
 
-" 全角スペースを視覚化
-highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
-match ZenkakuSpace /　/
-
-set undodir=D:$HOME/.vimbackup
-
-"" ステータスライン
-" ステータスラインに文字コード/改行文字種別を表示
-" 常にステータス行を表示
-set laststatus=2
-set statusline =%F%r%h%=
-set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
-"set statusline+=[%{has('multi_byte')&&\&fileencoding!=''?&fileencoding:&encoding}]
-
-" バックアップ関連
+" backups
 set backup
 set backupdir=$HOME/.vimbackup
+set undodir=D:$HOME/.vimbackup
 
-" Swapファイル関連
+" Swap files
 set swapfile
 set directory=$HOME/.vimbackup
 set updatecount=100
 set updatetime=180000
 
-" Backspace関連
+" Backspace
 set backspace=start,eol,indent
 
-" クリップボード関連の設定
+" clipboard
 set clipboard=unnamed
 
-" macos iterm2でもsyntax highlight
+" set character code UTF-8
+set fenc=utf-8
+" no baskup files
+set nobackup
+" no swp files
+set noswapfile
+" reload when file changes
+set autoread
+" バッファが編集中でもその他のファイルを開けるように
+set hidden
+" show inputting command
+set showcmd
+
+" --------------------
+" Visual
+" --------------------
+" syntax highlight
+syntax enable
+colorscheme monokai
+" show line numbers
+set number
+" Highlighting current line(horizontal)
+set cursorline
+" Highlighting current line(vertical)
+set cursorcolumn
+" cursor can go to the end of line +1
+set virtualedit=onemore
+set smartindent
+set visualbell
+" highlight corrensponding bracket
+set showmatch
+set colorcolumn=80
+
+" syntax highlight on iterm2,macos
 let OSTYPE = system('uname')
 if OSTYPE == "Darwin\n"
   set term=xterm-256color
 endif
 
-" 見た目の設定
-syntax enable
-colorscheme monokai
+"" Status Line
+set laststatus=2
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
 
-" setting
-"文字コードをUFT-8に設定
-set fenc=utf-8
-" バックアップファイルを作らない
-set nobackup
-" スワップファイルを作らない
-set noswapfile
-" 編集中のファイルが変更されたら自動で読み直す
-set autoread
-" バッファが編集中でもその他のファイルを開けるように
-set hidden
-" 入力中のコマンドをステータスに表示する
-set showcmd
+" visualize FULL width space
+highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
+match ZenkakuSpace /　/
 
-
-" 見た目系
-" 行番号を表示
-set number
-" 現在の行を強調表示
-set cursorline
-" 現在の行を強調表示（縦）
-set cursorcolumn
-" 行末の1文字先までカーソルを移動できるように
-set virtualedit=onemore
-" インデントはスマートインデント
-set smartindent
-" ビープ音を可視化
-set visualbell
-" 括弧入力時の対応する括弧を表示
-set showmatch
-set cursorline
-set colorcolumn=80
-
-" マウス関連
+" mouse
 set mouse=h
 set mousehide
 
-" 検索関連
-set incsearch
-
-" コマンドラインの補完
+" completion of commandlines
 set wildmode=list:longest
 " 折り返し時に表示行単位での移動できるようにする
 nnoremap j gj
 nnoremap k gk
 
-
-" Tab系
-" 不可視文字を可視化(タブが「▸-」と表示される)
+" Tabs
+" visualize invisible chars(tab)
 set list listchars=tab:\▸\-
-" Tab文字を半角スペースにする
+" whitespace tab
 set expandtab
-" 行頭以外のTab文字の表示幅（スペースいくつ分）
+" tab width in single tab
 set tabstop=2
-" 行頭でのTab文字の表示幅
+" tab width in begin of line
 set shiftwidth=2
 
-
-" 検索系
+" Search
 " 検索文字列が小文字の場合は大文字小文字を区別なく検索する
 set ignorecase
 " 検索文字列に大文字が含まれている場合は区別して検索する
@@ -145,9 +131,9 @@ autocmd InsertEnter * highlight StatusLine guifg=#ccdc90 guibg=#2E4340
 autocmd InsertLeave * highlight StatusLine guifg=#2E4340 guibg=#ccdc90
 augroup END
 
-" --------------------
-" 言語別設定
-" --------------------
+" --------------------------
+" Language Specific Settings
+" --------------------------
 " 共通
 set autoindent smartindent expandtab nocindent tabstop=2 softtabstop=2 shiftwidth=2
 
@@ -189,6 +175,7 @@ autocmd FileType coffee setl tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType jinja setl tabstop=8 softtabstop=2 shiftwidth=2
 
 " Markdown
+autocmd BufRead,BufNewFile *.md set filetype=markdown
 
 " TeX
 let g:tex_conceal=''
@@ -256,6 +243,4 @@ let g:indent_guides_enable_on_vim_startup = 1
 "" vim-go
 "let g:go_fmt_command = "goimports"
 "
-"" .md をMarkdownとして扱う
-au BufRead,BufNewFile *.md set filetype=markdown
 

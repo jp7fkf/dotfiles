@@ -1,14 +1,15 @@
 #!/bin/bash
 
 DOT_DIRECTORY="${HOME}/dotfiles"
-SPECIFY_FILES="" # 複数ファイルは""の中に半角スペース空けで入力しましょう
+SPECIFIC_FILES="" # whitespace to separate multiple files
 
-# ドットファイルとドットファイル以外の特定ファイルを回す
-for f in .??* ${SPECIFY_FILES}
+# for dotfiles and specific files
+for f in .??* ${SPECIFIC_FILES}
 do
-  # 無視したいファイルやディレクトリを追加
+  # ignore files
   [[ ${f} = ".git" ]] && continue
   [[ ${f} = ".gitignore" ]] && continue
+  [[ ${f} = ".gitignore_template" ]] && continue
   [[ ${f} = ".gitmodules" ]] && continue
   [[ ${f} = ".DS_Store" ]] && continue
   [[ ${f} = ".travis.yml" ]] && continue
