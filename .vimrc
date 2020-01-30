@@ -7,8 +7,8 @@
 " --------------------
 set nocp
 set filetype=on
-filetype plugin indent on
 set fileencoding=utf-8
+filetype plugin indent on
 set browsedir=buffer
 autocmd BufReadPost * loadview
 set incsearch
@@ -205,11 +205,49 @@ let g:indent_guides_enable_on_vim_startup = 1
 " source ~/dotfiles/.vimrc.neobundle
 
 "------------------------------------
-" プラグイン設定
+" Plugins
 "------------------------------------
+"------------------------------------
+" dein
+"------------------------------------
+let s:dein_dir = expand('~/.cache/vim/dein')
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+
+" if dein.vim is not exists, pull it from github
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+endif
+
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
+
+  " toml fies of plugins
+  let g:rc_dir    = expand('~/.vim/')
+  let s:toml      = g:rc_dir . 'dein.toml'
+  let s:lazy_toml = g:rc_dir . 'dein_lazy.toml'
+
+  " read toml and cache
+  call dein#load_toml(s:toml,      {'lazy': 0})
+  call dein#load_toml(s:lazy_toml, {'lazy': 1})
+
+  call dein#end()
+  call dein#save_state()
+endif
+
+if dein#check_install()
+  call dein#install()
+endif
+
+filetype plugin indent on
+syntax enable
+call deoplete#enable()
+"------------------------------------
+
 "" vim-quickrun
 "" let g:quickrun_config = {'*': {'hook/time/enable': '1'},}
-"
 "
 "" vim-nodejs-complete
 "setl omnifunc=jscomplete#CompleteJS
@@ -243,5 +281,4 @@ let g:indent_guides_enable_on_vim_startup = 1
 "
 "" vim-go
 "let g:go_fmt_command = "goimports"
-"
 
