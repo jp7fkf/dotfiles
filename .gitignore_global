@@ -2,7 +2,7 @@
 
 # misc
 .DS_Store
-.env
+.env*
 
 # Vi/Vim backup files
 *~
