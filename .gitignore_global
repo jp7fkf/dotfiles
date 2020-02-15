@@ -8,9 +8,21 @@
 *~
 *.swp
 *.swo
-
 .netrwhist
 
 # Emacs backup files
 *~
 *#
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+build/
+dist/
+eggs/
+.eggs/
+sdist/
+*.egg-info/
+.installed.cfg
+*.egg
