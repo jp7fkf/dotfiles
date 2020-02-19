@@ -243,7 +243,9 @@ endif
 
 filetype plugin indent on
 syntax enable
-call deoplete#enable()
+if has('nvim')
+  call deoplete#enable()
+endif
 "------------------------------------
 
 "" vim-quickrun
