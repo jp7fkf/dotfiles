@@ -41,8 +41,8 @@ def human_bytes(n):
     for symbol in reversed(symbols):
         if n >= prefix[symbol]:
             value = n / prefix[symbol]
-            return '{} {}'.format(round(value, 2), symbol)
-    return "{} B".format(round(n, 2))
+            return '{:5.1f} {}'.format(round(value, 2), symbol)
+    return "{:5.1f} B".format(round(n, 2))
 
 
 def print_stats(upload, download):
