@@ -33,7 +33,7 @@ def human_bytes(n):
         'borrowed' from https://github.com/giampaolo/psutil/blob/master/scripts/ifconfig.py
     """
 
-    symbols = ('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
+    symbols = ('k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
     prefix = {}
     for i, s in enumerate(symbols):
         prefix[s] = 1 << (i + 1) * 10
@@ -41,8 +41,8 @@ def human_bytes(n):
     for symbol in reversed(symbols):
         if n >= prefix[symbol]:
             value = n / prefix[symbol]
-            return '{:5.1f} {}'.format(round(value, 2), symbol)
-    return "{:5.1f} B".format(round(n, 2))
+            return '{:5.1f}{}bps'.format(round(value, 2), symbol)
+    return "{:5.1f}bps".format(round(n, 2))
 
 
 def print_stats(upload, download):
