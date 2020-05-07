@@ -36,7 +36,7 @@ SAVEHIST=1000000
 # one line
 # PROMPT="%~ %# "
 # dual lines
-PROMPT="%{${fg[green]}%}[%n@%M %*]%{${reset_color}%} %~
+PROMPT="%{${fg[green]}%}[%n@%M %D %*]%{${reset_color}%} %~
 %# "
 
 # 単語の区切り文字を指定する
@@ -138,16 +138,13 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
-
-# sudo の後のコマンドでエイリアスを有効にする
 alias sudo='sudo '
-
-alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S %Z"`"'
-alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
-
-# グローバルエイリアス
 alias -g L='| less'
 alias -g G='| grep'
+
+# useralias
+alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S %Z"`"'
+alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
@@ -161,6 +158,13 @@ elif which putclip >/dev/null 2>&1 ; then
     # Cygwin
     alias -g C='| putclip'
 fi
+
+########################################
+# functions
+
+function radpasswd (){
+  echo $(cat /dev/urandom | LC_ALL=C tr -dc '[:alnum:]' | head -c $1)
+}
 
 ############## peco&ssh ################
 function peco-ssh () {
