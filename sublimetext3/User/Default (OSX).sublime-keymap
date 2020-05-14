@@ -20,5 +20,12 @@
       "color_scheme": "Packages/ExportHtml/ColorSchemes/Print-Color.tmTheme",
       "style_gutter": false
     }
+  },
+  { "keys": ["ctrl+k"],
+    "command": "noop",
+  },
+  { "keys": ["ctrl+k", "ctrl+k"],
+    "command": "run_macro_file",
+    "args": {"file": "res://Packages/Default/Delete to Hard EOL.sublime-macro"}
   }
 ]
