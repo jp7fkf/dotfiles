@@ -24,8 +24,13 @@ else
   alias diff='diff -u'
 fi
 
+## KEY BINDING ##
 # emacs like keybinding
 bindkey -e
+# ctrl+allow for moving corsor each word
+# TODO: DISABLE mission control keymap in macOS default
+bindkey ";5C" forward-word
+bindkey ";5D" backward-word
 
 # history
 HISTFILE=~/.zsh_history
