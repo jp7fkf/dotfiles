@@ -29,6 +29,7 @@ brew "mtr"
 brew "nmap"
 brew "nodebrew"
 brew "peco"
+brew "plantuml"
 brew "postgresql", restart_service: true
 brew "pyenv"
 brew "r"
