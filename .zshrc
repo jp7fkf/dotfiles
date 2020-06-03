@@ -239,3 +239,4 @@ export PATH="/Library/TeX/texbin:/usr/local/texlive/2015/bin/x86_64-darwin:$PATH
 
 ## additional envs
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+export PLANTUML_LIMIT_SIZE=16384
