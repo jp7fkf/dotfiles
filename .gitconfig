@@ -5,3 +5,5 @@
 	email = jp7fkf@gmail.com
 [core]
 	excludesfile = ~/.gitignore_global
+[pull]
+	ff = only
