@@ -55,7 +55,7 @@ zstyle ':zle:*' word-style unspecified
 ########################################
 # completion
 function _ssh {
-  compadd `fgrep 'Host ' ~/.ssh/config | awk '{print $2}' | sort`;
+  compadd `find ~/.ssh -type f | xargs -I _ fgrep 'Host ' _ | awk '{print $2}' | sort`;
 }
 
 #for zsh-completions
