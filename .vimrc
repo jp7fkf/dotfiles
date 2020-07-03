@@ -184,6 +184,8 @@ let g:tex_conceal=''
 " YAML
 autocmd FileType yaml,yml setl tabstop=2 shiftwidth=2 softtabstop=2
 
+" sshconfig
+autocmd BufNewFile,BufRead *.sshconfig set filetype=sshconfig
 "------------------------------------
 " indent guides
 "------------------------------------

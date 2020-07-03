@@ -173,7 +173,8 @@ function radpasswd (){
 
 ############## peco&ssh ################
 function peco-ssh () {
-  local selected_host=$(awk '
+  local selected_host=$(find ~/.ssh -type f |
+  xargs -I _ awk '
   tolower($1)=="host" {
     for (i=2; i<=NF; i++) {
       if ($i !~ "[*?]") {
@@ -181,7 +182,7 @@ function peco-ssh () {
       }
     }
   }
-  ' ~/.ssh/*| sort | peco --query "$LBUFFER")
+  ' _ | sort | peco --query "$LBUFFER")
   if [ -n "$selected_host" ]; then
     BUFFER="ssh ${selected_host}"
     zle accept-line
