@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import urllib.parse
+import sys
+
+args = sys.argv
+
+print(urllib.parse.quote(args[1].encode("raw-unicode-escape").decode("unicode-escape")))

@@ -167,7 +167,7 @@ fi
 ########################################
 # functions
 
-function radpasswd (){
+function rdpasswd (){
   echo $(cat /dev/urandom | LC_ALL=C tr -dc '[:alnum:]' | head -c $1)
 }
 
