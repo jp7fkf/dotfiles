@@ -79,7 +79,7 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
 ########################################
-# vcs_info
+# vcs_info (git/subversion info)
 autoload -Uz vcs_info
 autoload -Uz add-zsh-hook
 
