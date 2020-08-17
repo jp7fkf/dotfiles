@@ -146,6 +146,7 @@ alias mkdir='mkdir -p'
 alias sudo='sudo '
 alias -g L='| less'
 alias -g G='| grep'
+alias grep='grep --color=auto'
 
 # useralias
 alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S %Z"`"'
