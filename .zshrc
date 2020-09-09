@@ -172,6 +172,10 @@ function rdpasswd (){
   echo $(cat /dev/urandom | LC_ALL=C tr -dc '[:alnum:]' | head -c $1)
 }
 
+function heic2jpegall (){
+  echo $(find $1 -name '*.HEIC' | xargs -IT basename T .HEIC | xargs -IT sips --setProperty format jpeg $1/T.HEIC --out $1/T.jpg;)
+}
+
 ############## peco&ssh ################
 function peco-ssh () {
   local selected_host=$(find ~/.ssh -type f |
