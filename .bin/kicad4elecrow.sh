@@ -23,7 +23,7 @@ do
   echo "[INFO] mv $a to `basename ${a} .drl`.txt"
 done
 
-echo [INFO] Complessing as zip.
+echo [INFO] Compressing as zip.
 zip -r ${PWD##*/}.zip .
 
 exit 0
