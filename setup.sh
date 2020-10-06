@@ -8,6 +8,7 @@ for f in .??* ${SPECIFIC_FILES}
 do
   # ignore files
   [[ ${f} = ".git" ]] && continue
+  [[ ${f} = ".ssh" ]] && continue
   [[ ${f} = ".gitignore" ]] && continue
   [[ ${f} = ".gitignore_template" ]] && continue
   [[ ${f} = ".gitmodules" ]] && continue
