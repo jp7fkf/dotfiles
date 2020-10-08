@@ -9,5 +9,7 @@
 	ff = only
 [push]
 	default = current
+	followTags = true
 [fetch]
 	prune = true
+	pruneTags = true
