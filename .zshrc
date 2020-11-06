@@ -147,6 +147,7 @@ alias sudo='sudo '
 alias -g L='| less'
 alias -g G='| grep'
 alias grep='grep --color=auto'
+alias date_iso8601='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 
 # useralias
 alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S %Z"`"'
