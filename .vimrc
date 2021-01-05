@@ -100,7 +100,8 @@ nnoremap k gk
 
 " Tabs
 " visualize invisible chars(tab)
-set list listchars=tab:\▸\-
+set list
+set listchars=tab:▸-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
 " whitespace tab
 set expandtab
 " tab width in single tab
@@ -149,7 +150,7 @@ autocmd FileType c setlocal cindent tabstop=8 softtabstop=8 shiftwidth=8
 
 " Python
 autocmd FileType python setl cinwords=if,elif,else,for,while,try,except,finally,def,class
-autocmd FileType python setl tabstop=2
+autocmd FileType python setl tabstop=2 softtabstop=2 shiftwidth=2
 
 " Ruby
 autocmd FileType ruby setl tabstop=2 shiftwidth=2 softtabstop=2 expandtab
