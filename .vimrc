@@ -25,6 +25,20 @@ endfun
 autocmd BufWritePre * call StripTrailingWhitespace()
 
 " backups
+" create a backup directory when not exists
+function! EnsureDirExists (dir)
+  if !isdirectory(a:dir)
+    if exists("*mkdir")
+      call mkdir(a:dir,'p',0700)
+      echo "Created directory: " . a:dir
+    else
+      echo "Please create directory: " . a:dir
+    endif
+  endif
+endfunction
+
+call EnsureDirExists($HOME.'/.vimbackup')
+
 set backup
 set backupdir=$HOME/.vimbackup
 set undodir=D:$HOME/.vimbackup
