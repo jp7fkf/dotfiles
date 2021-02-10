@@ -7,11 +7,11 @@
 	[
 		"Vintage"
 	],
+	"indent_subsequent_lines": true,
+	"scroll_past_end": true,
 	"show_encoding": true,
+	"spell_check": false,
 	"tab_size": 2,
 	"translate_tabs_to_spaces": true,
-	"trim_trailing_white_space_on_save": true,
-	"spell_check": false,
-	"indent_subsequent_lines": true,
-	"scroll_past_end":true,
+	"trim_trailing_white_space_on_save": true
 }
