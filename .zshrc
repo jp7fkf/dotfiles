@@ -179,6 +179,10 @@ function heic2jpegall (){
   echo $(find $1 -name '*.HEIC' | xargs -IT basename T .HEIC | xargs -IT sips --setProperty format jpeg $1/T.HEIC --out $1/T.jpg;)
 }
 
+function smtpauth_plain (){
+  printf "%s\0%s\0%s" $1 $1 $2 | openssl base64 -e | tr -d '\n'; echo
+}
+
 ############## peco&ssh ################
 function peco-ssh () {
   local selected_host=$(find ~/.ssh -type f |
