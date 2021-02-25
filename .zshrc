@@ -183,6 +183,26 @@ function smtpauth_plain (){
   printf "%s\0%s\0%s" $1 $1 $2 | openssl base64 -e | tr -d '\n'; echo
 }
 
+function docker-taglist (){
+  local image=${1}
+  local limit=${2:=1}
+
+  # official image exists under /library path
+  if [[ ! "${image}" =~ ^.+/.+$ ]]; then
+    image="library/${image}"
+  fi
+  local next="https://registry.hub.docker.com/v2/repositories/${image}/tags"
+  local names
+  while [[ ${limit} -gt 0 && ${next} != "null" ]]
+  do
+    response=$(curl --silent --show-error "${next}")
+    names="${names}\n$(echo ${response} | jq -r ".results|map_values(\"${image}:\"+.name)|.[]")"
+    next=$(echo ${response} | jq -r .next)
+    limit=$((${limit}-1))
+  done
+  echo -e "${names}"
+}
+
 ############## peco&ssh ################
 function peco-ssh () {
   local selected_host=$(find ~/.ssh -type f |

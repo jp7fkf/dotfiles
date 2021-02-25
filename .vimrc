@@ -16,13 +16,18 @@ set scrolloff=2
 
 " delete whitespace of line ends
 fun! StripTrailingWhitespace()
-    " don't strip on these filetypes
-    if &ft =~ 'modula2\|markdown'
-        return
-    endif
-    %s/^ *$//g
+  " don't strip on these filetypes
+  if &ft =~ 'modula2\|markdown'
+    return
+  endif
+
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e
+  %s/\($\n\s*\)\+\%$//e
+  call cursor(l, c)
 endfun
-autocmd BufWritePre * call StripTrailingWhitespace()
+autocmd BufWritePre * :call StripTrailingWhitespace()
 
 " backups
 " create a backup directory when not exists
@@ -300,4 +305,3 @@ endif
 "
 "" vim-go
 "let g:go_fmt_command = "goimports"
-
