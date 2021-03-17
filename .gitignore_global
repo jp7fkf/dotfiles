@@ -27,3 +27,6 @@ sdist/
 .installed.cfg
 *.egg
 node_modules/
+
+# terraform
+.terraform/
