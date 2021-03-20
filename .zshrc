@@ -224,7 +224,7 @@ function replace_all (){
     return 0
   fi
   if [[ -n "${opt[(i)-d]}" ]] || [[ -n "${opt[(i)--dry-run]}" ]]; then
-    grep -r $1 $3 -l
+    grep -r $1 $3
   else
     grep -r $1 $3 -l | xargs gsed -i "s/$1/$2/g"
   fi
