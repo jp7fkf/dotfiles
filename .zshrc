@@ -203,6 +203,33 @@ function docker-taglist (){
   echo -e "${names}"
 }
 
+function list_licenses (){
+  curl -s https://api.github.com/licenses | jq -r .
+}
+
+function replace_all (){
+  local -A opt
+  zparseopts -D -A opt -- h -help v -version d -dry-run
+  if [[ -n "${opt[(i)-h]}" ]] || [[ -n "${opt[(i)--help]}" ]] || [[ $# -ne 3 ]]; then
+    echo 'replace_all: replace all word of file under selected path.'
+    echo '[usage]: replace_all [options] <replace_from_str> <replace_to_str> <dir>'
+    echo '[options]:'
+    echo '  -h, --help: show this help.'
+    echo '  -v, --version: show version'
+    echo '  -d, --dry-run: show all files/lines which are changed by execution. This option will not change all files.'
+    return 0
+  fi
+  if [[ -n "${opt[(i)-v]}" ]] || [[ -n "${opt[(i)--version]}" ]]; then
+    echo 'replace_all version 0.0.1'
+    return 0
+  fi
+  if [[ -n "${opt[(i)-d]}" ]] || [[ -n "${opt[(i)--dry-run]}" ]]; then
+    grep -r $1 $3 -l
+  else
+    grep -r $1 $3 -l | xargs gsed -i "s/$1/$2/g"
+  fi
+}
+
 ############## peco&ssh ################
 function peco-ssh () {
   local selected_host=$(find ~/.ssh -type f |
