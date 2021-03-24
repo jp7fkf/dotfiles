@@ -209,7 +209,7 @@ function list_licenses (){
 
 function replace_all (){
   local -A opt
-  zparseopts -D -A opt -- h -help v -version d -dry-run
+  zparseopts -D -A opt -- h -help v -version c -check d -delete
   if [[ -n "${opt[(i)-h]}" ]] || [[ -n "${opt[(i)--help]}" ]] || [[ $# -ne 3 ]]; then
     echo 'replace_all: replace all word of file under selected path.'
     echo '[usage]: replace_all [options] <replace_from_str> <replace_to_str> <dir>'
@@ -223,10 +223,12 @@ function replace_all (){
     echo 'replace_all version 0.0.1'
     return 0
   fi
-  if [[ -n "${opt[(i)-d]}" ]] || [[ -n "${opt[(i)--dry-run]}" ]]; then
-    grep -r $1 $3
+  if [[ -n "${opt[(i)-c]}" ]] || [[ -n "${opt[(i)--check]}" ]]; then
+    grep -r "$1" "$3"
+  elif [[ -n "${opt[(i)-d]}" ]] || [[ -n "${opt[(i)--delete]}" ]]; then
+    grep -r "$1" "$3" -l | xargs gsed -i "/$1/d"
   else
-    grep -r $1 $3 -l | xargs gsed -i "s/$1/$2/g"
+    grep -r "$1" "$3" -l | xargs gsed -i "s/$1/$2/g"
   fi
 }
 
