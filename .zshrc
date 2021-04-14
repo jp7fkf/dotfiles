@@ -170,6 +170,9 @@ fi
 
 ########################################
 # functions
+function ssh-add-all (){
+  find ~/.ssh -name 'id_*' | grep -v .pub | xargs -I _ ssh-add _
+}
 
 function rdpasswd (){
   echo $(cat /dev/urandom | LC_ALL=C tr -dc '[:alnum:]' | head -c $1)
