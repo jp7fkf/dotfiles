@@ -170,6 +170,13 @@ fi
 
 ########################################
 # functions
+function gitgraph () {
+  git graph
+  zle accept-line
+}
+zle -N gitgraph
+bindkey 'GG' gitgraph
+
 function ssh-add-all (){
   find ~/.ssh -name 'id_*' | grep -v .pub | xargs -I _ ssh-add _
 }
@@ -255,6 +262,24 @@ function peco-ssh () {
 }
 zle -N peco-ssh
 bindkey 'SS' peco-ssh
+
+######### peco&git checkout ############
+function peco-checkout () {
+  local branch=$(git branch -a | peco | tr -d ' ')
+  if [ -n "$branch" ]; then
+    if [[ "$branch" =~ "remotes/" ]]; then
+      local b=$(echo $branch | awk -F'/' '{for(i=3;i<NF;i++){printf("%s%s",$i,OFS="/")}print $NF}')
+      BUFFER="git checkout -b '${b}' '${branch}'"
+      zle accept-line
+    else
+      BUFFER="git checkout '${branch}'"
+      zle accept-line
+    fi
+  fi
+  zle clear-screen
+}
+zle -N peco-checkout
+bindkey 'BB' peco-checkout
 
 ########################################
 # OS 別の設定
