@@ -143,15 +143,13 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
-alias sudo='sudo '
 alias -g L='| less'
 alias -g G='| grep'
 alias grep='grep --color=auto'
 alias date_iso8601='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 alias upper='tr "[:lower:]" "[:upper:]"'
 alias lower='tr "[:upper:]" "[:lower:]"'
-
-# useralias
+alias ssh-password='ssh -o PreferredAuthentications=password'
 alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S %Z"`"'
 alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
 
@@ -226,7 +224,8 @@ function replace_all (){
     echo '[options]:'
     echo '  -h, --help: show this help.'
     echo '  -v, --version: show version'
-    echo '  -d, --dry-run: show all files/lines which are changed by execution. This option will not change all files.'
+    echo '  -c, --check: show all files/lines which are changed by execution. This option will not change all files.'
+    echo '  -d, --delete: delete characters which are matched to the regular expressions. the replaced patterns are ignored.'
     return 0
   fi
   if [[ -n "${opt[(i)-v]}" ]] || [[ -n "${opt[(i)--version]}" ]]; then
