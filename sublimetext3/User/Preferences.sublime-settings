@@ -7,6 +7,11 @@
 	[
 		"Vintage"
 	],
+	"indent_guide_options":
+	[
+		"draw_normal",
+		"draw_active"
+	],
 	"indent_subsequent_lines": true,
 	"scroll_past_end": true,
 	"show_encoding": true,

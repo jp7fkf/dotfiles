@@ -18,6 +18,7 @@
 		"ConvertToUTF8",
 		"CTags",
 		"Dockerfile Syntax Highlighting",
+		"EditorConfig",
 		"ExportHtml",
 		"FindKeyConflicts",
 		"HyperlinkHelper",
