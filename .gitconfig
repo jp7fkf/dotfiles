@@ -5,10 +5,17 @@
   email = jp7fkf@gmail.com
 [core]
   excludesfile = ~/.gitignore_global
+  compression = 9
+[colur]
+  ui = true
 [alias]
   delete-merged-branch = "!f () { git checkout $1; git branch --merged | egrep -v '(\\*|dev|master)' | xargs git branch -d; }; f"
   graph = log --graph --date=short --decorate=short --pretty=format:'%C(Yellow)%h %Creset%cd %Cgreen%cn %C(Cyan)%d %Creset%s'
   difff = diff --word-diff
+  co = checkout
+  st = status
+  br = branch
+  ci = commit
 [pull]
   ff = only
 [push]
@@ -19,3 +26,11 @@
   pruneTags = true
 [init]
   defaultBranch = main
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+[ssh]
+  postBuffer = 2048M
+  maxRequestBuffer = 1024M
