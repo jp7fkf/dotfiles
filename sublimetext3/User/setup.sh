@@ -1,7 +1,15 @@
 #!/bin/bash
 
 DOT_DIRECTORY="${HOME}/dotfiles/sublimetext3/User"
-SUBLIME_USR_DIR="${HOME}/Library/ApplicationSupport/Sublime Text 3/Packages/User"
+
+
+if [[ `uname -m` == 'arm64' ]]; then
+  # for M1 Mac
+  SUBLIME_USR_DIR="${HOME}/Library/Application Support/Sublime Text 3/Packages/User"
+else
+  # for intel Mac
+  SUBLIME_USR_DIR="${HOME}/Library/ApplicationSupport/Sublime Text 3/Packages/User"
+fi
 
 SPECIFY_FILES="" # whitespace to separate multiple files
 if [ ${DOT_DIRECTORY} != $(pwd) ]; then

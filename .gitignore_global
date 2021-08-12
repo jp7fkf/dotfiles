@@ -32,3 +32,5 @@ node_modules/
 .terraform/
 .terraform.*
 .terraform-version
+terraform.tfstate.*
+*.log

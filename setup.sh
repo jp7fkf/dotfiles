@@ -9,6 +9,7 @@ do
   # ignore files
   [[ ${f} = ".git" ]] && continue
   [[ ${f} = ".ssh" ]] && continue
+  [[ ${f} = ".credentials" ]] && continue
   [[ ${f} = ".gitignore" ]] && continue
   [[ ${f} = ".gitignore_template" ]] && continue
   [[ ${f} = ".gitmodules" ]] && continue

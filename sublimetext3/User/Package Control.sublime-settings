@@ -17,6 +17,7 @@
 		"Codecs33",
 		"ConvertToUTF8",
 		"CTags",
+		"DataConverter",
 		"Dockerfile Syntax Highlighting",
 		"EditorConfig",
 		"ExportHtml",
@@ -28,6 +29,7 @@
 		"LaTeXTools",
 		"Package Control",
 		"Pretty JSON",
+		"Pretty YAML",
 		"Ruby Slim",
 		"ShellScriptImproved",
 		"SublimeLinter",
@@ -40,6 +42,6 @@
 		"SublimeLinter-ruby",
 		"SublimeLinter-xmllint",
 		"Sublimerge 3",
-		"SyncedSideBar"
+		"SyncedSideBar",
 	],
 }

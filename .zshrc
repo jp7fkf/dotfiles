@@ -151,7 +151,7 @@ alias upper='tr "[:lower:]" "[:upper:]"'
 alias lower='tr "[:upper:]" "[:lower:]"'
 alias ssh-password='ssh -o PreferredAuthentications=password'
 alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S %Z"`"'
-alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
+alias gitcmtwip='git commit -m "wip"'
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
@@ -340,7 +340,7 @@ function git-delete-squashed-branch () {
 ######### shellcolors ############
 function shellcolors () {
   echo -e "\033[1m# Basic\033[m"
-  echo -e "Set color: \"\\\033[<attribute>;<foreground>;<background>m\""
+  echo -e "Set   color: \"\\\033[<attribute>;<foreground>;<background>m\""
   echo -e "Reset color: \"\\\033[m"\"
 
   echo -e "\033[1m# Attributes:\033[m"
@@ -376,14 +376,14 @@ function shellcolors () {
   echo -e "\\\033[47m\033[47mWHITE\033[m\\\033[m\t\\\033[107m\033[107mLIGHT WHITE\033[m\\\033[m"
 
   echo -e "\033[1m# 256 colors:\033[m"
-  echo "Foreground: \\\033[38;5;<color number>mCOLOR\\\033[m"
-  echo "Background: \\\033[48;5;<color number>mCOLOR\\\033[m"
+  echo -e "Foreground: \"\\\033[38;5;<color number>mCOLOR\\\033[m\""
+  echo -e "Background: \"\\\033[48;5;<color number>mCOLOR\\\033[m\""
   seq 0 255 | xargs -I {} printf "\033[38;5;{}m{}\033[m "
-  echo ""
+  echo -e ""
 
   echo -e "\033[1m# 24bit colors\033[m"
-  echo -e "Foreground \\\033[38;2;<red(0-255)>;<green(0-255)>;<blue(0-255)>m\\\033[m"
-  echo -e "Background \\\033[48;2;<red(0-255)>;<green(0-255)>;<blue(0-255)>m\\\033[m"
+  echo -e "Foreground: \"\\\033[38;2;<red(0-255)>;<green(0-255)>;<blue(0-255)>m\\\033[m\""
+  echo -e "Background: \"\\\033[48;2;<red(0-255)>;<green(0-255)>;<blue(0-255)>m\\\033[m\""
 }
 
 ########################################
@@ -401,11 +401,19 @@ case ${OSTYPE} in
         ;;
 esac
 
-# vim:set ft=zsh:
-
 export PATH="/usr/local/sbin:${HOME}/.bin:$PATH"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+
+if [[ `uname -m` == 'arm64' ]]; then
+  # for M1 mac
+  export PATH="/opt/homebrew/bin:$PATH"
+  export PATH="/opt/homebrew/opt/openssl@1.1/bin:$PATH"
+else
+  # for Intel mac
+  alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
+fi
+
 
 ## pyenv
 export PYENV_ROOT=$HOME/.pyenv
@@ -415,23 +423,36 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 export PGDATA=/usr/local/var/postgres
 
 ## rbenv
-export PATH="$HOME/.rbenv/bin:$PATH"
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+if [ -e ~/.rbenv ]; then
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+fi
 
 ## goenv
 export GOENV_ROOT="$HOME/.goenv"
-export GOPATH=$HOME/dev/godev
-export GOBIN=$GOPATH/bin
-export PATH="$GOBIN:$GOENV_ROOT/bin:$PATH"
+export PATH="$GOENV_ROOT/bin:$PATH"
 if which goenv > /dev/null; then eval "$(goenv init -)"; fi
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$PATH:$GOPATH/bin"
 
 ## nodebrew
-export NODEBREW_ROOT=$HOME/.nodebrew
-export PATH=$NODEBREW_ROOT/current/bin:$PATH
+export NODEBREW_ROOT="$HOME/.nodebrew"
+export PATH="$NODEBREW_ROOT/current/bin:$PATH"
 
 ## texlive
 export PATH="/Library/TeX/texbin:/usr/local/texlive/2015/bin/x86_64-darwin:$PATH"
 
+## terraform
+export TF_CLI_ARGS_plan="--parallelism=30"
+export TF_CLI_ARGS_apply="--parallelism=30"
+
 ## additional envs
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export PLANTUML_LIMIT_SIZE=16384
+
+# kubernetes
+if [ -x "`which kubectl`"  ] ; then
+    source <(kubectl completion zsh)
+fi
+
+# vim:set ft=zsh:
