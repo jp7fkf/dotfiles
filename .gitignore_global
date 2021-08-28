@@ -34,3 +34,6 @@ node_modules/
 .terraform-version
 terraform.tfstate.*
 *.log
+
+# platformio
+.pio/

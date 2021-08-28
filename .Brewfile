@@ -42,8 +42,6 @@ brew "nodebrew"
 brew "pastel"
 brew "peco"
 brew "plantuml"
-brew "postgresql", restart_service: true
-brew "postgresql@11", restart_service: true
 brew "pyenv"
 brew "r"
 brew "ruby-build"

@@ -4,9 +4,6 @@
 # http://mollifier.mit-license.org/
 ########################################
 
-#重複削除
-typeset -U path PATH
-
 # environs
 export LANG=ja_JP.UTF-8
 
@@ -411,9 +408,9 @@ if [[ `uname -m` == 'arm64' ]]; then
   export PATH="/opt/homebrew/opt/openssl@1.1/bin:$PATH"
 else
   # for Intel mac
-  alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
+  #alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
+  export PATH="/usr/local:$PATH"
 fi
-
 
 ## pyenv
 export PYENV_ROOT=$HOME/.pyenv
@@ -442,12 +439,14 @@ export PATH="$NODEBREW_ROOT/current/bin:$PATH"
 ## texlive
 export PATH="/Library/TeX/texbin:/usr/local/texlive/2015/bin/x86_64-darwin:$PATH"
 
+#重複削除
+typeset -U path PATH
+
 ## terraform
 export TF_CLI_ARGS_plan="--parallelism=30"
 export TF_CLI_ARGS_apply="--parallelism=30"
 
 ## additional envs
-export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export PLANTUML_LIMIT_SIZE=16384
 
 # kubernetes
