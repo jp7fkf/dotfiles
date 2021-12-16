@@ -383,6 +383,47 @@ function shellcolors () {
   echo -e "Background: \"\\\033[48;2;<red(0-255)>;<green(0-255)>;<blue(0-255)>m\\\033[m\""
 }
 
+######### mtudisc ############
+function mtudisc () {
+  DEST=${1:-8.8.8.8}
+  MAXHOP=${2:-65535}
+  # Ctrl+C to exit
+  trap 'echo Breaked; exit 2' 2
+  ## check reachability
+  if ! ping -c 1 "${DEST}" > /dev/null; then
+    echo "Cannot connect to ${DEST}"
+    exit 1
+  fi
+  # binary search
+  MAX=`expr ${MAXHOP} + 1`
+  MIN=1
+  echo -ne "Discover MTU: Range($MIN-$MAX)\n" >&2
+  echo "OSType: $OSTYPE"
+  while [ $MIN -lt $MAX ]
+  do
+    i=`expr '(' $MIN + $MAX ')' / 2`
+    echo -ne "DataSize=$i: " >&2
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+      ping -c 1 -W 1 -M do -s $i "${DEST}">/dev/null 2>&1
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+      # Mac OSX
+      ping -c 1 -t 1 -D -s $i "${DEST}">/dev/null 2>&1
+    else
+      echo "OS not supported."
+      exit 1
+    fi
+    if [ $? -eq 0 ];then
+      echo "OK" >&2
+      MIN=`expr $i + 1`
+      LAST_PASSED_SIZE=$i
+    else
+      echo "NG" >&2
+      MAX=$i
+    fi
+  done
+  echo "MTU: `expr $LAST_PASSED_SIZE + 28`"
+}
+
 ########################################
 # OS 別の設定
 case ${OSTYPE} in
