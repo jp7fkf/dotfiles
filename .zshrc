@@ -385,17 +385,17 @@ function shellcolors () {
 
 ######### mtudisc ############
 function mtudisc () {
-  DEST=${1:-8.8.8.8}
-  MAXHOP=${2:-65535}
+  DESTINATION=${1:-8.8.8.8}
+  MAX_SIZE=${2:-65535}
   # Ctrl+C to exit
   trap 'echo Breaked; exit 2' 2
   ## check reachability
-  if ! ping -c 1 "${DEST}" > /dev/null; then
-    echo "Cannot connect to ${DEST}"
+  if ! ping -c 1 "${DESTINATION}" > /dev/null; then
+    echo "Cannot connect to ${DESTINATION}"
     exit 1
   fi
   # binary search
-  MAX=`expr ${MAXHOP} + 1`
+  MAX=`expr ${MAX_SIZE} + 1`
   MIN=1
   echo -ne "Discover MTU: Range($MIN-$MAX)\n" >&2
   echo "OSType: $OSTYPE"
@@ -404,10 +404,10 @@ function mtudisc () {
     i=`expr '(' $MIN + $MAX ')' / 2`
     echo -ne "DataSize=$i: " >&2
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-      ping -c 1 -W 1 -M do -s $i "${DEST}">/dev/null 2>&1
+      ping -c 1 -W 1 -M do -s $i "${DESTINATION}">/dev/null 2>&1
     elif [[ "$OSTYPE" == "darwin"* ]]; then
       # Mac OSX
-      ping -c 1 -t 1 -D -s $i "${DEST}">/dev/null 2>&1
+      ping -c 1 -t 1 -D -s $i "${DESTINATION}">/dev/null 2>&1
     else
       echo "OS not supported."
       exit 1
