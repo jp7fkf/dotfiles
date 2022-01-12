@@ -6,6 +6,7 @@
 [core]
   excludesfile = ~/.gitignore_global
   compression = 9
+  symlinks = true
 [colur]
   ui = true
 [alias]
