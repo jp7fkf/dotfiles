@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+docker image build -q -t docker-ansible $(dirname $(dirname $0)/$(readlink $0))
+docker run -it -v $(pwd):/app --rm docker-ansible $@
