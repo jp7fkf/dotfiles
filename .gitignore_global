@@ -37,3 +37,6 @@ terraform.tfstate.*
 
 # platformio
 .pio/
+
+# ansible
+.vaultpass
