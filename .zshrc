@@ -390,11 +390,11 @@ function mtudisc () {
   DESTINATION=${1:-8.8.8.8}
   MAX_SIZE=${2:-65535}
   # Ctrl+C to exit
-  trap 'echo Breaked; exit 2' 2
+  # trap 'echo Breaked; return 2' 2
   ## check reachability
   if ! ping -c 1 "${DESTINATION}" > /dev/null; then
     echo "Cannot connect to ${DESTINATION}"
-    exit 1
+    return 2
   fi
   # binary search
   MAX=`expr ${MAX_SIZE} + 1`
@@ -412,7 +412,7 @@ function mtudisc () {
       ping -c 1 -t 1 -D -s $i "${DESTINATION}">/dev/null 2>&1
     else
       echo "OS not supported."
-      exit 1
+      return 2
     fi
     if [ $? -eq 0 ];then
       echo "OK" >&2
