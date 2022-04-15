@@ -10,12 +10,14 @@ do
   [[ ${f} = ".git" ]] && continue
   [[ ${f} = ".ssh" ]] && continue
   [[ ${f} = ".credentials" ]] && continue
+  [[ ${f} = ".config" ]] && continue
   [[ ${f} = ".gitignore" ]] && continue
   [[ ${f} = ".gitignore_template" ]] && continue
   [[ ${f} = ".gitmodules" ]] && continue
   [[ ${f} = ".DS_Store" ]] && continue
   [[ ${f} = ".travis.yml" ]] && continue
   [[ ${f} = ".editorconfig" ]] && continue
+  [[ ${f} = ".zsh_history" ]] && continue
   [[ ${f} = "sublimetext3" ]] && continue
   ln -snfv ${DOT_DIRECTORY}/${f} ${HOME}/${f}
 done
