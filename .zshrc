@@ -447,7 +447,7 @@ export LANG=en_US.UTF-8
 
 if [[ `uname -m` == 'arm64' ]]; then
   # for M1 mac
-  export PATH="/opt/homebrew/bin:$PATH"
+  export PATH="/opt/homebrew/bin:/opt/homebrew/sbin/:$PATH"
   export PATH="/opt/homebrew/opt/openssl@1.1/bin:$PATH"
 else
   # for Intel mac
