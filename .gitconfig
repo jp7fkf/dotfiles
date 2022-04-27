@@ -38,5 +38,7 @@
   maxRequestBuffer = 1024M
 [merge]
 	tool = vimdiff
+	conflictstyle = diff3
 [mergetool]
 	keepBackup = false
+	prompt = false
