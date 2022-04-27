@@ -36,3 +36,7 @@
 [ssh]
   postBuffer = 2048M
   maxRequestBuffer = 1024M
+[merge]
+	tool = vimdiff
+[mergetool]
+	keepBackup = false
