@@ -259,6 +259,11 @@ function pdfmin()
     wait && return 0
 }
 
+############## peco&ghq ################
+alias g='cd $(ghq root)/$(ghq list | peco)'
+############## peco&hub ################
+alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+
 ############## peco&ssh ################
 function peco-ssh () {
   local selected_host=$(find ~/.ssh -type f |

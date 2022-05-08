@@ -12,12 +12,13 @@
   ui = true
 [alias]
   delete-merged-branch = "!f () { git checkout $1; git branch --merged | egrep -v '(\\*|dev|master)' | xargs git branch -d; }; f"
-  graph = log --graph --date=short --decorate=short --pretty=format:'%C(Yellow)%h %Creset%cd %Cgreen%cn %C(Cyan)%d %Creset%s'
+  graph = log -n 30 --graph --date=short --decorate=short --pretty=format:'%C(Yellow)%h %Creset%cd %Cgreen%cn %C(Cyan)%d %Creset%s'
   difff = diff --word-diff
   co = checkout
   st = status
   br = branch
   ci = commit
+  lo = log --oneline
 [pull]
   ff = only
 [push]
@@ -42,3 +43,5 @@
 [mergetool]
 	keepBackup = false
 	prompt = false
+[ghq]
+	root = ~/ghq
