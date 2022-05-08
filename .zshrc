@@ -260,9 +260,27 @@ function pdfmin()
 }
 
 ############## peco&ghq ################
-alias g='cd $(ghq root)/$(ghq list | peco)'
+function peco-ghq () {
+  local selected_repo=$(ghq list | peco --query "$LBUFFER")
+  if [ -n "$selected_repo" ]; then
+    BUFFER="cd $(ghq root)/${selected_repo}"
+    zle accept-line
+  fi
+  #zle clear-screen
+}
+zle -N peco-ghq
+bindkey 'GH' peco-ghq
+#alias g='cd $(ghq root)/$(ghq list | peco)'
+
 ############## peco&hub ################
-alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+function peco-hub () {
+  local selected_repo=$(ghq list | peco --query "$LBUFFER" | cut -d "/" -f 2,3)
+  if [ -n "$selected_repo" ]; then
+    hub browse "${selected_repo}"
+  fi
+}
+alias gh='peco-hub'
+#alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 
 ############## peco&ssh ################
 function peco-ssh () {
@@ -280,7 +298,7 @@ function peco-ssh () {
     BUFFER="ssh ${selected_host}"
     zle accept-line
   fi
-  zle clear-screen
+  #zle clear-screen
 }
 zle -N peco-ssh
 bindkey 'SS' peco-ssh
@@ -298,7 +316,7 @@ function peco-checkout () {
       zle accept-line
     fi
   fi
-  zle clear-screen
+  #zle clear-screen
 }
 zle -N peco-checkout
 bindkey 'BB' peco-checkout
