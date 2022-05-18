@@ -8,8 +8,6 @@
   compression = 9
   symlinks = true
   quotepath = false
-[colur]
-  ui = true
 [alias]
   delete-merged-branch = "!f () { git checkout $1; git branch --merged | egrep -v '(\\*|dev|master)' | xargs git branch -d; }; f"
   graph = log -n 30 --graph --date=short --decorate=short --pretty=format:'%C(Yellow)%h %Creset%cd %Cgreen%cn %C(Cyan)%d %Creset%s'
@@ -50,3 +48,5 @@
 	pushInsteadOf = https://github.com/
 [diff]
 	wsErrorHighlight = all
+[color]
+	ui = true
