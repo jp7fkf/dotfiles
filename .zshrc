@@ -327,19 +327,20 @@ function git-delete-squashed-branch () {
   zparseopts -D -A opt -- h -help v -version c -check
   if [[ -n "${opt[(i)-h]}" ]] || [[ -n "${opt[(i)--help]}" ]] || [[ $# -gt 1 ]]; then
     echo 'git-delete-squashed-branch: delete squash merged branches'
-    echo '[usage]: git-delete-squashed-branch [options] [baseBranch:master]'
+    echo '[usage]: git-delete-squashed-branch [options] [baseBranch: default branch]'
     echo '[options]:'
     echo '  -h, --help: show this help.'
     echo '  -v, --version: show version'
     echo '  -c, --check: show all branches which are deleted by execution. This option will not change all branches.'
     return 0
   fi
+  default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | awk -F'[/]' '{print $NF}')
   if [[ -n "${opt[(i)-v]}" ]] || [[ -n "${opt[(i)--version]}" ]]; then
     echo 'git-delete-squashed-branch version 0.0.1'
     return 0
   fi
   if [[ -n "${opt[(i)-c]}" ]] || [[ -n "${opt[(i)--check]}" ]]; then
-    local baseBranch=${1:=master}
+    local baseBranch=${1:=$default_branch}
     git checkout -q $baseBranch
     git for-each-ref refs/heads/ "--format=%(refname:short)" | \
     while read branch
@@ -350,7 +351,7 @@ function git-delete-squashed-branch () {
       fi
     done
   else
-    local baseBranch=${1:=master}
+    local baseBranch=${1:=$default_branch}
     git checkout -q $baseBranch
     git for-each-ref refs/heads/ "--format=%(refname:short)" | \
     while read branch
@@ -483,8 +484,7 @@ else
 fi
 
 ## pyenv
-export PYENV_ROOT=$HOME/.pyenv
-export PATH=$PYENV_ROOT/bin:$PATH
+if which pyenv > /dev/null; then eval "$(pyenv init --path)"; fi
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 export PGDATA=/usr/local/var/postgres
