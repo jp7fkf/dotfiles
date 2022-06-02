@@ -451,6 +451,38 @@ function mtudisc () {
   echo "MTU: `expr $LAST_PASSED_SIZE + 28`"
 }
 
+
+######### htping ############
+function htping () {
+  local seq=0
+  zparseopts -D -A opt -- h -help -interval:
+  if [[ -n "${opt[(i)-h]}" ]] || [[ -n "${opt[(i)--help]}" ]]; then
+    echo 'htping: '
+    echo '[usage]: htping [options] [curlargs] <url>'
+    echo '[options]:'
+    echo '  -h, --help: show this help.'
+    echo '  --version: show version'
+    echo '  --interval: set interval with sec(default: 1)'
+    return 0
+  fi
+  if [[ -n "${opt[(i)--version]}" ]]; then
+    echo 'htping version 0.0.1'
+    return 0
+  fi
+  local interval=1
+  if [[ -n "${opt[(i)--interval]}" ]]; then
+    interval=${opt[--interval]}
+  fi
+
+  while true
+  do
+    echo -n "seq=${seq} "
+    curl ${@} -w 'code=%{http_code} http_version=%{http_version} remote_ip=%{remote_ip} bytes=%{size_download} time=%{time_total}sec\n' -o /dev/null -s
+    seq=$((seq+1))
+    sleep ${interval}
+  done
+}
+
 ########################################
 # OS 別の設定
 case ${OSTYPE} in
