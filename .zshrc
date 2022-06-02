@@ -455,10 +455,10 @@ function mtudisc () {
 ######### htping ############
 function htping () {
   local seq=0
-  zparseopts -D -A opt -- h -help -interval:
+  zparseopts -D -A opt -- h -help -version -interval:
   if [[ -n "${opt[(i)-h]}" ]] || [[ -n "${opt[(i)--help]}" ]]; then
     echo 'htping: '
-    echo '[usage]: htping [options] [curlargs] <url>'
+    echo '[usage]: htping [options] <url> [curlargs]'
     echo '[options]:'
     echo '  -h, --help: show this help.'
     echo '  --version: show version'
