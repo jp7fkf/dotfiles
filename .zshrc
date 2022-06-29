@@ -151,6 +151,7 @@ alias ssh-password='ssh -o PreferredAuthentications=password'
 alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S %Z"`"'
 alias gitcmtwip='git commit -m "wip"'
 alias relogin='exec $SHELL -l'
+alias mduch='(){mkdir -p "$(dirname $1)" && touch $1}'
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
@@ -491,6 +492,7 @@ case ${OSTYPE} in
         export LSCOLORS=dxgxcxdxcxegedabagacad
         export CLICOLOR=1
         alias ls='ls -G -F'
+        alias lsusb='system_profiler SPUSBDataType'
         ;;
     linux*)
         #Linux用の設定
