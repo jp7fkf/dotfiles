@@ -21,6 +21,11 @@ else
   alias diff='diff -u'
 fi
 
+# diffd(delta)
+if [[ -x `which delta` ]]; then
+  alias diffd='(){diff $@ | delta --line-numbers --color-only}'
+fi
+
 ## KEY BINDING ##
 # emacs like keybinding
 bindkey -e
