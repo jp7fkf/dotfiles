@@ -157,6 +157,7 @@ alias gitcmtnow='git commit -m "`date "+%Y-%m-%d %H:%M:%S %Z"`"'
 alias gitcmtwip='git commit -m "wip"'
 alias relogin='exec $SHELL -l'
 alias mduch='(){mkdir -p "$(dirname $1)" && touch $1}'
+alias pm='podman'
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
