@@ -1,0 +1,10 @@
+*.cache
+/User/encoding_cache.json
+/User/Package Control.cache/
+/User/Package Control.ca-bundle
+/User/Package Control.ca-certs/
+/User/Package Control.ca-list
+/User/Package Control.last-run
+/User/Package Control.system-ca-bundle
+/User/Package Control.merged-ca-bundle
+/User/oscrypto-ca-bundle.crt

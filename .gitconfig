@@ -1,7 +1,55 @@
+# This is Git's per-user configuration file.
 [user]
-	email = jp7fkf@gmail.com
-	name = Yudai Hashimoto
-[alias]
-	delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
+# Please adapt and uncomment the following lines:
+  name = jp7fkf
+  email = jp7fkf@gmail.com
 [core]
-	excludesFile = ~/.gitignore_global
+  excludesfile = ~/.gitignore_global
+  compression = 9
+  symlinks = true
+  quotepath = false
+[alias]
+  delete-merged-branch = "!f () { git checkout ${1:-$(git symbolic-ref refs/remotes/origin/HEAD | awk -F'[/]' '{print $NF}')}; git branch --merged | egrep -v '(\\*|dev|master)' | xargs git branch -d; }; f"
+  graph = log -n 30 --graph --date=short --decorate=short --pretty=format:'%C(Yellow)%h %Creset%cd %Cgreen%cn %C(Cyan)%d %Creset%s'
+  difff = diff --word-diff
+  diffd = "!f () { git diff ${@} | delta --line-numbers --hunk-header-style=omit --file-style=auto;}; f"
+  co = checkout
+  st = status
+  br = branch
+  ci = commit
+  lo = log --oneline
+[pull]
+  ff = only
+[push]
+  default = current
+  followTags = true
+  autoSetupRemote = true
+[fetch]
+  prune = true
+  pruneTags = true
+[init]
+  defaultBranch = main
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+[ssh]
+  postBuffer = 2048M
+  maxRequestBuffer = 1024M
+[merge]
+  tool = vimdiff
+  conflictstyle = diff3
+  ff = false
+[mergetool]
+  keepBackup = false
+  prompt = false
+[ghq]
+  root = ~/ghq
+[url "git@github.com:"]
+  insteadOf = https://github.com/
+  pushInsteadOf = https://github.com/
+[diff]
+  wsErrorHighlight = all
+[color]
+  ui = true

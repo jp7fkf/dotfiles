@@ -1,0 +1,24 @@
+[
+  {
+    "keys": ["ctrl+shift+r"],
+    "command": "reindent",
+    "args": { "single_line": false }
+  },
+  { "keys": ["ctrl+super+l"], "command": "sublime_linter_panel_toggle" },
+  { "keys": ["shift+super+d"],
+    "command": "insert_date",
+    "args": {"format": "#%Y-%m-%d %H:%M:%S Yudai Hashimoto"}
+  },
+  {
+    "keys": ["ctrl+shift+p"],
+    "command": "export_html",
+    "args": {
+      "numbers": true,
+      "wrap": 900,
+      "browser_print": true,
+      "multi_select": true,
+      "color_scheme": "Packages/ExportHtml/ColorSchemes/Print-Color.tmTheme",
+      "style_gutter": false
+    }
+  },
+]

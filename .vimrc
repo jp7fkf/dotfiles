@@ -1,76 +1,146 @@
 "------------------------------------
-" mktakuyaの.vimrc を盛大にパクらせてもらったJP7FKFの.vimrc
+" JP7FKF's vimrc
 "------------------------------------
 
 " --------------------
-" 基本設定
+" General
 " --------------------
-" ファイル読み込み時の設定
 set nocp
 set filetype=on
-filetype plugin indent on
 set fileencoding=utf-8
+filetype plugin indent on
 set browsedir=buffer
-" au BufWritePost * mkview
 autocmd BufReadPost * loadview
+set incsearch
+set scrolloff=2
 
-" 保存時に行末の空白を除去する
+" delete whitespace of line ends
 fun! StripTrailingWhitespace()
-    " don't strip on these filetypes
-    if &ft =~ 'modula2\|markdown'
-        return
-    endif
-    %s/\s\+$//e
+  " don't strip on these filetypes
+  if &ft =~ 'modula2\|markdown'
+    return
+  endif
+
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e
+  %s/\($\n\s*\)\+\%$//e
+  call cursor(l, c)
 endfun
-" autocmd BufWritePre * call StripTrailingWhitespace()
+autocmd BufWritePre * :call StripTrailingWhitespace()
 
-" 全角スペースを視覚化
-highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
-match ZenkakuSpace /　/
+" backups
+" create a backup directory when not exists
+function! EnsureDirExists (dir)
+  if !isdirectory(a:dir)
+    if exists("*mkdir")
+      call mkdir(a:dir,'p',0700)
+      echo "Created directory: " . a:dir
+    else
+      echo "Please create directory: " . a:dir
+    endif
+  endif
+endfunction
 
-set undodir=D:$HOME/.vimbackup
+call EnsureDirExists($HOME.'/.vimbackup')
 
-"" ステータスライン
-" ステータスラインに文字コード/改行文字種別を表示
-set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
-" 常にステータス行を表示
-set laststatus=2
-
-" バックアップ関連
 set backup
 set backupdir=$HOME/.vimbackup
+set undodir=D:$HOME/.vimbackup
 
-" Swapファイル関連
+" Swap files
 set swapfile
 set directory=$HOME/.vimbackup
 set updatecount=100
 set updatetime=180000
 
-" Backspace関連
+" Backspace
 set backspace=start,eol,indent
 
-" クリップボード関連の設定
+" clipboard
 set clipboard=unnamed
 
-" 見た目の設定
-set syntax=on
+" set character code UTF-8
+set fenc=utf-8
+" no baskup files
+set nobackup
+" no swp files
+set noswapfile
+" reload when file changes
+set autoread
+" バッファが編集中でもその他のファイルを開けるように
+set hidden
+" show inputting command
+set showcmd
+
+" --------------------
+" Visual
+" --------------------
+" syntax highlight
+syntax enable
+colorscheme monokai
+" show line numbers
 set number
-set ruler
-set showmatch
-set laststatus=2
-set statusline =%F%r%h%=
+" Highlighting current line(horizontal)
 set cursorline
+" Highlighting current line(vertical)
+set cursorcolumn
+" cursor can go to the end of line +1
+set virtualedit=onemore
+set smartindent
+set visualbell
+" highlight corrensponding bracket
+set showmatch
 set colorcolumn=80
 
-" マウス関連
+" syntax highlight on iterm2,macos
+let OSTYPE = system('uname')
+if OSTYPE == "Darwin\n"
+  set term=xterm-256color
+endif
+
+"" Status Line
+set laststatus=2
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+
+" visualize FULL width space
+highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
+match ZenkakuSpace /　/
+
+" mouse
 set mouse=h
 set mousehide
 
-" 検索関連
-set incsearch
+" completion of commandlines
+set wildmode=list:longest
+" 折り返し時に表示行単位での移動できるようにする
+nnoremap j gj
+nnoremap k gk
+
+" Tabs
+" visualize invisible chars(tab)
+set list
+set listchars=tab:▸-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+" whitespace tab
+set expandtab
+" tab width in single tab
+set tabstop=2
+" tab width in begin of line
+set shiftwidth=2
+
+" Search
+" 検索文字列が小文字の場合は大文字小文字を区別なく検索する
 set ignorecase
+" 検索文字列に大文字が含まれている場合は区別して検索する
 set smartcase
+" 検索文字列入力時に順次対象文字列にヒットさせる
+set incsearch
+" 検索時に最後まで行ったら最初に戻る
 set wrapscan
+" 検索語をハイライト表示
+set hlsearch
+" ESC連打でハイライト解除
+nmap <Esc><Esc> :nohlsearch<CR><Esc>
 
 " コード補完関連
 set wildmenu wildmode=list:full
@@ -82,11 +152,11 @@ autocmd InsertEnter * highlight StatusLine guifg=#ccdc90 guibg=#2E4340
 autocmd InsertLeave * highlight StatusLine guifg=#2E4340 guibg=#ccdc90
 augroup END
 
-" --------------------
-" 言語別設定
-" --------------------
+" --------------------------
+" Language Specific Settings
+" --------------------------
 " 共通
-set autoindent smartindent expandtab nocindent tabstop=4 softtabstop=4 shiftwidth=4
+set autoindent smartindent expandtab nocindent tabstop=2 softtabstop=2 shiftwidth=2
 
 " HTML
 autocmd FileType html setlocal nocindent tabstop=2 softtabstop=2 shiftwidth=2
@@ -99,7 +169,7 @@ autocmd FileType c setlocal cindent tabstop=8 softtabstop=8 shiftwidth=8
 
 " Python
 autocmd FileType python setl cinwords=if,elif,else,for,while,try,except,finally,def,class
-autocmd FileType python setl tabstop=8
+autocmd FileType python setl tabstop=2 softtabstop=2 shiftwidth=2
 
 " Ruby
 autocmd FileType ruby setl tabstop=2 shiftwidth=2 softtabstop=2 expandtab
@@ -126,6 +196,7 @@ autocmd FileType coffee setl tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType jinja setl tabstop=8 softtabstop=2 shiftwidth=2
 
 " Markdown
+autocmd BufRead,BufNewFile *.md set filetype=markdown
 
 " TeX
 let g:tex_conceal=''
@@ -133,6 +204,8 @@ let g:tex_conceal=''
 " YAML
 autocmd FileType yaml,yml setl tabstop=2 shiftwidth=2 softtabstop=2
 
+" sshconfig
+autocmd BufNewFile,BufRead *.sshconfig set filetype=sshconfig
 "------------------------------------
 " indent guides
 "------------------------------------
@@ -148,54 +221,87 @@ let g:indent_guides_enable_on_vim_startup = 1
 " source ~/dotfiles/.vimrc.completion
 
 " unite.vim
-"source ~/dotfiles/.vimrc.unite
+" source ~/dotfiles/.vimrc.unite
 
 " neobundle
 " source ~/dotfiles/.vimrc.neobundle
 
 "------------------------------------
-" プラグイン設定
+" Plugins
 "------------------------------------
-" vim-quickrun
-" let g:quickrun_config = {'*': {'hook/time/enable': '1'},}
+"------------------------------------
+" dein
+"------------------------------------
+let s:dein_dir = expand('~/.cache/vim/dein')
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
-
-" vim-nodejs-complete
-setl omnifunc=jscomplete#CompleteJS
-if !exists('g:neocomplcache_omni_functions')
-  let g:neocomplcache_omni_functions = {}
-endif
-let g:neocomplcache_omni_functions.javascript = 'nodejscomplete#CompleteJS'
-let g:node_usejscomplete = 1
-
-" neocomplcache
-"" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
-let g:neocomplcache_force_overwrite_completefunc=1
-let g:neocomplcache_enable_camel_case_completion = 0
-
-" taglist.vim
-set tags=tags
-nmap <F8> :Tlist
-
-" NERDTreeToggle
-nmap <F9> :NERDTreeToggle
-let NERDTreeShowHidden = 1
-let g:NERDTreeWinSize = 40
-
-set fileformats=unix,dos,mac
-" □とか○の文字があってもカーソル位置がずれないようにする
-if exists('&ambiwidth')
-  set ambiwidth=double
+" if dein.vim is not exists, pull it from github
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
 
-" vim-go
-let g:go_fmt_command = "goimports"
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
 
-" .md をMarkdownとして扱う
-au BufRead,BufNewFile *.md set filetype=markdown
+  " toml fies of plugins
+  let g:rc_dir    = expand('~/.vim/')
+  let s:toml      = g:rc_dir . 'dein.toml'
+  let s:lazy_toml = g:rc_dir . 'dein_lazy.toml'
 
-syntax on
+  " read toml and cache
+  call dein#load_toml(s:toml,      {'lazy': 0})
+  call dein#load_toml(s:lazy_toml, {'lazy': 1})
+
+  call dein#end()
+  call dein#save_state()
+endif
+
+if dein#check_install()
+  call dein#install()
+endif
+
 filetype plugin indent on
+syntax enable
+if has('nvim')
+  call deoplete#enable()
+endif
+"------------------------------------
 
+"" vim-quickrun
+"" let g:quickrun_config = {'*': {'hook/time/enable': '1'},}
+"
+"" vim-nodejs-complete
+"setl omnifunc=jscomplete#CompleteJS
+"if !exists('g:neocomplcache_omni_functions')
+"  let g:neocomplcache_omni_functions = {}
+"endif
+"let g:neocomplcache_omni_functions.javascript = 'nodejscomplete#CompleteJS'
+"let g:node_usejscomplete = 1
+"
+"" neocomplcache
+""" <TAB>: completion.
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+"inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+"let g:neocomplcache_force_overwrite_completefunc=1
+"let g:neocomplcache_enable_camel_case_completion = 0
+"
+"" taglist.vim
+"set tags=tags
+"nmap <F8> :Tlist
+"
+"" NERDTreeToggle
+"nmap <F9> :NERDTreeToggle
+"let NERDTreeShowHidden = 1
+"let g:NERDTreeWinSize = 40
+"
+"set fileformats=unix,dos,mac
+"" □とか○の文字があってもカーソル位置がずれないようにする
+"if exists('&ambiwidth')
+"  set ambiwidth=double
+"endif
+"
+"" vim-go
+"let g:go_fmt_command = "goimports"

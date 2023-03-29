@@ -1,0 +1,3 @@
+[submodule ".bin/etc/deadman"]
+	path = .bin/etc/deadman
+	url = https://github.com/upa/deadman

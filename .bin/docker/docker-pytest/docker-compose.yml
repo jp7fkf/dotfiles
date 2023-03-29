@@ -1,0 +1,9 @@
+version: '3'
+services:
+  ansible:
+    container_name: docker-ansible
+    build: .
+    tty: true
+    working_dir: "/var/data"
+    volumes:
+      - ./data:/var/data
