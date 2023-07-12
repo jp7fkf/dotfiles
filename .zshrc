@@ -159,8 +159,8 @@ alias relogin='exec $SHELL -l'
 alias mduch='(){mkdir -p "$(dirname $1)" && touch $1}'
 alias pm='podman'
 alias rg='rg -uu'
-alias lf2crlf='sed "s/$/\r/g"'
-alias crlf2lf='sed "s/\r//g"'
+alias lf2crlf='sed -i "s/$/\r/g"'
+alias crlf2lf='sed -i "s/\r//g"'
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
