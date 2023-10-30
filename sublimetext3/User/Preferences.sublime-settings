@@ -1,5 +1,5 @@
 {
-	"remember_full_screen": true,
+	// "remember_full_screen": true,
 	"color_scheme": "Monokai.sublime-color-scheme",
 	"draw_white_space": "all",
 	"ensure_newline_at_eof_on_save": false,

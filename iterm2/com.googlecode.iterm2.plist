@@ -430,6 +430,8 @@ Maximize Active Pane</string>
 			<string>CB8F0538-CE9E-454D-8BD8-3B41CBD5C124</string>
 			<key>Horizontal Spacing</key>
 			<real>1</real>
+			<key>Icon</key>
+			<integer>0</integer>
 			<key>Idle Code</key>
 			<integer>0</integer>
 			<key>Jobs to Ignore</key>
@@ -797,6 +799,8 @@ Maximize Active Pane</string>
 			<array/>
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
+			<key>Title Components</key>
+			<integer>11</integer>
 			<key>Transparency</key>
 			<real>0.10993020304568528</real>
 			<key>Unlimited Scrollback</key>

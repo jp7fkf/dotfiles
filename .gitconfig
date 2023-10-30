@@ -8,15 +8,19 @@
   compression = 9
   symlinks = true
   quotepath = false
+  ignorecase = false
+  autocrlf = input
+  #pager = less -F
+  pager = delta
 [alias]
   delete-merged-branch = "!f () { git checkout ${1:-$(git symbolic-ref refs/remotes/origin/HEAD | awk -F'[/]' '{print $NF}')}; git branch --merged | egrep -v '(\\*|dev|master)' | xargs git branch -d; }; f"
   graph = log -n 30 --graph --date=short --decorate=short --pretty=format:'%C(Yellow)%h %Creset%cd %Cgreen%cn %C(Cyan)%d %Creset%s'
   difff = diff --word-diff
   diffd = "!f () { git diff ${@} | delta --line-numbers --hunk-header-style=omit --file-style=auto;}; f"
-  co = checkout
+  ch = checkout
   st = status
   br = branch
-  ci = commit
+  com = commit
   lo = log --oneline
 [pull]
   ff = only
@@ -53,3 +57,9 @@
   wsErrorHighlight = all
 [color]
   ui = true
+#[credential]
+#  helper = osxkeychain
+[delta]
+  navigate = true    # use n and N to move between diff sections
+  color-only = true
+  line-numbers = true

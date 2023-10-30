@@ -24,15 +24,19 @@ fi
 # diffd(delta)
 if [[ -x `which delta` ]]; then
   alias diffd='(){diff $@ | delta --line-numbers --color-only}'
+  #alias diffd='delta --line-numbers --color-only'
 fi
 
 ## KEY BINDING ##
 # emacs like keybinding
 bindkey -e
-# ctrl+allow for moving corsor each word
+# ctrl+allow for moving cursor each word
 # TODO: DISABLE mission control keymap in macOS default
 bindkey ";5C" forward-word
 bindkey ";5D" backward-word
+# ctrl + shift + allow for moving cursor each word
+# bindkey ";6C" forward-word
+# bindkey ";6D" backward-word
 
 # history
 HISTFILE=~/.zsh_history
@@ -62,10 +66,12 @@ function _ssh {
 
 #for zsh-completions
 fpath=(/usr/local/share/zsh-completions $fpath)
-
 # enable completion
 autoload -Uz compinit
 compinit -u
+
+# delta completion WA: https://github.com/dandavison/delta/issues/1167
+compdef _gnu_generic delta
 
 # 補完で小文字でも大文字にマッチさせる
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -74,12 +80,10 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' ignore-parents parent pwd ..
 
 # sudo の後ろでコマンド名を補完する
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
-                   /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 
 # ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
-
 ########################################
 # vcs_info (git/subversion info)
 autoload -Uz vcs_info
@@ -161,6 +165,9 @@ alias pm='podman'
 alias rg='rg -uu'
 alias lf2crlf='sed -i "" "s/$/\r/g"'
 alias crlf2lf='sed -i "" "s/\r//g"'
+alias clang-formatter='find * | grep -E ".*(\.ino|\.cpp|\.c|\.h|\.hpp|\.hh)$" | xargs clang-format -i -style=LLVM'
+alias update-clang-format='clang-format --dump-config --style=file > .clang-format'
+alias mydu='du -hcs'
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
@@ -508,6 +515,11 @@ function htping () {
   done
 }
 
+function clang-formatter2 () {
+  #echo $(find $1)
+  #echo $(find $1 | grep -E ".*(\.ino|\.cpp|\.c|\.h|\.hpp|\.hh)$" | xargs clang-format -i -style=LLVM)
+}
+
 ########################################
 # OS 別の設定
 case ${OSTYPE} in
@@ -532,6 +544,10 @@ if [[ `uname -m` == 'arm64' ]]; then
   # for M1 mac
   export PATH="/opt/homebrew/bin:/opt/homebrew/sbin/:$PATH"
   export PATH="/opt/homebrew/opt/openssl@1.1/bin:$PATH"
+
+  # for less syntax highlight
+  export LESS='-R' # --quit-if-one-screen'
+  export LESSOPEN='| /opt/homebrew/bin/src-hilite-lesspipe.sh %s'
 else
   # for Intel mac
   #alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
