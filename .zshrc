@@ -168,6 +168,7 @@ alias crlf2lf='sed -i "" "s/\r//g"'
 alias clang-formatter='find * | grep -E ".*(\.ino|\.cpp|\.c|\.h|\.hpp|\.hh)$" | xargs clang-format -i -style=LLVM'
 alias update-clang-format='clang-format --dump-config --style=file > .clang-format'
 alias mydu='du -hcs'
+alias compgen-c='print -rl -- ${(ko)commands}'
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
@@ -200,7 +201,7 @@ function rdpasswd (){
 }
 
 function heic2jpegall (){
-  echo $(find $1 -name '*.HEIC' | xargs -IT basename T .HEIC | xargs -IT sips --setProperty format jpeg $1/T.HEIC --out $1/T.jpg;)
+  echo $(find $1 -name '*.heic' | xargs -IT basename T .heic | xargs -IT sips --setProperty format jpeg $1/T.heic --out $1/T.jpg;)
 }
 
 function smtpauth_plain (){
@@ -208,7 +209,7 @@ function smtpauth_plain (){
 }
 
 function datelog (){
-  $@ | while read line; do echo "$(date): $line";done
+  $@ | while read line; do echo "$(date +'%Y-%m-%dT%H:%M:%S%z'): $line";done
 }
 
 function docker-taglist (){
@@ -518,6 +519,10 @@ function htping () {
 function clang-formatter2 () {
   #echo $(find $1)
   #echo $(find $1 | grep -E ".*(\.ino|\.cpp|\.c|\.h|\.hpp|\.hh)$" | xargs clang-format -i -style=LLVM)
+}
+
+function rename-r () {
+  find $3 -name "*$1*" | xargs rename -s $1 $2
 }
 
 ########################################
