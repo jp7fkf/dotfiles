@@ -256,9 +256,9 @@ function replace_all (){
   if [[ -n "${opt[(i)-c]}" ]] || [[ -n "${opt[(i)--check]}" ]]; then
     grep -r --exclude-dir=.git "$1" $~3
   elif [[ -n "${opt[(i)-d]}" ]] || [[ -n "${opt[(i)--delete]}" ]]; then
-    grep -r --exclude-dir=.git "$1" $~3 -l | xargs gsed -i "^$1^d"
+    grep -r --exclude-dir=.git "$1" $~3 -l | xargs gsed -i "~$1~d"
   else
-    grep -r --exclude-dir=.git "$1" $~3 -l | xargs gsed -i "s^$1^$2^g"
+    grep -r --exclude-dir=.git "$1" $~3 -l | xargs gsed -i "s~$1~$2~g"
   fi
 }
 alias replace_all='noglob replace_all'
