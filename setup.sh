@@ -25,4 +25,7 @@ done
 curl -fsSL https://raw.githubusercontent.com/prometheus/snmp_exporter/main/generator/Makefile -o .snmp/Makefile
 make --directory .snmp mibs
 
+# make symlink for xbar plugins
+ln -s ~/.bitbar/Enabled/* ~/Library/Application\ Support/xbar/plugins
+
 echo $(tput setaf 2)Deploy dotfiles complete! ✔︎$(tput sgr0)
