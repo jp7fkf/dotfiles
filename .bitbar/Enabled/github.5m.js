@@ -1,0 +1,1 @@
+../system/xbar-plugin-github/github.5m.js

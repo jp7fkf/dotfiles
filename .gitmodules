@@ -1,3 +1,6 @@
 [submodule ".bin/etc/deadman"]
 	path = .bin/etc/deadman
 	url = https://github.com/upa/deadman
+[submodule ".bitbar/system/xbar-plugin-github"]
+	path = .bitbar/system/xbar-plugin-github
+	url = https://github.com/jp7fkf/xbar-plugin-github.git
