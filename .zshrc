@@ -577,6 +577,7 @@ export PATH="$GOENV_ROOT/bin:$PATH"
 if which goenv > /dev/null; then eval "$(goenv init -)"; fi
 export PATH="$GOROOT/bin:$PATH"
 export PATH="$PATH:$GOPATH/bin"
+export GOBIN="$GOENV_ROOT/shims/"
 
 ## nodebrew
 export NODEBREW_ROOT="$HOME/.nodebrew"
