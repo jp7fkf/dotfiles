@@ -28,4 +28,7 @@ make --directory .snmp mibs
 # make symlink for xbar plugins
 ln -s ~/.bitbar/Enabled/* ~/Library/Application\ Support/xbar/plugins
 
+curl -fsSL https://iterm2.com/utilities/imgcat -o .bin/imgcat
+chmod +x .bin/imgcat
+
 echo $(tput setaf 2)Deploy dotfiles complete! ✔︎$(tput sgr0)
