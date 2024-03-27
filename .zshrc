@@ -236,6 +236,12 @@ function list_licenses (){
   curl -s https://api.github.com/licenses | jq -r .
 }
 
+function ntpquery (){
+  date -r $((0x`printf c%47s|nc -uw1 ${1} ${2:=123}|xxd -s40 -l4 -ps`-2208988800))
+  # bash version is follows:
+  # date -d@$((0x`printf c%47s|nc -uw1 10.208.0.13 123|xxd -s40 -l4 -p`-64#23GDW0))
+}
+
 function replace_all (){
   local -A opt
   zparseopts -D -A opt -- h -help v -version c -check d -delete
