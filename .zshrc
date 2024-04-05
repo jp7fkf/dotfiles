@@ -162,7 +162,7 @@ alias gitcmtwip='git commit -m "wip"'
 alias relogin='exec $SHELL -l'
 alias mduch='(){mkdir -p "$(dirname $1)" && touch $1}'
 alias pm='podman'
-alias rg='rg -uu'
+#alias rg='rg -uu'
 alias lf2crlf='sed -i "" "s/$/\r/g"'
 alias crlf2lf='sed -i "" "s/\r//g"'
 alias clang-formatter='find * | grep -E ".*(\.ino|\.cpp|\.c|\.h|\.hpp|\.hh)$" | xargs clang-format -i -style=LLVM'
@@ -577,13 +577,14 @@ if [ -e ~/.rbenv ]; then
     if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 fi
 
-## goenv
+# goenv
 export GOENV_ROOT="$HOME/.goenv"
 export PATH="$GOENV_ROOT/bin:$PATH"
 if which goenv > /dev/null; then eval "$(goenv init -)"; fi
 export PATH="$GOROOT/bin:$PATH"
 export PATH="$PATH:$GOPATH/bin"
-export GOBIN="$GOENV_ROOT/shims/"
+export GOBIN="$GOROOT/bin/"
+# export GOBIN="$GOENV_ROOT/shims/"
 
 ## nodebrew
 export NODEBREW_ROOT="$HOME/.nodebrew"
