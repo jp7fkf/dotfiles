@@ -169,6 +169,7 @@ alias clang-formatter='find * | grep -E ".*(\.ino|\.cpp|\.c|\.h|\.hpp|\.hh)$" | 
 alias update-clang-format='clang-format --dump-config --style=file > .clang-format'
 alias mydu='du -hcs'
 alias compgen-c='print -rl -- ${(ko)commands}'
+alias ptree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|    /g'"
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
@@ -529,6 +530,10 @@ function clang-formatter2 () {
 
 function rename-r () {
   find $3 -name "*$1*" | xargs rename -s $1 $2
+}
+
+function regexp-rename () {
+  find $3 -name "*$1*" | sed -e 's/$1/mv $2/g' | sh
 }
 
 ########################################
