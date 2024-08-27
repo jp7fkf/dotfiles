@@ -287,7 +287,7 @@ function pdfmin()
 }
 
 ############## dcr ################
-function dc-gcloud()
+function pm-gcloud()
 {
   mkdir -p $HOME/.config/gcloud
   export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
