@@ -286,6 +286,18 @@ function pdfmin()
   wait && return 0
 }
 
+############## dcr ################
+function dc-gcloud()
+{
+  mkdir -p $HOME/.config/gcloud
+  export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
+  docker run --rm -it --name gcloud-sdk \
+    -e CLOUDSDK_CONFIG=/config/gcloud \
+    -v $HOME/.config/gcloud:/config/gcloud \
+    -v $HOME/.kube:/root/.kube \
+    google/cloud-sdk $@
+}
+
 ################ binds #################
 function _git_status() {
   if [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = 'true' ]; then
