@@ -167,7 +167,7 @@ alias lf2crlf='sed -i "" "s/$/\r/g"'
 alias crlf2lf='sed -i "" "s/\r//g"'
 alias clang-formatter='find * | grep -E ".*(\.ino|\.cpp|\.c|\.h|\.hpp|\.hh)$" | xargs clang-format -i -style=LLVM'
 alias update-clang-format='clang-format --dump-config --style=file > .clang-format'
-alias mydu='du -hcs'
+alias mydu='du -hc -d 2 | sort -rn'
 alias compgen-c='print -rl -- ${(ko)commands}'
 alias ptree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|    /g'"
 alias gitroot='cd "$(git rev-parse --show-toplevel)"'
@@ -286,16 +286,15 @@ function pdfmin()
   wait && return 0
 }
 
-############## dcr ################
-function pm-gcloud()
+############## container env ################
+function pmc()
 {
-  mkdir -p $HOME/.config/gcloud
-  export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
-  docker run --rm -it --name gcloud-sdk \
-    -e CLOUDSDK_CONFIG=/config/gcloud \
-    -v $HOME/.config/gcloud:/config/gcloud \
-    -v $HOME/.kube:/root/.kube \
-    google/cloud-sdk $@
+  DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')" ~/.bin/docker-$1 ${@:2}
+}
+
+function dcc()
+{
+  ~/.bin/docker-$1 ${@:2}
 }
 
 ################ binds #################

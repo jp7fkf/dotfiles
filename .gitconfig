@@ -27,6 +27,7 @@
   fixmend = commit --amend --no-edit
 [pull]
   ff = only
+	autostash = true
 [push]
   default = current
   followTags = true
@@ -66,3 +67,5 @@
   navigate = true    # use n and N to move between diff sections
   color-only = true
   line-numbers = true
+[rebase]
+	autostash = true

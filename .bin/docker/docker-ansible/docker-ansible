@@ -3,5 +3,13 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-docker image build -q -t docker-ansible $(dirname $(dirname $0)/$(readlink $0))
+## Create image is commented out because of following issues
+# https://github.com/docker/buildx/issues/107
+# https://github.com/docker/buildx/issues/626
+# plz build image manyally
+# ex. DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')" podman buildx build --load -t docker-ansible /path/to/docker-ansible
+
+# docker build -q -t docker-ansible $(dirname $(dirname $0)/$(readlink $0))
+# docker buildx build --load -q -t docker-ansible $(dirname $(dirname $0)/$(readlink $0))
+# podman buildx build --load -q -t docker-ansible $(dirname $(dirname $0)/$(readlink $0))
 docker run -it -v $(pwd):/app --rm docker-ansible $@

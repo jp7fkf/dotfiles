@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+mkdir -p $HOME/.config/gcloud
+docker run --rm -it --name gcloud-sdk \
+  -e CLOUDSDK_CONFIG=/config/gcloud \
+  -v $HOME/.config/gcloud:/config/gcloud \
+  -v $HOME/.kube:/root/.kube \
+  google/cloud-sdk $@
