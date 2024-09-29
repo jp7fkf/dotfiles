@@ -176,6 +176,7 @@ alias parse_curl_header='awk "/^HTTP/,/^[\r\n]+$/"'
 alias grep_k2v='(){grep $@ | awk "{print \$2}"}'
 alias dcc='(){~/.bin/docker-$1 ${@:2}'
 alias pmc='(){DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')" ~/.bin/docker-$1 ${@:2}}'
+alias yq='yq -P'
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
