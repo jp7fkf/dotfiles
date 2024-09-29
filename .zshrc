@@ -173,7 +173,7 @@ alias compgen-c='print -rl -- ${(ko)commands}'
 alias ptree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|    /g'"
 alias gitroot='cd "$(git rev-parse --show-toplevel)"'
 alias parse_curl_header='awk "/^HTTP/,/^[\r\n]+$/"'
-alias grep_kv='(){grep $1 | awk "{print \$2}"}'
+alias grep_k2v='(){grep $1 | awk "{print \$2}"}'
 alias dcc='(){~/.bin/docker-$1 ${@:2}'
 alias pmc='(){DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')" ~/.bin/docker-$1 ${@:2}}'
 
