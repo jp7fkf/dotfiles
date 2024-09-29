@@ -6,17 +6,23 @@
 
 
 # Args
-# headers: must be 1-dimentional string array
-# data   : must be 2-dimentional string array
-# align  : must be in ['<', '>', '^']
+# _headers       : must be 1-dimentional string array
+# data           : must be 2-dimentional string array
+# default_align  : must be in ['<', '>', '^']
+# align_array    : must be 1-dimentional string array in ['<', '>', '^']
 
-def render_table(data, headers=[], column_width_limit=50, column_separator=' ', align='<', boarder='=', none_header_filler='', none_data_filler='', boarder_padding=False):
+def render_table(data, headers=None, column_width_limit=50, column_separator=' ', default_align='<', align_array=None, boarder='=', none_header_filler='', none_data_filler='', boarder_padding=False):
+    # init default
+    headers = [] if headers is None else headers
+    align_array = [] if align_array is None else align_array
+
     _rendered = []
     _max_column_widths = []
 
     # padding
     _column_len = max([len(_d) for _d in data + [headers]])
     headers += [None] * (_column_len - len(headers))
+    align_array += default_align * (_column_len - len(align_array))
     for _d in data:
         _d += [None] * (_column_len - len(_d))
 
@@ -30,11 +36,11 @@ def render_table(data, headers=[], column_width_limit=50, column_separator=' ', 
 
     # rendering
     if any(headers):
-        _rendered.append(column_separator.join([f"{headers[_index][:_max_column_widths[_index]]:{align}{_max_column_widths[_index]}}" if headers[_index] is not None else f"{none_header_filler[:_max_column_widths[_index]]:{align}{_max_column_widths[_index]}}" for _index in range(len(_max_column_widths))]))
+        _rendered.append(column_separator.join([f"{headers[_index][:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" if headers[_index] is not None else f"{none_header_filler[:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" for _index in range(len(_max_column_widths))]))
         if boarder is not None:
-            _rendered.append(column_separator.join([f"{(boarder*len(headers[_index]))[:_max_column_widths[_index]]:{boarder if boarder_padding else ' '}{align}{_max_column_widths[_index]}}" if headers[_index] is not None else (boarder if boarder_padding else ' ') * _max_column_widths[_index] for _index in range(len(_max_column_widths))]))
+            _rendered.append(column_separator.join([f"{(boarder*len(headers[_index]))[:_max_column_widths[_index]]:{boarder if boarder_padding else ' '}{align_array[_index]}{_max_column_widths[_index]}}" if headers[_index] is not None else (boarder if boarder_padding else ' ') * _max_column_widths[_index] for _index in range(len(_max_column_widths))]))
     for _d in data:
-        _rendered.append(column_separator.join([f"{_d[_index][:_max_column_widths[_index]]:{align}{_max_column_widths[_index]}}" if _d[_index] is not None else f"{none_data_filler[:_max_column_widths[_index]]:{align}{_max_column_widths[_index]}}" for _index in range(len(_d))]))
+        _rendered.append(column_separator.join([f"{_d[_index][:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" if _d[_index] is not None else f"{none_data_filler[:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" for _index in range(len(_d))]))
 
     return "\n".join(_rendered)
 
@@ -56,12 +62,12 @@ if __name__ == "__main__":
         ["123456789012345", "1234567890", "12345", "1234"],
         ["123456789012345", "1234567890", "12345", "1234", "123"],
     ]
-    print(render_table(_data, _headers, column_width_limit=8, column_separator=" | ", align='^', boarder='-', none_data_filler='-', boarder_padding=True))
+    print(render_table(_data, _headers, column_width_limit=8, column_separator=" | ", default_align='^', align_array=['<', '^', '>'], boarder='-', none_data_filler='-', boarder_padding=True))
     print()
 
     _kuku_size = 10
     _kuku = [[str(i * j) for i in range(1, _kuku_size)] for j in range(1, _kuku_size)]
-    print(render_table(_kuku, align='>'))
+    print(render_table(_kuku, default_align='>'))
     print()
 
     # k8s/kubectl like outputs
@@ -94,12 +100,12 @@ if __name__ == "__main__":
 # HogeHoge        HugaHuga    HogehogeHogehoge
 # 123456789012345 1234567890  12345
 #
-#  Title   | Descript | Remarks  |      |
+# Title    | Descript |  Remarks |      |
 # -------- | -------- | -------- | ---- | ---
-#   Hoge   |   Huga   |    -     |  -   |  -
+# Hoge     |   Huga   |        - |  -   |  -
 # HogeHoge | HugaHuga | Hogehoge |  -   |  -
-# 12345678 | 12345678 |  12345   | 1234 |  -
-# 12345678 | 12345678 |  12345   | 1234 | 123
+# 12345678 | 12345678 |    12345 | 1234 |  -
+# 12345678 | 12345678 |    12345 | 1234 | 123
 #
 # 1  2  3  4  5  6  7  8  9
 # 2  4  6  8 10 12 14 16 18
