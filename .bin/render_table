@@ -10,7 +10,7 @@
 # data   : must be 2-dimentional string array
 # align  : must be in ['<', '>', '^']
 
-def render_table(data, headers=[], column_width_limit=50, column_separator=" ", align='<', boarder='=', none_header_filler='', none_data_filler='', boarder_padding=False):
+def render_table(data, headers=[], column_width_limit=50, column_separator=' ', align='<', boarder='=', none_header_filler='', none_data_filler='', boarder_padding=False):
     _rendered = []
     _max_column_widths = []
 
@@ -32,7 +32,7 @@ def render_table(data, headers=[], column_width_limit=50, column_separator=" ", 
     if any(headers):
         _rendered.append(column_separator.join([f"{headers[_index][:_max_column_widths[_index]]:{align}{_max_column_widths[_index]}}" if headers[_index] is not None else f"{none_header_filler[:_max_column_widths[_index]]:{align}{_max_column_widths[_index]}}" for _index in range(len(_max_column_widths))]))
         if boarder is not None:
-            _rendered.append(column_separator.join([f'{(boarder*len(headers[_index]))[:_max_column_widths[_index]]:{boarder if boarder_padding else " "}{align}{_max_column_widths[_index]}}' if headers[_index] is not None else (boarder if boarder_padding else " ") * _max_column_widths[_index] for _index in range(len(_max_column_widths))]))
+            _rendered.append(column_separator.join([f"{(boarder*len(headers[_index]))[:_max_column_widths[_index]]:{boarder if boarder_padding else ' '}{align}{_max_column_widths[_index]}}" if headers[_index] is not None else (boarder if boarder_padding else ' ') * _max_column_widths[_index] for _index in range(len(_max_column_widths))]))
     for _d in data:
         _rendered.append(column_separator.join([f"{_d[_index][:_max_column_widths[_index]]:{align}{_max_column_widths[_index]}}" if _d[_index] is not None else f"{none_data_filler[:_max_column_widths[_index]]:{align}{_max_column_widths[_index]}}" for _index in range(len(_d))]))
 
