@@ -6,7 +6,7 @@
 
 
 # Args
-# _headers       : must be 1-dimentional string array
+# headers        : must be 1-dimentional string array
 # data           : must be 2-dimentional string array
 # default_align  : must be in ['<', '>', '^']
 # align_array    : must be 1-dimentional string array in ['<', '>', '^']
