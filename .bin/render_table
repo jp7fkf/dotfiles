@@ -13,7 +13,7 @@ import copy
 # align_array    : must be 1-dimentional string array in ['<', '>', '^']
 
 
-def render_table(data, headers=None, boarder='=', column_separator=' ', column_width_limit=50, none_header_filler='', none_data_filler='', default_align='<', align_array=None, boarder_padding=False, boarder_penetrate=False):
+def render_table(data, headers=None, border='=', column_separator=' ', column_width_limit=50, none_header_filler='', none_data_filler='', default_align='<', align_array=None, border_padding=False, border_penetrate=False):
     # init default
     data = copy.deepcopy(data)
     headers = [] if headers is None else copy.copy(headers)
@@ -39,12 +39,12 @@ def render_table(data, headers=None, boarder='=', column_separator=' ', column_w
     # rendering
     if any(headers):
         _rendered.append(column_separator.join([f"{headers[_index][:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" if headers[_index] is not None else f"{none_header_filler[:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" for _index in range(len(_max_column_widths))]))
-        if boarder is not None:
-            if boarder_penetrate is True:
-                _boarder_len = sum(_max_column_widths) + len(column_separator) * (len(_max_column_widths) - 1)
-                _rendered.append((boarder * _boarder_len)[:_boarder_len])
+        if border is not None:
+            if border_penetrate is True:
+                _border_len = sum(_max_column_widths) + len(column_separator) * (len(_max_column_widths) - 1)
+                _rendered.append((border * _border_len)[:_border_len])
             else:
-                _rendered.append(column_separator.join([f"{(boarder*len(headers[_index]))[:_max_column_widths[_index]]:{boarder if boarder_padding else ' '}{align_array[_index]}{_max_column_widths[_index]}}" if headers[_index] is not None else (boarder if boarder_padding else ' ') * _max_column_widths[_index] for _index in range(len(_max_column_widths))]))
+                _rendered.append(column_separator.join([f"{(border*len(headers[_index]))[:_max_column_widths[_index]]:{border if border_padding else ' '}{align_array[_index]}{_max_column_widths[_index]}}" if headers[_index] is not None else (border if border_padding else ' ') * _max_column_widths[_index] for _index in range(len(_max_column_widths))]))
     for _d in data:
         _rendered.append(column_separator.join([f"{_d[_index][:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" if _d[_index] is not None else f"{none_data_filler[:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" for _index in range(len(_d))]))
 
@@ -58,7 +58,7 @@ if __name__ == "__main__":
         ["HogeHoge", "HugaHuga", "HogehogeHogehoge"],
         ["123456789012345", "1234567890", "12345"],
     ]
-    print(render_table(_data, _headers, boarder_penetrate=True))
+    print(render_table(_data, _headers, border_penetrate=True))
     print()
 
     _headers = ["Title", "Description", "Remarks"]
@@ -68,7 +68,7 @@ if __name__ == "__main__":
         ["123456789012345", "1234567890", "12345", "1234"],
         ["123456789012345", "1234567890", "12345", "1234", "123"],
     ]
-    print(render_table(_data, _headers, boarder='-', column_separator=" | ", column_width_limit=8, none_data_filler='-', default_align='^', align_array=['<', '^', '>'], boarder_padding=True))
+    print(render_table(_data, _headers, border='-', column_separator=" | ", column_width_limit=8, none_data_filler='-', default_align='^', align_array=['<', '^', '>'], border_padding=True))
     print()
 
     _kuku_size = 10
@@ -83,7 +83,7 @@ if __name__ == "__main__":
         ["webapp-5f858ff5f8-jshmq", "1/1", "Running", "0", "21d"],
         ["webapp-5f858ff5f8-lnn4b", "1/1", "Running", "0", "21d"],
     ]
-    print(render_table(_data, _headers, boarder=None, column_separator="   "))
+    print(render_table(_data, _headers, border=None, column_separator="   "))
     print()
 
     _headers = ["Type", "Reason", "Age ", "From", "Message"]
@@ -94,7 +94,7 @@ if __name__ == "__main__":
         ["Normal", "Created", "2m53s", "kubelet", "Created container webapp"],
         ["Normal", "Started", "2m53s", "kubelet", "Started container webapp"],
     ]
-    print(render_table(_data, _headers, boarder="-", column_separator="  ", column_width_limit=100))
+    print(render_table(_data, _headers, border="-", column_separator="  ", column_width_limit=100))
     print()
 
 
