@@ -28,14 +28,14 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
 
     # padding
     _column_len = max([len(_d) for _d in data + [headers]])
-    headers += ([None] if not none_header_filler else [none_header_filler]) * (_column_len - len(headers))
+    headers += ([none_header_filler] if none_header_filler and any(headers) else [None]) * (_column_len - len(headers))
     align_array += default_align * (_column_len - len(align_array))
     for _d in data:
-        _d += ([None] if not none_data_filler else [none_data_filler]) * (_column_len - len(_d))
+        _d += [None] * (_column_len - len(_d))
 
     # define max width of each column
     for _d in [list(_column) for _column in zip(*data + [headers])]:
-        _column_width = max([len(_i) if _i is not None else max([len(none_header_filler), len(none_data_filler)]) for _i in _d])
+        _column_width = max([len(_i) if _i is not None else len(none_header_filler) if _i == 0 and any(headers) else len(none_data_filler) for _i in _d])
         if _column_width > column_width_limit:
             _max_column_widths.append(column_width_limit)
         else:
@@ -58,17 +58,17 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
 
 def main():
     parser = argparse.ArgumentParser(description=f'render_table. (v{VERSION})')
-    parser.add_argument('-f', '--file', help='data file', default="data.csv")
-    parser.add_argument('--header', help='header', default=False, action='store_true')
+    parser.add_argument('-f', '--file', help='CSV-formatted data file path', default="data.csv")
+    parser.add_argument('--header', help='use first row as a header', default=False, action='store_true')
     parser.add_argument('-l', '--column-width-limit', help='column width limit', type=int, default=50)
-    parser.add_argument('-s', '--column-separator', help='culumn separator', default=' ')
-    parser.add_argument('-a', '--default-align', help='default alignment', default='<', choices=['<', '^', '>'])
-    parser.add_argument('-A', '--align-array', help='alignment array', nargs='*', default=[], choices=['<', '^', '>'])
+    parser.add_argument('-s', '--column-separator', help='culumn separator char', default=' ')
+    parser.add_argument('-a', '--default-align', help='default alignment specifier', default='<', choices=['<', '^', '>'])
+    parser.add_argument('-A', '--align-array', help='alignment specifier array for each column', nargs='*', default=[], choices=['<', '^', '>'])
     parser.add_argument('-b', '--border', help='border chars', default='=')
     parser.add_argument('--none-header-filler', help='filler chars for None in headers', default='')
     parser.add_argument('--none-data-filler', help='filler chars for None in data', default='')
-    parser.add_argument('-p', '--border-padding', help='whole of border width will be padding with border chars', default=False, action='store_true')
-    parser.add_argument('-P', '--border-penetrate', help='whole of border width will be penetrately padding with border chars', default=False, action='store_true')
+    parser.add_argument('-p', '--border-padding', help='whole of border width will be padding with border chars except separator', default=False, action='store_true')
+    parser.add_argument('-P', '--border-penetrate', help='whole of border width will be penetrate padding with border chars', default=False, action='store_true')
     args = parser.parse_args()
 
     with open(args.file, 'r') as _file:
