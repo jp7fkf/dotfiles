@@ -26,6 +26,7 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
     _rendered = []
     _max_column_widths = []
 
+    # align to 3D array
     if type(data[0][0]) is str:
         data = [data]
 
@@ -47,8 +48,8 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
     # rendering
     if any(headers):
         _rendered.append(column_separator.join([f"{headers[_index][:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" if headers[_index] is not None else f"{none_header_filler[:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" for _index in range(len(_max_column_widths))]))
-    for _section in data:
-        if any(headers) and border is not None:
+    for _section_number, _section in enumerate(data):
+        if border is not None and (_section_number != 0 or any(headers)):
             if border_penetrate is True:
                 _border_len = sum(_max_column_widths) + len(column_separator) * (len(_max_column_widths) - 1)
                 _rendered.append((border * _border_len)[:_border_len])
@@ -92,7 +93,7 @@ def main():
     return 0
 
 
-def exmaple():
+def example():
     _headers = ["Title", "Description", "Remarks"]
     _data = [
         ["Hoge", "Huga", "Hogehoge"],
@@ -154,7 +155,7 @@ def exmaple():
             ["Normal", "Started", "2m53s", "kubelet", "Started container webapp"],
         ]
     ]
-    print(render_table(_data, _headers, border="-", column_separator="  ", column_width_limit=100, border_padding=True))
+    print(render_table(_data, border="-", column_separator="  ", column_width_limit=100, border_padding=True))
     print()
 
 ## Output Examples ##
@@ -189,6 +190,18 @@ def exmaple():
 #
 # Type    Reason     Age                     From                     Message
 # ----    ------     ----                    ----                     -------
+# Normal  Sync       9m59s (x2657 over 18d)  loadbalancer-controller  Scheduled for sync
+# Normal  Scheduled  2m54s                   default-scheduler        Successfully assigned jp7fkf-lab/webapp-28790340-tbthk to gke-webapp
+# Normal  Pulled     2m53s                   kubelet                  Container image "gcr.io/google.com/cloudsdktool/cloud-sdk:319.0.0-alpine" already present on machine
+# Normal  Created    2m53s                   kubelet                  Created container webapp
+# Normal  Started    2m53s                   kubelet                  Started container webapp
+#
+# Normal  Sync       9m59s (x2657 over 18d)  loadbalancer-controller  Scheduled for sync
+# Normal  Scheduled  2m54s                   default-scheduler        Successfully assigned jp7fkf-lab/webapp-28790340-tbthk to gke-webapp
+# Normal  Pulled     2m53s                   kubelet                  Container image "gcr.io/google.com/cloudsdktool/cloud-sdk:319.0.0-alpine" already present on machine
+# Normal  Created    2m53s                   kubelet                  Created container webapp
+# Normal  Started    2m53s                   kubelet                  Started container webapp
+# ------  ---------  ----------------------  -----------------------  ----------------------------------------------------------------------------------------------------
 # Normal  Sync       9m59s (x2657 over 18d)  loadbalancer-controller  Scheduled for sync
 # Normal  Scheduled  2m54s                   default-scheduler        Successfully assigned jp7fkf-lab/webapp-28790340-tbthk to gke-webapp
 # Normal  Pulled     2m53s                   kubelet                  Container image "gcr.io/google.com/cloudsdktool/cloud-sdk:319.0.0-alpine" already present on machine
