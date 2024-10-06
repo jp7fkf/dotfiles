@@ -13,7 +13,7 @@ VERSION = "1.0.0"
 
 # Args
 # headers        : must be 1-dimentional string array
-# data           : must be 2-dimentional string array
+# data           : must be 2/3-dimentional string array
 # default_align  : must be in ['<', '>', '^']
 # align_array    : must be 1-dimentional string array in ['<', '>', '^']
 
@@ -26,15 +26,18 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
     _rendered = []
     _max_column_widths = []
 
+    if type(data[0][0]) is str:
+        data = [data]
+
     # padding
-    _column_len = max([len(_d) for _d in data + [headers]])
+    _column_len = max([len(_d) for _d in sum(data, []) + [headers]])
     headers += ([none_header_filler] if none_header_filler and any(headers) else [None]) * (_column_len - len(headers))
     align_array += default_align * (_column_len - len(align_array))
-    for _d in data:
+    for _d in sum(data, []):
         _d += [None] * (_column_len - len(_d))
 
     # define max width of each column
-    for _d in [list(_column) for _column in zip(*data + [headers])]:
+    for _d in [list(_column) for _column in zip(*sum(data, []) + [headers])]:
         _column_width = max([len(_i) if _i is not None else len(none_header_filler) if _i == 0 and any(headers) else len(none_data_filler) for _i in _d])
         if _column_width > column_width_limit:
             _max_column_widths.append(column_width_limit)
@@ -44,14 +47,15 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
     # rendering
     if any(headers):
         _rendered.append(column_separator.join([f"{headers[_index][:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" if headers[_index] is not None else f"{none_header_filler[:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" for _index in range(len(_max_column_widths))]))
-        if border is not None:
+    for _section in data:
+        if any(headers) and border is not None:
             if border_penetrate is True:
                 _border_len = sum(_max_column_widths) + len(column_separator) * (len(_max_column_widths) - 1)
                 _rendered.append((border * _border_len)[:_border_len])
             else:
                 _rendered.append(column_separator.join([f"{(border*len(headers[_index]))[:_max_column_widths[_index]]:{border if border_padding else ' '}{align_array[_index]}{_max_column_widths[_index]}}" if headers[_index] is not None else (border if border_padding else ' ') * _max_column_widths[_index] for _index in range(len(_max_column_widths))]))
-    for _d in data:
-        _rendered.append(column_separator.join([f"{_d[_index][:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" if _d[_index] is not None else f"{none_data_filler[:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" for _index in range(len(_d))]))
+        for _d in _section:
+            _rendered.append(column_separator.join([f"{_d[_index][:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" if _d[_index] is not None else f"{none_data_filler[:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" for _index in range(len(_d))]))
 
     return "\n".join(_rendered)
 
@@ -132,6 +136,25 @@ def exmaple():
         ["Normal", "Started", "2m53s", "kubelet", "Started container webapp"],
     ]
     print(render_table(_data, _headers, border="-", column_separator="  ", column_width_limit=100))
+    print()
+
+    _headers = ["Type", "Reason", "Age ", "From", "Message"]
+    _data = [
+        [
+            ["Normal", "Sync", "9m59s (x2657 over 18d)", "loadbalancer-controller", "Scheduled for sync"],
+            ["Normal", "Scheduled", "2m54s", "default-scheduler", "Successfully assigned jp7fkf-lab/webapp-28790340-tbthk to gke-webapp"],
+            ["Normal", "Pulled", "2m53s", "kubelet", "Container image \"gcr.io/google.com/cloudsdktool/cloud-sdk:319.0.0-alpine\" already present on machine"],
+            ["Normal", "Created", "2m53s", "kubelet", "Created container webapp"],
+            ["Normal", "Started", "2m53s", "kubelet", "Started container webapp"],
+        ],[
+            ["Normal", "Sync", "9m59s (x2657 over 18d)", "loadbalancer-controller", "Scheduled for sync"],
+            ["Normal", "Scheduled", "2m54s", "default-scheduler", "Successfully assigned jp7fkf-lab/webapp-28790340-tbthk to gke-webapp"],
+            ["Normal", "Pulled", "2m53s", "kubelet", "Container image \"gcr.io/google.com/cloudsdktool/cloud-sdk:319.0.0-alpine\" already present on machine"],
+            ["Normal", "Created", "2m53s", "kubelet", "Created container webapp"],
+            ["Normal", "Started", "2m53s", "kubelet", "Started container webapp"],
+        ]
+    ]
+    print(render_table(_data, _headers, border="-", column_separator="  ", column_width_limit=100, border_padding=True))
     print()
 
 ## Output Examples ##
