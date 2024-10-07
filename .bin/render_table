@@ -52,7 +52,7 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
         if border is not None and (_section_number != 0 or any(headers)):
             if border_penetrate is True:
                 _border_len = sum(_max_column_widths) + len(column_separator) * (len(_max_column_widths) - 1)
-                _rendered.append((border * _border_len)[:_border_len])
+                _rendered.append((border * (_border_len // len(border) + 1))[:_border_len])
             else:
                 _rendered.append(column_separator.join([f"{(border*len(headers[_index]))[:_max_column_widths[_index]]:{border if border_padding else ' '}{align_array[_index]}{_max_column_widths[_index]}}" if headers[_index] is not None else (border if border_padding else ' ') * _max_column_widths[_index] for _index in range(len(_max_column_widths))]))
         for _row in _section:
