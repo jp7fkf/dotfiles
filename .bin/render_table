@@ -31,15 +31,15 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
         data = [data]
 
     # padding
-    _column_len = max([len(_d) for _d in sum(data, []) + [headers]])
+    _column_len = max([len(_row) for _row in sum(data, []) + [headers]])
     headers += ([none_header_filler] if none_header_filler and any(headers) else [None]) * (_column_len - len(headers))
     align_array += default_align * (_column_len - len(align_array))
-    for _d in sum(data, []):
-        _d += [None] * (_column_len - len(_d))
+    for _row in sum(data, []):
+        _row += [None] * (_column_len - len(_row))
 
     # define max width of each column
-    for _d in [list(_column) for _column in zip(*sum(data, []) + [headers])]:
-        _column_width = max([len(_i) if _i is not None else len(none_header_filler) if _i == 0 and any(headers) else len(none_data_filler) for _i in _d])
+    for _row in [list(_column) for _column in zip(*sum(data, []) + [headers])]:
+        _column_width = max([len(_i) if _i is not None else len(none_header_filler) if _i == 0 and any(headers) else len(none_data_filler) for _i in _row])
         if _column_width > column_width_limit:
             _max_column_widths.append(column_width_limit)
         else:
@@ -55,8 +55,8 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
                 _rendered.append((border * _border_len)[:_border_len])
             else:
                 _rendered.append(column_separator.join([f"{(border*len(headers[_index]))[:_max_column_widths[_index]]:{border if border_padding else ' '}{align_array[_index]}{_max_column_widths[_index]}}" if headers[_index] is not None else (border if border_padding else ' ') * _max_column_widths[_index] for _index in range(len(_max_column_widths))]))
-        for _d in _section:
-            _rendered.append(column_separator.join([f"{_d[_index][:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" if _d[_index] is not None else f"{none_data_filler[:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" for _index in range(len(_d))]))
+        for _row in _section:
+            _rendered.append(column_separator.join([f"{_row[_index][:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" if _row[_index] is not None else f"{none_data_filler[:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" for _index in range(len(_row))]))
 
     return "\n".join(_rendered)
 
@@ -147,7 +147,7 @@ def example():
             ["Normal", "Pulled", "2m53s", "kubelet", "Container image \"gcr.io/google.com/cloudsdktool/cloud-sdk:319.0.0-alpine\" already present on machine"],
             ["Normal", "Created", "2m53s", "kubelet", "Created container webapp"],
             ["Normal", "Started", "2m53s", "kubelet", "Started container webapp"],
-        ],[
+        ], [
             ["Normal", "Sync", "9m59s (x2657 over 18d)", "loadbalancer-controller", "Scheduled for sync"],
             ["Normal", "Scheduled", "2m54s", "default-scheduler", "Successfully assigned jp7fkf-lab/webapp-28790340-tbthk to gke-webapp"],
             ["Normal", "Pulled", "2m53s", "kubelet", "Container image \"gcr.io/google.com/cloudsdktool/cloud-sdk:319.0.0-alpine\" already present on machine"],
