@@ -29,10 +29,9 @@ make --directory .snmp mibs
 ln -s ~/.bitbar/Enabled/* ~/Library/Application\ Support/xbar/plugins
 
 # setup secretlint
-curl -sSL https://api.github.com/repos/secretlint/secretlint/releases/latest | jq -r ".assets[] | select(.name | contains(\"`uname -o | tr "[:upper:]" "[:lower:]"`\") and contains(\"`uname -m|tr "[:upper:]" "[:lower:]"`\")) | .browser_download_url" | xargs -I_ curl -LJ _ -o .bin/secretlint && chmod 755 .bin/secretlint
-
-curl -fsSL https://iterm2.com/utilities/imgcat -o .bin/imgcat
-chmod +x .bin/imgcat
+curl -fsSL https://api.github.com/repos/secretlint/secretlint/releases/latest | jq -r ".assets[] | select(.name | contains(\"`uname -o | tr "[:upper:]" "[:lower:]"`\") and contains(\"`uname -m|tr "[:upper:]" "[:lower:]"`\")) | .browser_download_url" | xargs -I_ curl -LJ _ -o .bin/secretlint && chmod +x .bin/secretlint
+# setup imgcat
+curl -fsSL https://iterm2.com/utilities/imgcat -o .bin/imgcat && chmod +x .bin/imgcat
 
 echo $(tput setaf 2)Deploy dotfiles complete! ✔︎$(tput sgr0)
 
