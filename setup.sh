@@ -33,7 +33,7 @@ curl -fsSL https://api.github.com/repos/secretlint/secretlint/releases/latest | 
 # setup imgcat
 curl -fsSL https://iterm2.com/utilities/imgcat -o .bin/imgcat && chmod +x .bin/imgcat
 
-echo $(tput setaf 2)Deploy dotfiles complete! ✔︎$(tput sgr0)
-
 # for terraform provider cache
 mkdir -p $HOME/.terraform.d/plugin-cache
+
+echo $(tput setaf 2)Deploy dotfiles complete! ✔︎$(tput sgr0)
