@@ -29,7 +29,7 @@ make --directory .snmp mibs
 ln -s ~/.bitbar/Enabled/* ~/Library/Application\ Support/xbar/plugins
 
 # setup secretlint
-curl https://api.github.com/repos/secretlint/secretlint/releases/latest -sL | jq -r ".assets[] | select(.name | contains(\"`uname -o | tr "[:upper:]" "[:lower:]"`\") and contains(\"`uname -m|tr "[:upper:]" "[:lower:]"`\")) | .browser_download_url" | xargs -I_ curl -LJ _ -o .bin/secretlint && chmod 755 .bin/secretlint
+curl -sSL https://api.github.com/repos/secretlint/secretlint/releases/latest | jq -r ".assets[] | select(.name | contains(\"`uname -o | tr "[:upper:]" "[:lower:]"`\") and contains(\"`uname -m|tr "[:upper:]" "[:lower:]"`\")) | .browser_download_url" | xargs -I_ curl -LJ _ -o .bin/secretlint && chmod 755 .bin/secretlint
 
 curl -fsSL https://iterm2.com/utilities/imgcat -o .bin/imgcat
 chmod +x .bin/imgcat
