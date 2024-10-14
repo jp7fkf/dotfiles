@@ -12,6 +12,7 @@
   autocrlf = input
   #pager = less -F
   pager = delta
+	hooksPath = /Users/yudaihashimoto/.config/git/hooks
 [alias]
   delete-merged-branch = "!f () { git checkout ${1:-$(git symbolic-ref refs/remotes/origin/HEAD | awk -F'[/]' '{print $NF}')}; git branch --merged | egrep -v '(\\*|dev|master)' | xargs git branch -d; }; f"
   graph = log -n 30 --graph --date=short --decorate=short --pretty=format:'%C(Yellow)%h %Creset%cd %Cgreen%cn %C(Cyan)%d %Creset%s'
