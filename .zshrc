@@ -575,13 +575,21 @@ export PATH="/usr/local/sbin:${HOME}/.bin:$PATH"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
+export LESS='-MRj10#5' #
+export LESS_TERMCAP_mb=$'\E[01;05;91m'      # Begins blinking.
+#export LESS_TERMCAP_md=$'\E[01;31m'      # Begins bold.
+export LESS_TERMCAP_me=$'\E[0m'          # Ends mode.
+export LESS_TERMCAP_so=$'\E[00;101;30m'   # Begins standout-mode.
+export LESS_TERMCAP_se=$'\E[0m'          # Ends standout-mode.
+export LESS_TERMCAP_us=$'\E[01;04;32m'      # Begins underline.
+export LESS_TERMCAP_ue=$'\E[0m'          # Ends underline.
+
 if [[ `uname -m` == 'arm64' ]]; then
   # for M1 mac
   export PATH="/opt/homebrew/bin:/opt/homebrew/sbin/:$PATH"
   export PATH="/opt/homebrew/opt/openssl@1.1/bin:$PATH"
 
   # for less syntax highlight
-  export LESS='-R' # --quit-if-one-screen'
   export LESSOPEN='| /opt/homebrew/bin/src-hilite-lesspipe.sh %s'
 else
   # for Intel mac
