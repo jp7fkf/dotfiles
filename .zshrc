@@ -177,6 +177,7 @@ alias grep_k2v='(){grep $@ | awk "{print \$2}"}'
 alias dcc='(){~/.bin/docker-$1 ${@:2}'
 alias pmc='(){DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')" ~/.bin/docker-$1 ${@:2}}'
 alias yq='yq -P'
+alias lsabs='(){find $@ -maxdepth 0}'
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
