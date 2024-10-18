@@ -20,7 +20,7 @@ VERSION = "1.0.0"
 
 def render_table(data, headers=None, border='=', column_separator=' ', column_width_limit=50, none_header_filler='', none_data_filler='', default_align='<', align_array=None, border_padding=False, border_penetrate=False):
     # init default
-    data = [copy.deepcopy(data)] if type(data[0][0]) is str else copy.deepcopy(data)
+    data = copy.deepcopy(data) if type(data[0][0]) is list else [copy.deepcopy(data)]
     headers = [[]] if headers is None or len(headers) == 0 else copy.deepcopy(headers) if type(headers[0]) is list else [copy.copy(headers)]
     align_array = [] if align_array is None else copy.copy(align_array)
     _rendered = []
