@@ -12,23 +12,19 @@ import csv
 VERSION = "1.0.0"
 
 # Args
-# headers        : must be 1-dimentional string array
-# data           : must be 2/3-dimentional string array
+# headers        : must be 1,2-dimentional string array
+# data           : must be 2,3-dimentional string array
 # default_align  : must be in ['<', '>', '^']
 # align_array    : must be 1-dimentional string array in ['<', '>', '^']
 
 
 def render_table(data, headers=None, border='=', column_separator=' ', column_width_limit=50, none_header_filler='', none_data_filler='', default_align='<', align_array=None, border_padding=False, border_penetrate=False):
     # init default
-    data = copy.deepcopy(data)
+    data = [copy.deepcopy(data)] if type(data[0][0]) is str else copy.deepcopy(data)
     headers = [[]] if headers is None or len(headers) == 0 else copy.deepcopy(headers) if type(headers[0]) is list else [copy.copy(headers)]
     align_array = [] if align_array is None else copy.copy(align_array)
     _rendered = []
     _max_column_widths = []
-
-    # align to 3D array
-    if type(data[0][0]) is str:
-        data = [data]
 
     # padding
     _column_len = max([len(_row) for _row in sum(data, []) + headers])
@@ -39,8 +35,8 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
         _row += [None] * (_column_len - len(_row))
 
     # define max width of each column
-    for _row in [list(_column) for _column in zip(*sum(data, []) + headers)]:
-        _column_width = max([len(_d) if _d is not None else len(none_header_filler) if _i < len(headers) and any(any(_h) for _h in headers) else len(none_data_filler) for _i, _d in enumerate(_row)])
+    for _i, _column in enumerate([list(_row) for _row in zip(*sum(data, []) + headers)]):
+        _column_width = max([len(_d) if _d is not None else len(none_header_filler) if _i < len(headers) and any(any(_h) for _h in headers) else len(none_data_filler) for _d in _column])
         if _column_width > column_width_limit:
             _max_column_widths.append(column_width_limit)
         else:
@@ -56,7 +52,7 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
                 _border_len = sum(_max_column_widths) + len(column_separator) * (len(_max_column_widths) - 1)
                 _rendered.append((border * (_border_len // len(border) + 1))[:_border_len])
             else:
-                _rendered.append(column_separator.join([f"{(border*max([len(_j) if _j is not None else 0 for _j in [list(_i) for _i in zip(*headers)][_index]]))[:_max_column_widths[_index]]:{border if border_padding else ' '}{align_array[_index]}{_max_column_widths[_index]}}" if any(_h is not None for _h in [_h for _h in zip(*headers)][_index]) else (border if border_padding else ' ') * _max_column_widths[_index] for _index in range(len(_max_column_widths))]))
+                _rendered.append(column_separator.join([f"{(border*max([len(_j) if _j is not None else len(none_header_filler) for _j in [list(_i) for _i in zip(*headers)][_index]]))[:_max_column_widths[_index]]:{border if border_padding else ' '}{align_array[_index]}{_max_column_widths[_index]}}" if any(_h is not None for _h in [_h for _h in zip(*headers)][_index]) else (border if border_padding else ' ') * _max_column_widths[_index] for _index in range(len(_max_column_widths))]))
         for _row in _section:
             _rendered.append(column_separator.join([f"{_row[_index][:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" if _row[_index] is not None else f"{none_data_filler[:_max_column_widths[_index]]:{align_array[_index]}{_max_column_widths[_index]}}" for _index in range(len(_row))]))
 
@@ -113,6 +109,17 @@ def example():
         ["123456789012345", "1234567890", "12345", "1234", "123"],
     ]
     print(render_table(_data, _headers, border='-', column_separator=" | ", column_width_limit=8, none_data_filler='-', default_align='^', align_array=['<', '^', '>'], border_padding=True))
+    print()
+
+    _headers = [["Title", "Description", "Remarks"],
+                ["Multi headers", "Multiline headers example", None, "2nd header only"]]
+    _data = [
+        ["Hoge", "Huga"],
+        ["HogeHoge", "HugaHuga", "HogehogeHogehoge"],
+        ["123456789012345", "1234567890", "12345", "1234"],
+        ["123456789012345", "1234567890", "12345", "1234", "123"],
+    ]
+    print(render_table(_data, _headers, border='-', column_separator=" | ", column_width_limit=100, none_header_filler='******', none_data_filler='-', default_align='^', align_array=['<', '^', '>']))
     print()
 
     _kuku_size = 10
@@ -174,6 +181,14 @@ def example():
 # HogeHoge | HugaHuga | Hogehoge |  -   |  -
 # 12345678 | 12345678 |    12345 | 1234 |  -
 # 12345678 | 12345678 |    12345 | 1234 | 123
+#
+# Title           |        Description        |          Remarks |     ******      | ******
+# Multi headers   | Multiline headers example |           ****** | 2nd header only | ******
+# -------------   | ------------------------- |          ------- | --------------- | ------
+# Hoge            |           Huga            |                - |        -        |   -
+# HogeHoge        |         HugaHuga          | HogehogeHogehoge |        -        |   -
+# 123456789012345 |        1234567890         |            12345 |      1234       |   -
+# 123456789012345 |        1234567890         |            12345 |      1234       |  123
 #
 # 1  2  3  4  5  6  7  8  9
 # 2  4  6  8 10 12 14 16 18
