@@ -111,8 +111,10 @@ def example():
     print(render_table(_data, _headers, border='-', column_separator=" | ", column_width_limit=8, none_data_filler='-', default_align='^', align_array=['<', '^', '>'], border_padding=True))
     print()
 
-    _headers = [["Title", "Description", "Remarks"],
-                ["Multi headers", "Multiline headers example", None, "2nd header only"]]
+    _headers = [
+        ["Title", "Description", "Remarks"],
+        ["Multi headers", "Multiline headers example", None, "2nd header only"]
+    ]
     _data = [
         ["Hoge", "Huga"],
         ["HogeHoge", "HugaHuga", "HogehogeHogehoge"],
