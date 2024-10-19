@@ -72,7 +72,11 @@ def main():
     parser.add_argument('--none-data-filler', help='filler chars for None in data', default='')
     parser.add_argument('-p', '--border-padding', help='whole of border width will be padding with border chars except separator', default=False, action='store_true')
     parser.add_argument('-P', '--border-penetrate', help='whole of border width will be penetrate padding with border chars', default=False, action='store_true')
+    parser.add_argument('--show-example', help='show rendering examples', default=False, action='store_true')
     args = parser.parse_args()
+
+    if args.show_example:
+        return example()
 
     with open(args.file, 'r') as _file:
         _data = list(csv.reader(_file))
