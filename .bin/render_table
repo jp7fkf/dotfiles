@@ -35,7 +35,7 @@ def render_table(data, headers=None, border='=', column_separator=' ', column_wi
         _row += [None] * (_column_len - len(_row))
 
     # define max width of each column
-    for _i, _column in enumerate([list(_row) for _row in zip(*sum(data, []) + headers)]):
+    for _i, _column in enumerate([list(_column) for _column in zip(*sum(data, []) + headers)]):
         _column_width = max([len(_d) if _d is not None else len(none_header_filler) if _i < len(headers) and any(any(_h) for _h in headers) else len(none_data_filler) for _d in _column])
         if _column_width > column_width_limit:
             _max_column_widths.append(column_width_limit)
