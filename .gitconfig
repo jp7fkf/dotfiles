@@ -72,3 +72,5 @@
   line-numbers = true
 [rebase]
 	autostash = true
+[stash]
+	showPatch = true

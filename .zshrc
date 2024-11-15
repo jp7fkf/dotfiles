@@ -166,6 +166,7 @@ alias whois_radb='whois -h whois.radb.net'
 #alias rg='rg -uu'
 alias lf2crlf='sed -i "" "s/$/\r/g"'
 alias crlf2lf='sed -i "" "s/\r//g"'
+alias crlf_check="rg -lU '\r\n'"
 alias clang-formatter='find * | grep -E ".*(\.ino|\.cpp|\.c|\.h|\.hpp|\.hh)$" | xargs clang-format -i -style=LLVM'
 alias update-clang-format='clang-format --dump-config --style=file > .clang-format'
 alias mydu='du -hc -d 2 | sort -rn'
@@ -178,6 +179,7 @@ alias dcc='(){~/.bin/docker-$1 ${@:2};}'
 alias pmc='(){DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')" ~/.bin/docker-$1 ${@:2};}'
 alias yq='yq -P'
 alias lsabs='(){find $@ -maxdepth 0;}'
+alias gannot='(){grep -E -r -H -n "[^0-9a-zA-Z](TODO|FIXME|HACK|XXX|REVIEW|OPTIMIZE|CHANGED|NOTE|WARNING)[^0-9a-zA-Z]" $1;}'
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
@@ -554,6 +556,29 @@ function rename-r () {
 
 function regexp-rename () {
   find $3 -name "*$1*" | sed -e 's/$1/mv $2/g' | sh
+}
+
+function yn_prompt () {
+  while true; do
+    if [ -n "$ZSH_VERSION" ]; then
+      read "yn?$1"
+    else
+      read -p "$1" yn
+    fi
+    case $yn in
+        [Yy]* ) eval $2; break;;
+        [Nn]* ) return;;
+        * ) echo "Please answer yes or no.";;
+    esac
+  done
+}
+
+function update_all () {
+  brew update
+  brew upgrade
+  brew doctor
+
+  yn_prompt "Do you wish to run following comamnd?[y/n]: " 'echo "hoge"'
 }
 
 ########################################
