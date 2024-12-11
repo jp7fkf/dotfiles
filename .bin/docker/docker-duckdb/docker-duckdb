@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+touch ~/.duckdb_history
+docker run -it --rm -v $(pwd):/tmp/files -v ~/.duckdb_history:/root/.duckdb_history datacatering/duckdb:v1.1.3 $@
