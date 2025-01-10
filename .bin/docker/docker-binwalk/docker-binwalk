@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+docker run -it --rm -v $(pwd):/analysis refirmlabs/binwalk -t 1 $@
