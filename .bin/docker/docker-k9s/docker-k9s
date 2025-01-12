@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+docker run --rm -it -v $HOME/.kube:/root/.kube derailed/k9s $@
+
+# gke-gcloud-auth-plugin env
+#docker run --rm -it -v $HOME/.kube:/root/.kube -v $(which gke-gcloud-auth-plugin):/usr/bin/gke-gcloud-auth-plugin derailed/k9s $@
