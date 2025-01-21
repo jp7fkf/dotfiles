@@ -16,7 +16,6 @@ do
   [[ ${f} = ".gitmodules" ]] && continue
   [[ ${f} = ".DS_Store" ]] && continue
   [[ ${f} = ".travis.yml" ]] && continue
-  [[ ${f} = ".editorconfig" ]] && continue
   [[ ${f} = "sublimetext3" ]] && continue
   ln -snfv ${DOT_DIRECTORY}/${f} ${HOME}/${f}
 done
