@@ -620,6 +620,7 @@ if [[ -x `which bat` ]]; then
   export PAGER="bat"
   export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 fi
+alias show=$PAGER
 
 if [[ `uname -m` == 'arm64' ]]; then
   # for M1 mac
