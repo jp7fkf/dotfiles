@@ -615,6 +615,12 @@ export LESS_TERMCAP_se=$'\E[0m'          # Ends standout-mode.
 export LESS_TERMCAP_us=$'\E[01;04;32m'      # Begins underline.
 export LESS_TERMCAP_ue=$'\E[0m'          # Ends underline.
 
+if [[ -x `which bat` ]]; then
+  alias bat='bat -p --paging=always'
+  export PAGER="bat"
+  export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
+fi
+
 if [[ `uname -m` == 'arm64' ]]; then
   # for M1 mac
   export PATH="/opt/homebrew/bin:/opt/homebrew/sbin/:$PATH"
