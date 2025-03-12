@@ -36,3 +36,6 @@ curl -fsSL https://iterm2.com/utilities/imgcat -o .bin/imgcat && chmod +x .bin/i
 mkdir -p $HOME/.terraform.d/plugin-cache
 
 echo $(tput setaf 2)Deploy dotfiles complete! ✔︎$(tput sgr0)
+
+brew bundle upgrade --global --cleanup --force
+brew cleanup --prune=all
