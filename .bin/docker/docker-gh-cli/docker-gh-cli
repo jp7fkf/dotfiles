@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+mkdir -p $HOME/.config/gh
+docker run -it --rm --name gh-cli \
+  -e GH_CONFIG_DIR=/config/gh \
+  -v $HOME/.config/gh:/config/gh \
+  ghcr.io/supportpal/github-gh-cli $@
