@@ -61,5 +61,7 @@ cd `dirname $0`
 mkdir -p $PROVIDER_ROOT_DIR/$HOSTNAME/$NAMESPACE/$TYPE
 cd $PROVIDER_ROOT_DIR/$HOSTNAME/$NAMESPACE/$TYPE
 
-ASSET_ID=`curl -fsSL https://$GH_TOKEN@api.github.com/repos/$REPOSITORY/releases/$VERSION | jq -r ".assets[] | select(.name | contains(\"$OS\") and contains(\"$ARCH\")) | .id"`
-curl -sSLJO -H 'Accept: application/octet-stream' https://$GH_TOKEN@api.github.com/repos/$REPOSITORY/releases/assets/$ASSET_ID
+ASSET_JSON=`curl -fsSL https://$GH_TOKEN@api.github.com/repos/$REPOSITORY/releases/$VERSION | jq -r ".assets[] | select(.name | contains(\"$OS\") and contains(\"$ARCH\"))"`
+ASSET_NAME=`echo $ASSET_JSON | jq -r .name`
+ASSET_ID=`echo $ASSET_JSON | jq -r .id`
+curl -fsSL -H 'Accept: application/octet-stream' -o $ASSET_NAME https://$GH_TOKEN@api.github.com/repos/$REPOSITORY/releases/assets/$ASSET_ID
