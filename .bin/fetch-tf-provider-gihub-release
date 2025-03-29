@@ -19,7 +19,7 @@ OS=`uname -s | tr "[:upper:]" "[:lower:]"`
 ARCH=`uname -m|tr "[:upper:]" "[:lower:]"`
 
 USAGE="Fetch terraform provider from github release assets.
-Environment variable GH_TOKEN must be exported or specified.
+Environment variable GH_TOKEN/GITUB_TOKEN must be exported or specified.
 
 USAGE:
     $(basename "$0") [OPTIONS]
@@ -34,7 +34,7 @@ OPTIONS:
     -o <os>          Specify machine OS of terraform provider (default: uname -s)
     -a <arch>        Specify machine architecture of terraform provider (default: uname -m)
     -d <directory>   Specify output provider directory (default: ./providers)
-    -t <token>       Specify token for github (default: env:GH_TOKEN)
+    -t <token>       Specify token for github (default: env:GH_TOKEN, env:GITHUB_TOKEN)
 "
 
 while getopts ':hVH:N:T:R:v:o:a:d:t:' option; do
@@ -63,11 +63,11 @@ while getopts ':hVH:N:T:R:v:o:a:d:t:' option; do
        ;;
     t) GH_TOKEN=$OPTARG
        ;;
-    :) printf "missing argument for -%s\n" "$OPTARG" >&2
+    :) printf "[ERROR]: missing argument for -%s\n\n" "$OPTARG" >&2
        echo "$USAGE" >&2
        exit 1
        ;;
-   \?) printf "illegal option: -%s\n" "$OPTARG" >&2
+   \?) printf "[ERROR]: illegal option: -%s\n\n" "$OPTARG" >&2
        echo "$USAGE" >&2
        exit 1
        ;;
@@ -76,27 +76,27 @@ done
 shift $((OPTIND - 1))
 
 if [ -z "${HOSTNAME-}" ] || [[ $HOSTNAME = *[[:space:]]* ]] ; then
-    echo "Missting argument -H <hostname>." >&2
+    printf "[ERROR]: Missting argument -H <hostname>.\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
 if [ -z "${NAMESPACE-}" ] || [[ $NAMESPACE = *[[:space:]]* ]] ; then
-    echo "Missting argument -N <namespace>." >&2
+    printf "[ERROR]: Missting argument -N <namespace>.\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
 if [ -z "${TYPE-}" ] || [[ $TYPE = *[[:space:]]* ]] ; then
-    echo "Missting argument -T <type>." >&2
+    printf "[ERROR]: Missting argument -T <type>.\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
 if [ -z "${REPOSITORY-}" ] || [[ $REPOSITORY = *[[:space:]]* ]] ; then
-    echo "Missting argument -R <repository>." >&2
+    printf "[ERROR]: Missting argument -R <repository>.\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
-if [ -z "${GH_TOKEN-}" ] || [[ $GH_TOKEN = *[[:space:]]* ]] ; then
-    echo "github token is undefined. Please export GH_TOKEN environment variable or specify argument -t <token>" >&2
+if [ -z "${GH_TOKEN:=${GITHUB_TOKEN:-}}" ] || [[ $GH_TOKEN = *[[:space:]]* ]] ; then
+    printf "[ERROR]: github token is undefined. Please export GH_TOKEN/GITUB_TOKEN environment variable or specify argument -t <token>\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
