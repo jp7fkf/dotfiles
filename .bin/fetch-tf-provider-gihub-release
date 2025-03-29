@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# see: https://developer.hashicorp.com/terraform/cli/config/config-file#provider-installation
+# Packed layout: HOSTNAME/NAMESPACE/TYPE/terraform-provider-TYPE_VERSION_TARGET.zip is the distribution zip file obtained from the provider's origin registry.
+# Unpacked layout: HOSTNAME/NAMESPACE/TYPE/VERSION/TARGET is a directory containing the result of extracting the provider's distribution zip file.
+
+HOSTNAME="example.com"
+NAMESPACE="example"
+TYPE="example"
+REPOSITORY="jp7fkf/terraform-provider-example"
+VERSION="latest"
+PROVIDER_ROOT_DIR="./providers"
+
+OS=`uname -o | tr "[:upper:]" "[:lower:]"`
+ARCH=`uname -m|tr "[:upper:]" "[:lower:]"`
+
+USAGE="Fetch terraform provider from github release assets.
+
+$(basename "$0") [-h] [-v <version>]
+Options:
+    -h            Show this help
+    -V            Show version
+    -v <version>  Specify provider version release tag (default: latest)"
+
+while getopts ':hsv:V' option; do
+  case "$option" in
+    h) echo "$USAGE"
+       exit
+       ;;
+    v) VERSION=$OPTARG
+       ;;
+    V) echo "$(basename "$0")(version: 0.1.0)"
+       exit
+       ;;
+    :) printf "missing argument for -%s\n" "$OPTARG" >&2
+       echo "$USAGE" >&2
+       exit 1
+       ;;
+   \?) printf "illegal option: -%s\n" "$OPTARG" >&2
+       echo "$USAGE" >&2
+       exit 1
+       ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+
+if [[ -z "${GH_TOKEN}" ]]; then
+  echo "ERROR: Environment variable GH_TOKEN is undefined."
+fi
+
+if [ $VERSION != 'latest' ];then
+    VERSION="tags/$VERSION"
+fi
+
+cd `dirname $0`
+mkdir -p $PROVIDER_ROOT_DIR/$HOSTNAME/$NAMESPACE/$TYPE
+cd $PROVIDER_ROOT_DIR/$HOSTNAME/$NAMESPACE/$TYPE
+
+ASSET_ID=`curl -fsSL https://$GH_TOKEN@api.github.com/repos/$REPOSITORY/releases/$VERSION | jq -r ".assets[] | select(.name | contains(\"$OS\") and contains(\"$ARCH\")) | .id"`
+curl -sSLJO -H 'Accept: application/octet-stream' https://$GH_TOKEN@api.github.com/repos/$REPOSITORY/releases/assets/$ASSET_ID
