@@ -18,8 +18,7 @@ PROVIDER_ROOT_DIR="./providers"
 OS=`uname -s | tr "[:upper:]" "[:lower:]"`
 ARCH=`uname -m|tr "[:upper:]" "[:lower:]"`
 
-USAGE="
-Fetch terraform provider from github release assets.
+USAGE="Fetch terraform provider from github release assets.
 Environment variable GH_TOKEN must be exported or specified.
 
 $(basename "$0") [-h] [-v <version>]
