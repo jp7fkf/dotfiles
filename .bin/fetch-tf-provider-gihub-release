@@ -24,7 +24,7 @@ $(basename "$0") [-h] [-v <version>]
 Options:
     -h            Show this help
     -V            Show version
-    -v <version>  Specify provider version release tag (default: latest)"
+    -v <version>  Specify provider version release tag ex. v1.0.0 (default: latest)"
 
 while getopts ':hsv:V' option; do
   case "$option" in
