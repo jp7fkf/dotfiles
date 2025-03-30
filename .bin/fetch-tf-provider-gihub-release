@@ -109,8 +109,6 @@ if [ $VERSION != 'latest' ];then
 fi
 
 echo "Downloading provider...(OS: ${OS}, ARCH=${ARCH})"
-mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}
-cd ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}
 
 ASSET_JSON=`curl -fsSL https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/${VERSION} | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\"))"`
 ASSET_NAME=`echo $ASSET_JSON | jq -r .name`
@@ -119,6 +117,8 @@ if [ -z "${ASSET_ID}" ]; then
     echo "No provider asset found. exit." >&2
     exit 1
 fi
+mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}
+cd ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}
 curl -fsSL -H 'Accept: application/octet-stream' -o $ASSET_NAME https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/assets/${ASSET_ID}
-
-echo "Completed. (provider: ${ASSET_NAME})"
+echo "Output asset to ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}"
+echo "Completed."
