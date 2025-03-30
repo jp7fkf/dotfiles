@@ -96,25 +96,26 @@ if [ -z "${REPOSITORY-}" ] || [[ $REPOSITORY = *[[:space:]]* ]] ; then
     exit 1
 fi
 if [ -z "${GH_TOKEN:=${GITHUB_TOKEN:-}}" ] || [[ $GH_TOKEN = *[[:space:]]* ]] ; then
-    printf "\033[1m[ERROR]: github token is undefined. Please export GH_TOKEN/GITUB_TOKEN environment variable or specify argument -t <token>\033[m\n\n" >&2
-    echo "$USAGE" >&2
-    exit 1
+    printf "\033[1m[WARN]: github token is undefined. Please export GH_TOKEN/GITUB_TOKEN environment variable or specify argument -t <token> for private repository.\033[m\n\n" >&2
+    GH_TOKEN=""
+else
+    GH_TOKEN=${GH_TOKEN}"@"
 fi
 if [ $VERSION != 'latest' ];then
-    VERSION="tags/$VERSION"
+    VERSION="tags/${VERSION}"
 fi
 
-echo "Downloading provider...(OS: $OS, ARCH=$ARCH)"
-mkdir -p $PROVIDER_ROOT_DIR/$HOSTNAME/$NAMESPACE/$TYPE
-cd $PROVIDER_ROOT_DIR/$HOSTNAME/$NAMESPACE/$TYPE
+echo "Downloading provider...(OS: ${OS}, ARCH=${ARCH})"
+mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}
+cd ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}
 
-ASSET_JSON=`curl -fsSL https://$GH_TOKEN@api.github.com/repos/$REPOSITORY/releases/$VERSION | jq -r ".assets[] | select(.name | contains(\"$OS\") and contains(\"$ARCH\"))"`
+ASSET_JSON=`curl -fsSL https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/${VERSION} | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\"))"`
 ASSET_NAME=`echo $ASSET_JSON | jq -r .name`
 ASSET_ID=`echo $ASSET_JSON | jq -r .id`
 if [ -z "${ASSET_ID}" ]; then
     echo "No provider asset found. exit." >&2
     exit 1
 fi
-curl -fsSL -H 'Accept: application/octet-stream' -o $ASSET_NAME https://$GH_TOKEN@api.github.com/repos/$REPOSITORY/releases/assets/$ASSET_ID
+curl -fsSL -H 'Accept: application/octet-stream' -o $ASSET_NAME https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/assets/${ASSET_ID}
 
-echo "Completed. (provider: $ASSET_NAME)"
+echo "Completed. (provider: ${ASSET_NAME})"
