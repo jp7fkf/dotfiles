@@ -119,5 +119,6 @@ if [ -z "${ASSET_ID}" ]; then
 fi
 mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}
 curl -fsSL -H 'Accept: application/octet-stream' -o ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME} https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/assets/${ASSET_ID}
+
 echo "Output asset to ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}"
 echo "Completed."
