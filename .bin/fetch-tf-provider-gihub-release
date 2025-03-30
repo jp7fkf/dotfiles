@@ -63,11 +63,11 @@ while getopts ':hVH:N:T:R:v:o:a:d:t:' option; do
        ;;
     t) GH_TOKEN=$OPTARG
        ;;
-    :) printf "[ERROR]: missing argument for -%s\n\n" "$OPTARG" >&2
+    :) printf "\033[1m[ERROR]: missing argument for -%s\033[m\n\n" "$OPTARG" >&2
        echo "$USAGE" >&2
        exit 1
        ;;
-   \?) printf "[ERROR]: illegal option: -%s\n\n" "$OPTARG" >&2
+   \?) printf "\033[1m[ERROR]: illegal option: -%s\033[m\n\n" "$OPTARG" >&2
        echo "$USAGE" >&2
        exit 1
        ;;
@@ -76,27 +76,27 @@ done
 shift $((OPTIND - 1))
 
 if [ -z "${HOSTNAME-}" ] || [[ $HOSTNAME = *[[:space:]]* ]] ; then
-    printf "[ERROR]: Missting argument -H <hostname>.\n\n" >&2
+    printf "\033[1m[ERROR]: Missting argument -H <hostname>.\033[m\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
 if [ -z "${NAMESPACE-}" ] || [[ $NAMESPACE = *[[:space:]]* ]] ; then
-    printf "[ERROR]: Missting argument -N <namespace>.\n\n" >&2
+    printf "\033[1m[ERROR]: Missting argument -N <namespace>.\033[m\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
 if [ -z "${TYPE-}" ] || [[ $TYPE = *[[:space:]]* ]] ; then
-    printf "[ERROR]: Missting argument -T <type>.\n\n" >&2
+    printf "\033[1m[ERROR]: Missting argument -T <type>.\033[m\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
 if [ -z "${REPOSITORY-}" ] || [[ $REPOSITORY = *[[:space:]]* ]] ; then
-    printf "[ERROR]: Missting argument -R <repository>.\n\n" >&2
+    printf "\033[1m[ERROR]: Missting argument -R <repository>.\033[m\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
 if [ -z "${GH_TOKEN:=${GITHUB_TOKEN:-}}" ] || [[ $GH_TOKEN = *[[:space:]]* ]] ; then
-    printf "[ERROR]: github token is undefined. Please export GH_TOKEN/GITUB_TOKEN environment variable or specify argument -t <token>\n\n" >&2
+    printf "\033[1m[ERROR]: github token is undefined. Please export GH_TOKEN/GITUB_TOKEN environment variable or specify argument -t <token>\033[m\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
