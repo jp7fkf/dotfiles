@@ -616,7 +616,7 @@ export LESS_TERMCAP_us=$'\E[01;04;32m'      # Begins underline.
 export LESS_TERMCAP_ue=$'\E[0m'          # Ends underline.
 
 if [[ -x `which bat` ]]; then
-  alias bat='bat -p --paging=always'
+  # alias bat='bat -p --paging=always'
   # export PAGER="bat"
   alias les=bat
   export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
