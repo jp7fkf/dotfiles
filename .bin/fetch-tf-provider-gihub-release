@@ -22,7 +22,7 @@ OS=`uname -s | tr "[:upper:]" "[:lower:]"`
 ARCH=`uname -m|tr "[:upper:]" "[:lower:]"`
 
 USAGE="Fetch terraform provider from github release assets.
-Environment variable GH_TOKEN/GITUB_TOKEN must be exported or specified.
+Environment variable GH_TOKEN/GITUB_TOKEN must be exported or specified for private repository.
 
 USAGE:
     $(basename "$0") [OPTIONS]
