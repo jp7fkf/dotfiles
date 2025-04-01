@@ -66,11 +66,11 @@ while getopts ':hVH:N:T:R:v:o:a:d:t:' option; do
        ;;
     t) GH_TOKEN=$OPTARG
        ;;
-    :) printf "\033[1m[ERROR]: missing argument for -%s\033[m\n\n" "$OPTARG" >&2
+    :) printf "\033[1m[ERROR]: Missing argument for -%s\033[m\n\n" "$OPTARG" >&2
        echo "$USAGE" >&2
        exit 1
        ;;
-   \?) printf "\033[1m[ERROR]: illegal option: -%s\033[m\n\n" "$OPTARG" >&2
+   \?) printf "\033[1m[ERROR]: Illegal option: -%s\033[m\n\n" "$OPTARG" >&2
        echo "$USAGE" >&2
        exit 1
        ;;
