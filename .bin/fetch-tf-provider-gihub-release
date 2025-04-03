@@ -115,7 +115,7 @@ if [ -z "${GH_TOKEN:=${GITHUB_TOKEN:-}}" ] || [[ $GH_TOKEN = *[[:space:]]* ]] ; 
 else
     GH_TOKEN=${GH_TOKEN}"@"
 fi
-if [ $VERSION != 'latest' ];then
+if [ ${VERSION} != 'latest' ];then
     VERSION="tags/${VERSION}"
 fi
 
@@ -138,7 +138,9 @@ if [ ${UNPACKED:=0} -eq 1 ] ; then
     mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}
     unzip -q ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME} -d ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}
     rm ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}
+    echo "Output asset to ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}/"
+else
+    echo "Output asset to ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}"
 fi
 
-echo "Output asset to ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}"
 echo "Completed."
