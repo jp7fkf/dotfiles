@@ -20,6 +20,14 @@ PROVIDER_ROOT_DIR="./providers"
 
 OS=`uname -s | tr "[:upper:]" "[:lower:]"`
 ARCH=`uname -m|tr "[:upper:]" "[:lower:]"`
+# special mapping for a lot of x86_64 users
+if [ "$ARCH" == "x86_64" ]; then
+    ARCH="amd64"
+fi
+if [ `type -P go` ] ; then
+    OS=`go env GOOS`
+    ARCH=`go env GOARCH`
+fi
 
 USAGE="Fetch terraform provider from github release assets.
 Environment variable GH_TOKEN/GITUB_TOKEN must be exported or specified for private repository.
