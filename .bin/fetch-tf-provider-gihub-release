@@ -37,6 +37,7 @@ USAGE:
 OPTIONS:
     -h               Show this help
     -V               Show version
+    -u               Output provider as unpacked layout
     -H <hostname>    Specify hostname of terraform provider
     -N <namespace>   Specify namespace of terraform provider
     -T <type>        Specify type of terraform provider
@@ -48,13 +49,15 @@ OPTIONS:
     -t <token>       Specify token for github (default: env:GH_TOKEN, env:GITHUB_TOKEN)
 "
 
-while getopts ':hVH:N:T:R:v:o:a:d:t:' option; do
+while getopts ':hVuH:N:T:R:v:o:a:d:t:' option; do
   case "$option" in
     h) echo "$USAGE"
        exit
        ;;
     V) echo "$(basename "$0")(version: 0.1.0)"
        exit
+       ;;
+    u) UNPACKED=1
        ;;
     H) HOSTNAME=$OPTARG
        ;;
@@ -118,15 +121,24 @@ fi
 
 echo "Downloading provider...(OS: ${OS}, ARCH=${ARCH})"
 
-ASSET_JSON=`curl -fsSL https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/${VERSION} | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\"))"`
+RELEASE_JSON=`curl -fsSL https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/${VERSION}`
+ASSET_JSON=`echo $RELEASE_JSON | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\"))"`
 ASSET_NAME=`echo $ASSET_JSON | jq -r .name`
 ASSET_ID=`echo $ASSET_JSON | jq -r .id`
+VERSION=`echo $RELEASE_JSON | jq -r .tag_name | sed 's/^v//'`
+
 if [ -z "${ASSET_ID}" ]; then
     echo "No provider asset found. exit." >&2
     exit 1
 fi
+
 mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}
 curl -fsSL -H 'Accept: application/octet-stream' -o ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME} https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/assets/${ASSET_ID}
+if [ ${UNPACKED:=0} -eq 1 ] ; then
+    mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}
+    unzip -q ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME} -d ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}
+    rm ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}
+fi
 
 echo "Output asset to ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}"
 echo "Completed."
