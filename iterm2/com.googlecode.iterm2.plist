@@ -624,6 +624,8 @@ Maximize Active Pane</string>
 	<false/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.30627504006410255</real>
+	<key>SynchronizeQueryWithFindPasteboard</key>
+	<false/>
 	<key>TabStyle</key>
 	<integer>1</integer>
 	<key>Use background pattern indicator</key>
