@@ -19,7 +19,7 @@ VERSION="latest"
 PROVIDER_ROOT_DIR="./providers"
 
 OS=`uname -s | tr "[:upper:]" "[:lower:]"`
-ARCH=`uname -m|tr "[:upper:]" "[:lower:]"`
+ARCH=`uname -m | tr "[:upper:]" "[:lower:]"`
 # special mapping for a lot of x86_64 users
 if [ "$ARCH" == "x86_64" ]; then
     ARCH="amd64"
