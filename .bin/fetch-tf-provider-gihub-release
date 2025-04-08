@@ -44,7 +44,8 @@ OPTIONS:
     -R <repository>  Specify repository of terraform provider ex. <owner/repo>
     -v <version>     Specify provider version release tag ex. v1.0.0 (default: latest)
     -o <os>          Specify machine OS of terraform provider (default: uname -s)
-    -a <arch>        Specify machine architecture of terraform provider (default: env:GOARCH > 'uname -m' based auto detection)
+    -a <arch>        Specify machine architecture of terraform provider
+                     (default: env:GOARCH > 'uname -m' based auto detection)
     -d <directory>   Specify output provider directory (default: ./providers)
     -t <token>       Specify token for github (default: env:GH_TOKEN, env:GITHUB_TOKEN)
 "
