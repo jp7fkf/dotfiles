@@ -148,6 +148,14 @@ bindkey '^R' history-incremental-pattern-search-backward
 ########################################
 # alias
 alias ssh='ssh -o ServerAliveInterval=60'
+if [[ -x `which gsed` ]]; then
+  alias sed='gsed'
+fi
+if [[ -x `which ggrep` ]]; then
+  alias grep='ggrep --color=auto'
+else
+  alias grep='grep --color=auto'
+fi
 alias la='ls -a'
 alias ll='ls -l'
 alias rm='rm -i'
@@ -157,7 +165,6 @@ alias m='make'
 alias mkdir='mkdir -p'
 alias -g L='| less'
 alias -g G='| grep'
-alias grep='grep --color=auto'
 alias date_iso8601='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 alias upper='tr "[:lower:]" "[:upper:]"'
 alias lower='tr "[:upper:]" "[:lower:]"'
@@ -278,9 +285,9 @@ function replace_all (){
   if [[ -n "${opt[(i)-c]}" ]] || [[ -n "${opt[(i)--check]}" ]]; then
     grep -r --exclude-dir=.git "$1" $~3
   elif [[ -n "${opt[(i)-d]}" ]] || [[ -n "${opt[(i)--delete]}" ]]; then
-    grep -r --exclude-dir=.git "$1" $~3 -l | xargs gsed -i "/$1/d"
+    grep -r --exclude-dir=.git "$1" $~3 -l | xargs sed -i "/$1/d"
   else
-    grep -r --exclude-dir=.git "$1" $~3 -l | xargs gsed -i "s~$1~$2~g"
+    grep -r --exclude-dir=.git "$1" $~3 -l | xargs sed -i "s~$1~$2~g"
   fi
 }
 alias replace_all='noglob replace_all'
@@ -619,7 +626,7 @@ if [[ -x `which bat` ]]; then
   # alias bat='bat -p --paging=always'
   # export PAGER="bat"
   alias les=bat
-  export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
+  export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p --paging=always -l=man'"
 fi
 
 if [[ `uname -m` == 'arm64' ]]; then
