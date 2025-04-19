@@ -120,28 +120,46 @@ if [ ${VERSION} != 'latest' ];then
     VERSION="tags/${VERSION}"
 fi
 
-echo "Downloading provider...(OS: ${OS}, ARCH=${ARCH})"
+(
+    # TODO: we want to get fail body on stdout in fail and substitute normal response to variable.
+    RELEASE_JSON=`curl -sSL --fail-with-body https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/${VERSION}`
+    ASSET_JSON=`echo $RELEASE_JSON | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\"))"`
+    ASSET_NAME=`echo $ASSET_JSON | jq -r .name`
+    ASSET_ID=`echo $ASSET_JSON | jq -r .id`
+    VERSION=`echo $RELEASE_JSON | jq -r .tag_name | sed 's/^v//'`
 
-RELEASE_JSON=`curl -fsSL https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/${VERSION}`
-ASSET_JSON=`echo $RELEASE_JSON | jq -r ".assets[] | select(.name | contains(\"${OS}\") and contains(\"${ARCH}\"))"`
-ASSET_NAME=`echo $ASSET_JSON | jq -r .name`
-ASSET_ID=`echo $ASSET_JSON | jq -r .id`
-VERSION=`echo $RELEASE_JSON | jq -r .tag_name | sed 's/^v//'`
+    if [ -z "${ASSET_ID}" ]; then
+        echo -e "\nNo provider asset found. exit." >&2
+        exit 1
+    fi
 
-if [ -z "${ASSET_ID}" ]; then
-    echo "No provider asset found. exit." >&2
-    exit 1
-fi
+    mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}
+    curl -fsSL -H 'Accept: application/octet-stream' -o ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME} https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/assets/${ASSET_ID}
+    if [ ${UNPACKED:=0} -eq 1 ] ; then
+        mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}
+        unzip -o -q ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME} -d ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}
+        rm ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}
+        echo -e "\nOutput asset to ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}/"
+    else
+        echo -e "\nOutput asset to ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}"
+    fi
+) &
 
-mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}
-curl -fsSL -H 'Accept: application/octet-stream' -o ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME} https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/assets/${ASSET_ID}
-if [ ${UNPACKED:=0} -eq 1 ] ; then
-    mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}
-    unzip -q ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME} -d ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}
-    rm ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}
-    echo "Output asset to ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}/"
-else
-    echo "Output asset to ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}"
-fi
-
+PID=$!
+POS=0
+PROGRESS=("⠇" "⠋" "⠉" "⠙" "⠸" "⠴" "⠤" "⠦")
+while true; do
+    echo -ne "Downloading provider...(OS: ${OS}, ARCH=${ARCH}) ${PROGRESS[$((POS % 8))]}\r"
+    sleep 0.1
+    POS=$((POS+1))
+    if [ ! -n "$(jobs -r)" ]; then
+        wait $PID
+        RET=$?
+        if [ ! ${RET} ]; then
+            exit $RET
+        else
+            break
+        fi
+    fi
+done
 echo "Completed."
