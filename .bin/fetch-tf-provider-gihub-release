@@ -24,7 +24,7 @@ ARCH=`uname -m | tr "[:upper:]" "[:lower:]"`
 if [ "$ARCH" == "x86_64" ]; then
     ARCH="amd64"
 fi
-if [ `type -P go` ] ; then
+if [ `type -P go` ]; then
     OS=`go env GOOS`
     ARCH=`go env GOARCH`
 fi
@@ -90,33 +90,33 @@ while getopts ':hVuH:N:T:R:v:o:a:d:t:' option; do
 done
 shift $((OPTIND - 1))
 
-if [ -z "${HOSTNAME-}" ] || [[ $HOSTNAME = *[[:space:]]* ]] ; then
+if [ -z "${HOSTNAME-}" ] || [[ $HOSTNAME = *[[:space:]]* ]]; then
     printf "\033[1m[ERROR]: Missting argument -H <hostname>.\033[m\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
-if [ -z "${NAMESPACE-}" ] || [[ $NAMESPACE = *[[:space:]]* ]] ; then
+if [ -z "${NAMESPACE-}" ] || [[ $NAMESPACE = *[[:space:]]* ]]; then
     printf "\033[1m[ERROR]: Missting argument -N <namespace>.\033[m\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
-if [ -z "${TYPE-}" ] || [[ $TYPE = *[[:space:]]* ]] ; then
+if [ -z "${TYPE-}" ] || [[ $TYPE = *[[:space:]]* ]]; then
     printf "\033[1m[ERROR]: Missting argument -T <type>.\033[m\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
-if [ -z "${REPOSITORY-}" ] || [[ $REPOSITORY = *[[:space:]]* ]] ; then
+if [ -z "${REPOSITORY-}" ] || [[ $REPOSITORY = *[[:space:]]* ]]; then
     printf "\033[1m[ERROR]: Missting argument -R <repository>.\033[m\n\n" >&2
     echo "$USAGE" >&2
     exit 1
 fi
-if [ -z "${GH_TOKEN:=${GITHUB_TOKEN:-}}" ] || [[ $GH_TOKEN = *[[:space:]]* ]] ; then
+if [ -z "${GH_TOKEN:=${GITHUB_TOKEN:-}}" ] || [[ $GH_TOKEN = *[[:space:]]* ]]; then
     printf "\033[1m[WARN]: github token is undefined. Please export GH_TOKEN/GITUB_TOKEN environment variable or specify argument -t <token> for private repository.\033[m\n\n" >&2
     GH_TOKEN=""
 else
     GH_TOKEN=${GH_TOKEN}"@"
 fi
-if [ ${VERSION} != 'latest' ];then
+if [ ${VERSION} != 'latest' ]; then
     VERSION="tags/${VERSION}"
 fi
 
@@ -135,7 +135,7 @@ fi
 
     mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}
     curl -fsSL -H 'Accept: application/octet-stream' -o ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME} https://${GH_TOKEN}api.github.com/repos/${REPOSITORY}/releases/assets/${ASSET_ID}
-    if [ ${UNPACKED:=0} -eq 1 ] ; then
+    if [ ${UNPACKED:=0} -eq 1 ]; then
         mkdir -p ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}
         unzip -o -q ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME} -d ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${VERSION}/${OS}_${ARCH}
         rm ${PROVIDER_ROOT_DIR}/${HOSTNAME}/${NAMESPACE}/${TYPE}/${ASSET_NAME}
@@ -149,7 +149,7 @@ PID=$!
 POS=0
 PROGRESS=("⠇" "⠋" "⠉" "⠙" "⠸" "⠴" "⠤" "⠦")
 while true; do
-    echo -ne "Downloading provider...(OS: ${OS}, ARCH=${ARCH}) ${PROGRESS[$((POS % 8))]}\r"
+    echo -ne "\rDownloading provider...(OS: ${OS}, ARCH=${ARCH}) ${PROGRESS[$((POS % 8))]} "
     sleep 0.1
     POS=$((POS+1))
     if [ ! -n "$(jobs -r)" ]; then
