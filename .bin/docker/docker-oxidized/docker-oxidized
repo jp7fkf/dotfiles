@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+OPTIONS=""
+POSITIONAL=""
+
+while [[ $# -gt 0 ]]; do
+  ARG="$1"
+  shift
+
+  case "$ARG" in
+    --)
+      POSITIONAL+=" $*"
+      break
+      ;;
+    --*=*|-?=*)
+      OPTIONS+=" ${ARG%%=*} ${ARG#*=}"
+      ;;
+    -*)
+      if [[ $# -gt 0 && "$1" != -* ]]; then
+        OPTIONS+=" $ARG $1"
+        shift
+      else
+        OPTIONS+=" $ARG"
+      fi
+      ;;
+    *)
+      POSITIONAL+=" $ARG"
+      ;;
+  esac
+done
+
+docker run ${OPTIONS:="-it --rm  -p 8888:8888 -v $(dirname $(readlink -f $0))/oxidized:/home/oxidized/.config/oxidized"} oxidized/oxidized:latest #-- ${POSITIONAL}
