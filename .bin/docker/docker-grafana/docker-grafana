@@ -3,4 +3,33 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-docker run -it --rm  -p 3000:3000 grafana/grafana-enterprise:latest $@
+OPTIONS=""
+POSITIONAL=""
+
+while [[ $# -gt 0 ]]; do
+  ARG="$1"
+  shift
+
+  case "$ARG" in
+    --)
+      POSITIONAL+=" $*"
+      break
+      ;;
+    --*=*|-?=*)
+      OPTIONS+=" ${ARG%%=*} ${ARG#*=}"
+      ;;
+    -*)
+      if [[ $# -gt 0 && "$1" != -* ]]; then
+        OPTIONS+=" $ARG $1"
+        shift
+      else
+        OPTIONS+=" $ARG"
+      fi
+      ;;
+    *)
+      POSITIONAL+=" $ARG"
+      ;;
+  esac
+done
+
+docker run ${OPTIONS:="-it --rm  -p 3000:3000"} grafana/grafana-enterprise:latest -- ${POSITIONAL}
