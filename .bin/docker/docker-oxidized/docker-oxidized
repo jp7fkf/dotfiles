@@ -5,7 +5,6 @@ set -o pipefail
 
 OPTIONS=""
 POSITIONAL=""
-
 while [[ $# -gt 0 ]]; do
   ARG="$1"
   shift
