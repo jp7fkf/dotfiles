@@ -32,3 +32,4 @@ while [[ $# -gt 0 ]]; do
 done
 
 docker run ${OPTIONS:="-it --rm  -p 3000:3000 -v $(dirname $(readlink -f $0))/grafana:/var/lib/grafana"} grafana/grafana-enterprise:latest -- ${POSITIONAL}
+#docker run -it --rm  -p 3000:3000 -e “GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app” grafana/grafana-enterprise:latest
