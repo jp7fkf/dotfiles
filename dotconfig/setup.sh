@@ -17,6 +17,7 @@ done
 DOTCONFIG_DIRECTORY="${HOME}/dotfiles/dotconfig"
 CONFIG_DIRECTORY="${HOME}/.config"
 SPECIFIC_FILES="" # whitespace to separate multiple files
+cd "${HOME}/dotfiles/dotconfig"
 
 # create .config if not exists.
 mkdir -p ${CONFIG_DIRECTORY}
