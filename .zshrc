@@ -392,6 +392,18 @@ function peco-checkout () {
 zle -N peco-checkout
 bindkey 'BB' peco-checkout
 
+############## peco&command_candidate ################
+function peco-cmd-candidate () {
+  local selected_cmd=$(cat ~/.config/pecocan.txt | peco --query "$LBUFFER")
+  if [ -n "$selected_cmd" ]; then
+    BUFFER="echo ${selected_cmd} | pbcopy"
+    zle accept-line
+  fi
+  #zle clear-screen
+}
+zle -N peco-cmd-candidate
+bindkey 'GC' peco-cmd-candidate
+
 ######### git-delete-squashed-branch ############
 function git-delete-squashed-branch () {
   local -A opt
