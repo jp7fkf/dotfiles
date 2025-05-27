@@ -30,6 +30,7 @@ fi
 ## KEY BINDING ##
 # emacs like keybinding
 bindkey -e
+KEYTIMEOUT=15
 # ctrl+allow for moving cursor each word
 # TODO: DISABLE mission control keymap in macOS default
 bindkey ";5C" forward-word
@@ -285,9 +286,9 @@ function replace_all (){
   if [[ -n "${opt[(i)-c]}" ]] || [[ -n "${opt[(i)--check]}" ]]; then
     grep -r --exclude-dir=.git "$1" $~3
   elif [[ -n "${opt[(i)-d]}" ]] || [[ -n "${opt[(i)--delete]}" ]]; then
-    grep -r --exclude-dir=.git "$1" $~3 -l | xargs sed -i "/$1/d"
+    grep -r --exclude-dir=.git "$1" $~3 -l | xargs gsed -i "/$1/d"
   else
-    grep -r --exclude-dir=.git "$1" $~3 -l | xargs sed -i "s~$1~$2~g"
+    grep -r --exclude-dir=.git "$1" $~3 -l | xargs gsed -i "s~$1~$2~g"
   fi
 }
 alias replace_all='noglob replace_all'
@@ -332,7 +333,7 @@ bindkey 'GS' _git_status
 
 ############## peco&ghq ################
 function peco-ghq () {
-  local selected_repo=$(ghq list | peco --query "$LBUFFER")
+  local selected_repo=$(ghq list | peco --prompt='ghq>' --query "$LBUFFER")
   if [ -n "$selected_repo" ]; then
     BUFFER="cd $(ghq root)/${selected_repo}"
     zle accept-line
@@ -345,7 +346,7 @@ bindkey 'GH' peco-ghq
 
 ############## peco&hub ################
 function peco-hub () {
-  local selected_repo=$(ghq list | peco --query "$LBUFFER" | cut -d "/" -f 2,3)
+  local selected_repo=$(ghq list | peco --prompt='hub>' --query "$LBUFFER" | cut -d "/" -f 2,3)
   if [ -n "$selected_repo" ]; then
     hub browse "${selected_repo}"
   fi
@@ -364,7 +365,7 @@ function peco-ssh () {
       }
     }
   }
-  ' _ | sort | peco --query "$LBUFFER")
+  ' _ | sort | peco --prompt='ssh>' --query "$LBUFFER")
   if [ -n "$selected_host" ]; then
     BUFFER="ssh ${selected_host}"
     zle accept-line
@@ -376,7 +377,7 @@ bindkey 'SS' peco-ssh
 
 ######### peco&git checkout ############
 function peco-checkout () {
-  local branch=$(git branch -a | peco | tr -d ' ')
+  local branch=$(git branch -a | peco --prompt='git checkout>'| tr -d ' ')
   if [ -n "$branch" ]; then
     if [[ "$branch" =~ "remotes/" ]]; then
       local b=$(echo $branch | awk -F'/' '{for(i=3;i<NF;i++){printf("%s%s",$i,OFS="/")}print $NF}')
@@ -394,9 +395,10 @@ bindkey 'BB' peco-checkout
 
 ############## peco&command_candidate ################
 function peco-cmd-candidate () {
-  local selected_cmd=$(cat ~/.config/pecocan.txt | peco --query "$LBUFFER")
+  local selected_cmd=$(cat ~/.config/pecocan.txt | peco --prompt='commands>' --query "$LBUFFER")
   if [ -n "$selected_cmd" ]; then
-    BUFFER="echo ${selected_cmd} | pbcopy"
+    BUFFER="echo -n ${(q+)selected_cmd} | pbcopy"
+    # BUFFER="echo ${selected_cmd:q} | pbcopy"
     zle accept-line
   fi
   #zle clear-screen
@@ -422,29 +424,30 @@ function git-delete-squashed-branch () {
     echo 'git-delete-squashed-branch version 0.0.1'
     return 0
   fi
-  if [[ -n "${opt[(i)-c]}" ]] || [[ -n "${opt[(i)--check]}" ]]; then
-    local baseBranch=${1:=$default_branch}
-    git checkout -q $baseBranch
-    git for-each-ref refs/heads/ "--format=%(refname:short)" | \
-    while read branch
-    do
-      mergeBase=$(git merge-base $baseBranch $branch)
-      if [[ $(git cherry $baseBranch $(git commit-tree $(git rev-parse $branch\^{tree}) -p $mergeBase -m _)) == "-"* ]]; then
+
+  local baseBranch=${1:=$default_branch}
+  git checkout -q $baseBranch
+  git pull
+  git for-each-ref refs/heads/ "--format=%(refname:short)" | \
+  while read branch
+  do
+    mergeBase=$(git merge-base $baseBranch $branch)
+    if [[ $(git cherry $baseBranch $(git commit-tree $(git rev-parse $branch\^{tree}) -p $mergeBase -m _)) == "-"* ]]; then
+      if [[ -n "${opt[(i)-c]}" ]] || [[ -n "${opt[(i)--check]}" ]]; then
         echo $branch
-      fi
-    done
-  else
-    local baseBranch=${1:=$default_branch}
-    git checkout -q $baseBranch
-    git for-each-ref refs/heads/ "--format=%(refname:short)" | \
-    while read branch
-    do
-      mergeBase=$(git merge-base $baseBranch $branch)
-      if [[ $(git cherry $baseBranch $(git commit-tree $(git rev-parse $branch\^{tree}) -p $mergeBase -m _)) == "-"* ]]; then
+      else
         git branch -D $branch;
       fi
-    done
-  fi
+    fi
+  done
+}
+
+######### git-delete-merged-branch ############
+function git-delete-merged-branch () {
+  echo "[Remove squash-merged branch]"
+  git-delete-squashed-branch
+  echo "[Remove merged branch with merge commit]"
+  git delete-merged-branch
 }
 
 ######### shellcolors ############

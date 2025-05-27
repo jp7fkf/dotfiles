@@ -1,2 +1,2 @@
 show virtual-chassis vc-port diagnostics optics match "(fpc|vcp|Module voltage  |Receiver signal avarage|output power  |Module temperature  )"
-GKE_CHANNEL=REGULAR GKE_REGION=asia-northeast1 gcloud container get-server-config --flatten="channels" --filter="channels.channel=${GKE_CHANNEL}" --format="yaml(channels.channel,channels.validVersions)" --region=${GKE_REGION}
+GKE_CHANNEL=REGULAR GKE_REGION=asia-northeast1; gcloud container get-server-config --flatten="channels" --filter="channels.channel=${GKE_CHANNEL}" --format="yaml(channels.channel,channels.validVersions)" --region=${GKE_REGION}
