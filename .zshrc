@@ -185,6 +185,7 @@ alias update-clang-format='clang-format --dump-config --style=file > .clang-form
 alias mydu='du -hc -d 2 | sort -rn'
 alias compgen-c='print -rl -- ${(ko)commands}'
 alias ptree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|    /g'"
+# alias gitroot='cd "$(git rev-parse --show-toplevel)"' # cd top of nearest .git root
 alias gitroot="cd "$(readlink -f $(git rev-parse --git-dir) | gsed 's/\/\.git.*//g')""
 alias parse_curl_header='awk "/^HTTP/,/^[\r\n]+$/"'
 alias grep_k2v='(){grep $@ | awk "{print \$2}";}'
