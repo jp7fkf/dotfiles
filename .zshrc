@@ -383,16 +383,46 @@ function peco-checkout () {
     if [[ "$branch" =~ "remotes/" ]]; then
       local b=$(echo $branch | awk -F'/' '{for(i=3;i<NF;i++){printf("%s%s",$i,OFS="/")}print $NF}')
       BUFFER="git checkout -b '${b}' '${branch}'"
-      zle accept-line
     else
       BUFFER="git checkout '${branch}'"
-      zle accept-line
     fi
+    zle accept-line
   fi
   #zle clear-screen
 }
 zle -N peco-checkout
 bindkey 'BB' peco-checkout
+
+######### peco&git worktree add ############
+function peco-worktree-add () {
+  local WORKTREE_DIR="$(readlink -f $(git rev-parse --git-dir) | sed 's/\/\.git.*//g')/.worktrees/"
+  local branch=$(git branch -a | peco --prompt='git worktree add>'| tr -d ' ')
+  if [ -n "$branch" ]; then
+    if [[ "$branch" =~ "remotes/" ]]; then
+      local b=$(echo $branch | awk -F'/' '{for(i=3;i<NF;i++){printf("%s%s",$i,OFS="/")}print $NF}')
+      BUFFER="git worktree add -f '${WORKTREE_DIR}${b}' '${branch}'; cd '${WORKTREE_DIR}${b}'"
+    else
+      BUFFER="git worktree add -f '${WORKTREE_DIR}${branch}' '${branch}'; cd '${WORKTREE_DIR}${branch}'"
+    fi
+    zle accept-line
+  fi
+  #zle clear-screen
+}
+zle -N peco-worktree-add
+bindkey 'GW' peco-worktree-add
+
+######### peco&git worktree cd ############
+function peco-worktree-cd () {
+  local WORKTREE_DIR="$(readlink -f $(git rev-parse --git-dir) | sed 's/\/\.git.*//g')/.worktrees/"
+  local worktreedir=$(GITROOT=`readlink -f $(git rev-parse --git-dir) | sed 's/\/\.git.*//g'`; git worktree list | sed "s|$GITROOT/.worktrees/||g" | awk '{print $1}' | peco --prompt='git worktree cd>'| tr -d ' ')
+  if [ -n "$worktreedir" ]; then
+    BUFFER="cd '${WORKTREE_DIR}${worktreedir}'"
+    zle accept-line
+  fi
+  #zle clear-screen
+}
+zle -N peco-worktree-cd
+bindkey 'GE' peco-worktree-cd
 
 ############## peco&command_candidate ################
 function peco-cmd-candidate () {
