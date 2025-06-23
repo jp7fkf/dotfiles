@@ -426,7 +426,7 @@ bindkey 'GE' peco-worktree-cd
 
 ############## peco&command_candidate ################
 function peco-cmd-candidate () {
-  local selected_cmd=$(grep -v '^#' ~/.config/pecocan.txt | peco --prompt='commands>' --query "$LBUFFER")
+  local selected_cmd=$(grep -v '\(^#\|^$\)' ~/.config/pecocan.txt | peco --prompt='commands>' --query "$LBUFFER")
   if [ -n "$selected_cmd" ]; then
     BUFFER="echo -n ${(q+)selected_cmd} | pbcopy"
     # BUFFER="echo ${selected_cmd:q} | pbcopy"
