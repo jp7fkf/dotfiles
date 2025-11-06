@@ -3,3 +3,6 @@ show virtual-chassis vc-port diagnostics optics match "(fpc|vcp|Module voltage  
 
 # Google Cloud
 GKE_CHANNEL=REGULAR GKE_REGION=asia-northeast1; gcloud container get-server-config --flatten="channels" --filter="channels.channel=${GKE_CHANNEL}" --format="yaml(channels.channel,channels)" --region=${GKE_REGION}
+
+# shell
+for i in `seq 0 9`; do echo -ne '\a'; sleep 1; done
