@@ -634,9 +634,11 @@ function yn_prompt () {
 function update_all () {
   brew update
   brew upgrade
+  brew bundle upgrade --global --cleanup --force
+  brew cleanup --prune=all
   brew doctor
 
-  yn_prompt "Do you wish to run following comamnd?[y/n]: " 'echo "hoge"'
+  yn_prompt "Do you wish to run following comamnd?[y/n]: " 'echo "ok!"'
 }
 
 ########################################
