@@ -183,6 +183,7 @@ alias crlf_check="rg -lU '\r\n'"
 alias clang-formatter='find * | grep -E ".*(\.ino|\.cpp|\.c|\.h|\.hpp|\.hh)$" | xargs clang-format -i -style=LLVM'
 alias update-clang-format='clang-format --dump-config --style=file > .clang-format'
 alias mydu='du -hc -d 2 | sort -rn'
+alias mydu='du -sch ./* | sort -hr'
 alias compgen-c='print -rl -- ${(ko)commands}'
 alias ptree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|    /g'"
 # alias gitroot='cd "$(git rev-parse --show-toplevel)"' # cd top of nearest .git root
