@@ -21,6 +21,7 @@
   ch = checkout
   st = status
   br = branch
+  br-format = br --format='%(refname:short) | %(committerdate) | %(committername)/%(authorname)' --sort=-committerdate
   co = commit
   lo = log --oneline
   pr = "!f() { if [[ -z $1 ]]; then target=''; else target=\"$1...\"; fi; open \"$(git ls-remote --get-url $(git config --get branch.$(git rev-parse --abbrev-ref HEAD).remote) | sed 's|.*git@github.com[:/]\\(.*\\)$|https://github.com/\\1|' | sed 's|\\.git$||')/compare/$target$(git config --get branch.$(git rev-parse --abbrev-ref HEAD).merge | cut -d / -f 3-)?expand=1\"; }; f"
@@ -40,11 +41,6 @@
   pruneTags = true
 [init]
   defaultBranch = main
-[filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
 [ssh]
   postBuffer = 2048M
   maxRequestBuffer = 1024M
