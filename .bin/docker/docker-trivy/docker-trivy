@@ -2,9 +2,11 @@
 set -o errexit
 set -o nounset
 set -o pipefail
+
 docker run -it --rm \
   --workdir /root/trivy \
   -e DOCKER_HOST=unix:///root/trivy/.docker/run/docker.sock \
-  aquasec/trivy:latest $@
+  $1 \
+  aquasec/trivy:latest ${@:2}
   #-v $(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}'):/root/trivy/.docker/run/docker.sock \
   #-v $(docker context inspect | jq -r '.[0].Endpoints.docker.Host' | sed "s^unix://^^"):/root/trivy/.docker/run/docker.sock \

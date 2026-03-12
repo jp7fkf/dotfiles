@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# Copyright (c) 2026 Yudai Hashimoto (jp7fkf)
+# Licensed under MIT.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+USAGE="hogehuga
+USAGE:
+
+USAGE:
+    $(basename "$0") [OPTIONS]
+OPTIONS:
+    -h              Show this help
+    -V              Show version
+    --carg <args>   Containter args
+"
+
+CONTAINER_ARGS=""
+
+while getopts ':hV:c:' option; do
+  case "$option" in
+    h) echo "$USAGE"
+       exit
+       ;;
+    V) echo "$(basename "$0")(version: 0.1.0)"
+       exit
+       ;;
+    c) CONTAINER_ARGS=$OPTARG
+       ;;
+    :) printf "\033[1m[ERROR]: Missing argument for -%s\033[m\n\n" "$OPTARG" >&2
+       echo "$USAGE" >&2
+       exit 1
+       ;;
+   \?) printf "\033[1m[ERROR]: Illegal option: -%s\033[m\n\n" "$OPTARG" >&2
+       echo "$USAGE" >&2
+       exit 1
+       ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')" ~/.bin/docker-$1 "${CONTAINER_ARGS}" ${@:2}
