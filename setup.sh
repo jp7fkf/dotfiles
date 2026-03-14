@@ -37,6 +37,8 @@ mkdir -p $HOME/.terraform.d/plugin-cache
 
 # deploy dotconfigs
 ./dotconfig/setup.sh
+# deploy dotssh(manually)
+# ./.ssh/setup.sh
 
 echo $(tput setaf 2)Deploy dotfiles complete! ✔︎$(tput sgr0)
 
