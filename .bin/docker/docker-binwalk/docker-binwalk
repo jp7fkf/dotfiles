@@ -3,4 +3,4 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-docker run -it --rm -v $(pwd):/analysis refirmlabs/binwalk -t 1 $@
+docker run -it --rm -v $(pwd):/analysis $1 refirmlabs/binwalk -t 1 ${@:2}

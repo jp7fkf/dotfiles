@@ -3,7 +3,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-docker run --rm -it -v $HOME/.kube:/root/.kube derailed/k9s $@
+docker run --rm -it -v $HOME/.kube:/root/.kube $1 derailed/k9s ${@:2}
 
 # gke-gcloud-auth-plugin env
 #docker run --rm -it -v $HOME/.kube:/root/.kube -v $(which gke-gcloud-auth-plugin):/usr/bin/gke-gcloud-auth-plugin derailed/k9s $@

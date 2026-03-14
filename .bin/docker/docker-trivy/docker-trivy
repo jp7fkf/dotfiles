@@ -5,8 +5,12 @@ set -o pipefail
 
 docker run -it --rm \
   --workdir /root/trivy \
-  -e DOCKER_HOST=unix:///root/trivy/.docker/run/docker.sock \
+  -v /run/user/$(id -u)/podman/podman.sock:/var/run/docker.sock \
   $1 \
   aquasec/trivy:latest ${@:2}
+  #--userns=keep-id \
+  #-v /var/run/podman/podman.sock:/var/run/docker.sock \
+  #-e DOCKER_HOST=unix:///var/run/docker.sock \
+  #-e DOCKER_HOST=unix:///root/trivy/.docker/run/docker.sock \
   #-v $(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}'):/root/trivy/.docker/run/docker.sock \
   #-v $(docker context inspect | jq -r '.[0].Endpoints.docker.Host' | sed "s^unix://^^"):/root/trivy/.docker/run/docker.sock \

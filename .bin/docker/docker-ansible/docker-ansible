@@ -12,4 +12,4 @@ set -o pipefail
 # docker build -q -t docker-ansible $(dirname $(dirname $0)/$(readlink $0))
 # docker buildx build --load -q -t docker-ansible $(dirname $(dirname $0)/$(readlink $0))
 # podman buildx build --load -q -t docker-ansible $(dirname $(dirname $0)/$(readlink $0))
-docker run -it -v $(pwd):/app --rm docker-ansible $@
+docker run -it -v $(pwd):/app --rm $1 docker-ansible ${@:2}

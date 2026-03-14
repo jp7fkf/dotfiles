@@ -4,8 +4,11 @@ set -o nounset
 set -o pipefail
 
 mkdir -p $HOME/.config/gcloud
-docker run --rm -it --name gcloud-sdk \
-  -e CLOUDSDK_CONFIG=/config/gcloud \
-  -v $HOME/.config/gcloud:/config/gcloud \
+docker run --rm -it \
+  --workdir /root \
+  -e CLOUDSDK_CONFIG=/root/.config/gcloud \
+  -v $HOME/.config/gcloud:/root/.config/gcloud \
   -v $HOME/.kube:/root/.kube \
-  google/cloud-sdk $@
+  -v $HOME/.ssh:/root/.ssh \
+  $1 \
+  google/cloud-sdk ${@:2}

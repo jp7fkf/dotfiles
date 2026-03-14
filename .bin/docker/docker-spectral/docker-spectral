@@ -3,4 +3,4 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-docker run -it --rm -v $(pwd):/app --workdir /app stoplight/spectral $@
+docker run -it --rm -v $(pwd):/app --workdir /app $1 stoplight/spectral ${@:2}

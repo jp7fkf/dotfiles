@@ -3,4 +3,4 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-docker run -it --rm -v $(pwd):/app library/alpine:latest $@
+docker run -it --rm -v $(pwd):/app $1 library/alpine:latest ${@:2}
