@@ -662,7 +662,7 @@ export PATH="/usr/local/sbin:${HOME}/.bin:$PATH"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-export LESS='-cMRj10#5' #
+export LESS='-MRj10#5' #
 export LESS_TERMCAP_mb=$'\E[01;05;91m'      # Begins blinking.
 #export LESS_TERMCAP_md=$'\E[01;31m'      # Begins bold.
 export LESS_TERMCAP_me=$'\E[0m'          # Ends mode.
