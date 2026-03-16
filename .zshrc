@@ -670,6 +670,7 @@ export LESS_TERMCAP_so=$'\E[00;101;30m'   # Begins standout-mode.
 export LESS_TERMCAP_se=$'\E[0m'          # Ends standout-mode.
 export LESS_TERMCAP_us=$'\E[01;04;32m'      # Begins underline.
 export LESS_TERMCAP_ue=$'\E[0m'          # Ends underline.
+export HOMEBREW_BUNDLE_DUMP_NO_GO=1
 
 if [[ -x `which bat` ]]; then
   # alias bat='bat -p --paging=always'
