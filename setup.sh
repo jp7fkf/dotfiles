@@ -23,6 +23,7 @@ do
   [[ ${f} = ".DS_Store" ]] && continue
   [[ ${f} = ".travis.yml" ]] && continue
   [[ ${f} = "sublimetext3" ]] && continue
+  [[ ${f} = "Alfred" ]] && continue
   cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/
   ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}
 done
@@ -45,6 +46,7 @@ mkdir -p $HOME/.terraform.d/plugin-cache
 # deploy dotconfigs
 ./dotconfig/setup.sh
 ./.docker/setup.sh
+./Alfred/setup.sh
 # deploy dotssh(manually)
 # ./.ssh/setup.sh
 
