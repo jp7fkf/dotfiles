@@ -23,7 +23,7 @@ do
   [[ ${f} = ".DS_Store" ]] && continue
   [[ ${f} = ".travis.yml" ]] && continue
   [[ ${f} = "sublimetext3" ]] && continue
-  cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/${f}
+  cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/
   ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}
 done
 
