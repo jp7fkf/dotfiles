@@ -3,9 +3,7 @@
 set -o nounset
 set -o pipefail
 
-
 DRYRUN=0
-
 while getopts hd OPTS; do
   case "$OPTS" in
     h) echo "usage: ./setup.sh [options]"
@@ -18,14 +16,14 @@ while getopts hd OPTS; do
   esac
 done
 
-DOTCONFIG_DIRECTORY="${HOME}/dotfiles/.docker"
-CONFIG_DIRECTORY="${HOME}/.docker"
+SOURCE_DIRECTORY="${HOME}/dotfiles/.docker"
+TARGET_DIRECTORY="${HOME}/.docker"
 SPECIFIC_FILES="" # whitespace to separate multiple files
-cd "${HOME}/dotfiles/.docker"
 
-# create .config if not exists.
-mkdir -p ${CONFIG_DIRECTORY}
+# create .docker if not exists.
+mkdir -p ${TARGET_DIRECTORY}
 
+cd "${SOURCE_DIRECTORY}"
 # for dotfiles and specific files
 for f in * .??* ${SPECIFIC_FILES}
 do
@@ -35,9 +33,11 @@ do
   [[ ${f} = ".??*" ]] && continue
 
   if [ $DRYRUN -eq 0 ]; then
-    ln -snfv ${DOTCONFIG_DIRECTORY}/${f} ${CONFIG_DIRECTORY}/${f}
+    cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/${f}
+    ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}
   else
-    echo "ln -snfv ${DOTCONFIG_DIRECTORY}/${f} ${CONFIG_DIRECTORY}/${f}"
+    echo "cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/${f}"
+    echo "ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}"
   fi
 done
 echo $(tput setaf 2)["$0"] Deploy dotfiles complete! ✔︎$(tput sgr0)

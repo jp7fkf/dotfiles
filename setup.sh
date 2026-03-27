@@ -4,7 +4,8 @@ set -o nounset
 set -o pipefail
 
 
-DOT_DIRECTORY="${HOME}/dotfiles"
+SOURCE_DIRECTORY="${HOME}/dotfiles"
+TARGET_DIRECTORY=${HOME}
 SPECIFIC_FILES="" # whitespace to separate multiple files
 
 # for dotfiles and specific files
@@ -22,7 +23,8 @@ do
   [[ ${f} = ".DS_Store" ]] && continue
   [[ ${f} = ".travis.yml" ]] && continue
   [[ ${f} = "sublimetext3" ]] && continue
-  ln -snfv ${DOT_DIRECTORY}/${f} ${HOME}/${f}
+  cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/${f}
+  ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}
 done
 
 # pull snmp mibs

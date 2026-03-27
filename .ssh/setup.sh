@@ -4,7 +4,6 @@ set -o nounset
 set -o pipefail
 
 DRYRUN=0
-
 while getopts hd OPTS; do
   case "$OPTS" in
     h) echo "usage: ./setup.sh [options]"
@@ -27,7 +26,7 @@ chmod 700 ${TARGET_DIRECTORY}
 mkdir -p ${TARGET_DIRECTORY}/conf.d
 chmod 766 ${TARGET_DIRECTORY}/conf.d
 
-cd "${HOME}/dotfiles/.ssh"
+cd "${SOURCE_DIRECTORY}"
 # for dotfiles and specific files
 for f in * .??* ${SPECIFIC_FILES}
 do
@@ -37,8 +36,10 @@ do
   [[ ${f} = ".??*" ]] && continue
 
   if [ $DRYRUN -eq 0 ]; then
+    cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/${f}
     ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}
   else
+    echo "cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/${f}"
     echo "ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}"
   fi
 done
