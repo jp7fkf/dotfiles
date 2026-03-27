@@ -1,0 +1,6 @@
+
+[[Snippets]]
+  Description = "junos show virtual-chassis diagnostics optics power"
+  Output = ""
+  Tag = []
+  command = "show virtual-chassis vc-port diagnostics optics match \"(fpc|vcp|Module voltage  |Receiver signal avarage|output power  |Module temperature  )\"'"
