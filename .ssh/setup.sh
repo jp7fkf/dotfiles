@@ -21,10 +21,10 @@ TARGET_DIRECTORY="${HOME}/.ssh"
 SPECIFIC_FILES="" # whitespace to separate multiple files
 
 # create .ssh if not exists.
-mkdir -p ${TARGET_DIRECTORY}
-chmod 700 ${TARGET_DIRECTORY}
-mkdir -p ${TARGET_DIRECTORY}/conf.d
-chmod 766 ${TARGET_DIRECTORY}/conf.d
+mkdir -p "${TARGET_DIRECTORY}"
+chmod 700 "${TARGET_DIRECTORY}"
+mkdir -p "${TARGET_DIRECTORY}/conf.d"
+chmod 766 "${TARGET_DIRECTORY}/conf.d"
 
 cd "${SOURCE_DIRECTORY}"
 # for dotfiles and specific files
@@ -36,8 +36,8 @@ do
   [[ ${f} = ".??*" ]] && continue
 
   if [ $DRYRUN -eq 0 ]; then
-    cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/
-    ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}
+    cp -r "${TARGET_DIRECTORY}/${f}" "${SOURCE_DIRECTORY}/"
+    ln -snfv "${SOURCE_DIRECTORY}/${f}" "${TARGET_DIRECTORY}/${f}"
   else
     echo "cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/"
     echo "ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}"
