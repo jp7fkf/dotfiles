@@ -3,6 +3,7 @@
 set -o nounset
 set -o pipefail
 
+
 DRYRUN=0
 
 while getopts hd OPTS; do
@@ -17,17 +18,14 @@ while getopts hd OPTS; do
   esac
 done
 
-SOURCE_DIRECTORY="${HOME}/dotfiles/.ssh"
-TARGET_DIRECTORY="${HOME}/.ssh"
+DOTCONFIG_DIRECTORY="${HOME}/dotfiles/.docker"
+CONFIG_DIRECTORY="${HOME}/.docker"
 SPECIFIC_FILES="" # whitespace to separate multiple files
+cd "${HOME}/dotfiles/.docker"
 
-# create .ssh if not exists.
-mkdir -p ${TARGET_DIRECTORY}
-chmod 700 ${TARGET_DIRECTORY}
-mkdir -p ${TARGET_DIRECTORY}/conf.d
-chmod 766 ${TARGET_DIRECTORY}/conf.d
+# create .config if not exists.
+mkdir -p ${CONFIG_DIRECTORY}
 
-cd "${HOME}/dotfiles/.ssh"
 # for dotfiles and specific files
 for f in * .??* ${SPECIFIC_FILES}
 do
@@ -37,9 +35,9 @@ do
   [[ ${f} = ".??*" ]] && continue
 
   if [ $DRYRUN -eq 0 ]; then
-    ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}
+    ln -snfv ${DOTCONFIG_DIRECTORY}/${f} ${CONFIG_DIRECTORY}/${f}
   else
-    echo "ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}"
+    echo "ln -snfv ${DOTCONFIG_DIRECTORY}/${f} ${CONFIG_DIRECTORY}/${f}"
   fi
 done
 echo $(tput setaf 2)["$0"] Deploy dotfiles complete! ✔︎$(tput sgr0)

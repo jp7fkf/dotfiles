@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#set -o errexit
+set -o nounset
+set -o pipefail
+
 
 DOT_DIRECTORY="${HOME}/dotfiles"
 SPECIFIC_FILES="" # whitespace to separate multiple files
@@ -11,6 +15,7 @@ do
   [[ ${f} = ".ssh" ]] && continue
   [[ ${f} = ".credentials" ]] && continue
   [[ ${f} = ".config" ]] && continue
+  [[ ${f} = ".docker" ]] && continue
   [[ ${f} = ".gitignore" ]] && continue
   [[ ${f} = ".gitignore_template" ]] && continue
   [[ ${f} = ".gitmodules" ]] && continue
@@ -22,7 +27,7 @@ done
 
 # pull snmp mibs
 curl -fsSL https://raw.githubusercontent.com/prometheus/snmp_exporter/main/generator/Makefile -o .snmp/Makefile
-make --directory .snmp mibs
+PATH=$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin:$PATH make --directory .snmp mibs
 
 # make symlink for xbar plugins
 ln -s ~/.bitbar/Enabled/* ~/Library/Application\ Support/xbar/plugins
@@ -37,10 +42,11 @@ mkdir -p $HOME/.terraform.d/plugin-cache
 
 # deploy dotconfigs
 ./dotconfig/setup.sh
+./.docker/setup.sh
 # deploy dotssh(manually)
 # ./.ssh/setup.sh
 
-echo $(tput setaf 2)Deploy dotfiles complete! ✔︎$(tput sgr0)
+echo $(tput setaf 2)["$0"] Deploy dotfiles complete! ✔︎$(tput sgr0)
 
 brew bundle upgrade --global --cleanup --force
 brew cleanup --prune=all

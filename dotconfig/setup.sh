@@ -1,4 +1,8 @@
-#! /bin/bash
+#!/usr/bin/env bash
+#set -o errexit
+set -o nounset
+set -o pipefail
+
 
 DRYRUN=0
 
@@ -36,4 +40,4 @@ do
     echo "ln -snfv ${DOTCONFIG_DIRECTORY}/${f} ${CONFIG_DIRECTORY}/${f}"
   fi
 done
-echo $(tput setaf 2)Deploy dotfiles complete! ✔︎$(tput sgr0)
+echo $(tput setaf 2)["$0"] Deploy dotfiles complete! ✔︎$(tput sgr0)
