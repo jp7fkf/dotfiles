@@ -30,7 +30,7 @@ done
 
 # pull snmp mibs
 curl -fsSL https://raw.githubusercontent.com/prometheus/snmp_exporter/main/generator/Makefile -o .snmp/Makefile
-PATH=$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin:$PATH make --directory .snmp mibs
+PATH=$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH make --directory .snmp mibs
 
 # make symlink for xbar plugins
 ln -s ~/.bitbar/Enabled/* ~/Library/Application\ Support/xbar/plugins
