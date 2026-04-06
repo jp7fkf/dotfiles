@@ -37,10 +37,10 @@ do
 
   if [ $DRYRUN -eq 0 ]; then
     cp -r "${TARGET_DIRECTORY}/${f}" "${SOURCE_DIRECTORY}/"
-    ln -snfv "${SOURCE_DIRECTORY}/${f}" "${TARGET_DIRECTORY}/${f}"
+    ln -snfFv "${SOURCE_DIRECTORY}/${f}" "${TARGET_DIRECTORY}/${f}"
   else
     echo "cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/"
-    echo "ln -snfv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}"
+    echo "ln -snfFv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}"
   fi
 done
 echo $(tput setaf 2)["$0"] Deploy dotfiles complete! ✔︎$(tput sgr0)

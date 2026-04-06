@@ -25,7 +25,7 @@ do
   [[ ${f} = "sublimetext3" ]] && continue
   [[ ${f} = "Alfred" ]] && continue
   cp -r "${TARGET_DIRECTORY}/${f}" "${SOURCE_DIRECTORY}/"
-  ln -snfv "${SOURCE_DIRECTORY}/${f}" "${TARGET_DIRECTORY}/${f}"
+  ln -snfFv "${SOURCE_DIRECTORY}/${f}" "${TARGET_DIRECTORY}/${f}"
 done
 
 # pull snmp mibs
