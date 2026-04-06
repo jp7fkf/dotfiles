@@ -24,7 +24,7 @@ do
   [[ ${f} = ".travis.yml" ]] && continue
   [[ ${f} = "sublimetext3" ]] && continue
   [[ ${f} = "Alfred" ]] && continue
-  cp -r "${TARGET_DIRECTORY}/${f}" "${SOURCE_DIRECTORY}/"
+  [ ! -L "${TARGET_DIRECTORY}/${f}" ] && cp -r "${TARGET_DIRECTORY}/${f}" "${SOURCE_DIRECTORY}/" && rm -rf "${TARGET_DIRECTORY}/${f}"
   ln -snfFv "${SOURCE_DIRECTORY}/${f}" "${TARGET_DIRECTORY}/${f}"
 done
 

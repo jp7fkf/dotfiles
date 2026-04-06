@@ -33,10 +33,10 @@ do
   [[ ${f} = ".??*" ]] && continue
 
   if [ $DRYRUN -eq 0 ]; then
-    cp -r "${TARGET_DIRECTORY}/${f}" "${SOURCE_DIRECTORY}/"
+    [ ! -L "${TARGET_DIRECTORY}/${f}" ] && cp -r "${TARGET_DIRECTORY}/${f}" "${SOURCE_DIRECTORY}/" && rm -rf "${TARGET_DIRECTORY}/${f}"
     ln -snfFv "${SOURCE_DIRECTORY}/${f}" "${TARGET_DIRECTORY}/${f}"
   else
-    echo "cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/"
+    echo "[ ! -L ${TARGET_DIRECTORY}/${f} ] && cp -r ${TARGET_DIRECTORY}/${f} ${SOURCE_DIRECTORY}/ && rm -rf ${TARGET_DIRECTORY}/${f}"
     echo "ln -snfFv ${SOURCE_DIRECTORY}/${f} ${TARGET_DIRECTORY}/${f}"
   fi
 done
