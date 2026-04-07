@@ -1,71 +1,73 @@
 # This is Git's per-user configuration file.
 [user]
 # Please adapt and uncomment the following lines:
-  name = jp7fkf
-  email = jp7fkf@gmail.com
+name = jp7fkf
+email = jp7fkf@gmail.com
 [core]
-  excludesfile = ~/.gitignore_global
-  compression = 9
-  symlinks = true
-  quotepath = false
-  ignorecase = false
-  autocrlf = input
-  #pager = less -F
-  pager = delta
+	excludesfile = ~/.gitignore_global
+	compression = 9
+	symlinks = true
+	quotepath = false
+	ignorecase = false
+	autocrlf = input
+	#pager = less -F
+	pager = delta
 	hooksPath = /Users/yudaihashimoto/.config/git/hooks
 [alias]
-  delete-merged-branch = "!f () { git checkout ${1:-$(git symbolic-ref refs/remotes/origin/HEAD | awk -F'[/]' '{print $NF}')}; git branch --merged | egrep -v '(\\*|dev|master)' | xargs git branch -d; }; f"
-  graph = log -n 30 --graph --date=short --decorate=short --pretty=format:'%C(Yellow)%h %Creset%cd %Cgreen%cn %C(Cyan)%d %Creset%s'
-  difff = diff --word-diff
-  diffd = "!f () { git diff ${@} | delta --line-numbers --hunk-header-style=omit --file-style=auto;}; f"
-  ch = checkout
-  st = status
-  br = branch
-  br-format = br --format='%(refname:short) | %(committerdate) | %(committername)/%(authorname)' --sort=-committerdate
-  co = commit
-  lo = log --oneline
-  pr = "!f() { if [[ -z $1 ]]; then target=''; else target=\"$1...\"; fi; open \"$(git ls-remote --get-url $(git config --get branch.$(git rev-parse --abbrev-ref HEAD).remote) | sed 's|.*git@github.com[:/]\\(.*\\)$|https://github.com/\\1|' | sed 's|\\.git$||')/compare/$target$(git config --get branch.$(git rev-parse --abbrev-ref HEAD).merge | cut -d / -f 3-)?expand=1\"; }; f"
-  comend = commit --amend --date=now -C HEAD
-  fixmend = commit --amend --no-edit
-  cmtnow = "!f () { git commit -m \"`date \"+%Y-%m-%d %H:%M:%S %Z\"`\";}; f"
-  cmtwip = "!f () { git commit -m \"wip\";}; f"
+	delete-merged-branch = "!f () { git checkout ${1:-$(git symbolic-ref refs/remotes/origin/HEAD | awk -F'[/]' '{print $NF}')}; git branch --merged | egrep -v '(\\*|dev|master)' | xargs git branch -d; }; f"
+	graph = log -n 30 --graph --date=short --decorate=short --pretty=format:'%C(Yellow)%h %Creset%cd %Cgreen%cn %C(Cyan)%d %Creset%s'
+	difff = diff --word-diff
+	diffd = "!f () { git diff ${@} | delta --line-numbers --hunk-header-style=omit --file-style=auto;}; f"
+	ch = checkout
+	st = status
+	br = branch
+	br-format = br --format='%(refname:short) | %(committerdate) | %(committername)/%(authorname)' --sort=-committerdate
+	co = commit
+	lo = log --oneline
+	pr = "!f() { if [[ -z $1 ]]; then target=''; else target=\"$1...\"; fi; open \"$(git ls-remote --get-url $(git config --get branch.$(git rev-parse --abbrev-ref HEAD).remote) | sed 's|.*git@github.com[:/]\\(.*\\)$|https://github.com/\\1|' | sed 's|\\.git$||')/compare/$target$(git config --get branch.$(git rev-parse --abbrev-ref HEAD).merge | cut -d / -f 3-)?expand=1\"; }; f"
+	comend = commit --amend --date=now -C HEAD
+	fixmend = commit --amend --no-edit
+	cmtnow = "!f () { git commit -m \"`date \"+%Y-%m-%d %H:%M:%S %Z\"`\";}; f"
+	cmtwip = "!f () { git commit -m \"wip\";}; f"
+	prev = checkout HEAD^1
+	next = "!sh -c 'if [ \"$1\" = \"\" ]; then if [ \"$TARGET_BRANCH\" = \"\" ]; then if [ \"$(git branch | grep master)\" = \"\" ]; then TARGET_BRANCH=main; else TARGET_BRANCH=master; fi; fi; else TARGET_BRANCH=$1; fi; git log --reverse --pretty=%H $TARGET_BRANCH | grep $(git rev-parse HEAD) -A 1 | tail -1 | xargs git checkout' -"
 [pull]
-  ff = only
+	ff = only
 	autostash = true
 [push]
-  default = current
-  followTags = true
-  autoSetupRemote = true
+	default = current
+	followTags = true
+	autoSetupRemote = true
 [fetch]
-  prune = true
-  pruneTags = true
+	prune = true
+	pruneTags = true
 [init]
-  defaultBranch = main
+	defaultBranch = main
 [ssh]
-  postBuffer = 2048M
-  maxRequestBuffer = 1024M
+	postBuffer = 2048M
+	maxRequestBuffer = 1024M
 [merge]
-  tool = vimdiff
-  conflictstyle = diff3
-  ff = false
+	tool = vimdiff
+	conflictstyle = diff3
+	ff = false
 [mergetool]
-  keepBackup = false
-  prompt = false
+	keepBackup = false
+	prompt = false
 [ghq]
-  root = ~/ghq
+	root = ~/ghq
 [url "git@github.com:"]
-  insteadOf = https://github.com/
-  pushInsteadOf = https://github.com/
+	insteadOf = https://github.com/
+	pushInsteadOf = https://github.com/
 [diff]
-  wsErrorHighlight = all
+	wsErrorHighlight = all
 [color]
-  ui = true
+	ui = true
 #[credential]
 #  helper = osxkeychain
 [delta]
-  navigate = true    # use n and N to move between diff sections
-  color-only = true
-  line-numbers = true
+	navigate = true    # use n and N to move between diff sections
+	color-only = true
+	line-numbers = true
 [rebase]
 	autostash = true
 [stash]
