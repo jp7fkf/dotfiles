@@ -15,7 +15,7 @@
   Column = 40
   Editor = "vim"
   Format = "[$description]: $command $tags"
-  SelectCmd = "fzf --ansi --layout=reverse --border --height=90% --pointer=* --cycle --prompt=Snippets:"
+  SelectCmd = "peco"
   SnippetDirs = []
   SnippetFile = "/Users/jp7fkf/.config/pet/snippet.toml"
   SortBy = ""
