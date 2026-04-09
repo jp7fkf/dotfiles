@@ -17,7 +17,7 @@
   Format = "[$description]: $command $tags"
   SelectCmd = "peco"
   SnippetDirs = []
-  SnippetFile = "/Users/jp7fkf/.config/pet/snippet.toml"
+  SnippetFile = "~/.config/pet/snippet.toml"
   SortBy = ""
 
 [Gist]
