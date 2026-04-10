@@ -9,4 +9,4 @@
   Description = "send syslog using nc"
   Output = ""
   Tag = []
-  command = "while true; do echo "<PRI=0> Mar 27 00:46:46 test-hoge test message\" | nc -v -w 1 <destination_ip=127.0.0.1> <port=5140>; sleep <interval=1>; done"
+  command = "while true; do echo \"<PRI=0> Mar 27 00:46:46 test-hoge test message\" | nc -v -w 1 <destination_ip=127.0.0.1> <port=5140>; sleep <interval=1>; done"
