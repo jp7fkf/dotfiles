@@ -53,7 +53,7 @@ SAVEHIST=1000000
 # one line
 # PROMPT="%~ %# "
 # dual lines
-PROMPT="%{${fg[green]}%}[%n@%M %D %*]%{${reset_color}%} %~
+PROMPT="%{${fg[green]}%}[%n@%M %D{%FT%T}]%{${reset_color}%} %~
 %# "
 
 # 単語の区切り文字を指定する
