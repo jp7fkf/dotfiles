@@ -635,7 +635,7 @@ function yn_prompt () {
 function update_all () {
   brew update
   brew upgrade
-  brew bundle upgrade --global --cleanup --force
+  brew bundle upgrade --global --force
   brew cleanup --prune=all
   brew doctor
 
